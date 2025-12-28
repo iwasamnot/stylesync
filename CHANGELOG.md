@@ -81,3 +81,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Responsive filter sidebar with mobile toggle
 - Real-time product count display based on active filters
 
+### Added - 2025-01-27 (Major Features & Modern UI)
+- **Discount Percentage Display**: Shows discount percentage (e.g., "-25% OFF") on sale items
+- **Wishlist/Favorites System**: 
+  - Add/remove products to wishlist
+  - Wishlist page with all saved items
+  - Wishlist button on product cards and details page
+  - Wishlist count badge in navbar
+  - localStorage persistence
+- **Toast Notifications**: 
+  - Success, error, info, and warning toasts
+  - Auto-dismiss with customizable duration
+  - Smooth slide-in animations
+- **Loading Skeletons**: 
+  - Beautiful skeleton loaders for better perceived performance
+  - Replaces basic spinners
+- **Smooth Animations & Transitions**:
+  - Product card hover effects (scale, shadow, translate)
+  - Fade-in animations for product grid
+  - Scale-in animations with staggered delays
+  - Smooth transitions on all interactive elements
+  - Custom scrollbar styling
+- **Enhanced Product Cards**:
+  - Discount badge with percentage
+  - Wishlist button overlay
+  - Improved hover states
+  - Better visual hierarchy
+- **Enhanced Product Details**:
+  - Discount percentage display
+  - Wishlist button
+  - Toast notifications for cart actions
+- **Modern UI Improvements**:
+  - Custom CSS animations (slide-in, fade-in, scale-in)
+  - Smooth scrolling
+  - Better focus states
+  - Improved mobile responsiveness
+  - Enhanced visual feedback
+
