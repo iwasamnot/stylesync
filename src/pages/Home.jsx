@@ -4,6 +4,7 @@ import ProductFilters from '../components/ProductFilters';
 import ProductSort from '../components/ProductSort';
 import SearchBar from '../components/SearchBar';
 import ProductTabs from '../components/ProductTabs';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -141,8 +142,11 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">Shop All Products</h1>
+          <LoadingSkeleton count={8} />
+        </div>
       </div>
     );
   }
@@ -195,9 +199,11 @@ const Home = () => {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredAndSortedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+                {filteredAndSortedProducts.map((product, index) => (
+                  <div key={product.id} className="animate-scale-in" style={{ animationDelay: `${index * 50}ms` }}>
+                    <ProductCard product={product} />
+                  </div>
                 ))}
               </div>
             )}

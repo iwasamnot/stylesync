@@ -3,11 +3,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useCart } from '../context/CartContext';
+import { useToast } from '../context/ToastContext';
+import { calculateDiscount } from '../utils/helpers';
+import WishlistButton from '../components/WishlistButton';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { showToast } = useToast();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -36,8 +40,12 @@ const ProductDetails = () => {
     for (let i = 0; i < quantity; i++) {
       addToCart(product);
     }
-    alert('Product added to cart!');
+    showToast(`${quantity} ${product.name} added to cart!`, 'success');
   };
+
+  const discount = product?.onSale && product?.originalPrice 
+    ? calculateDiscount(product.originalPrice, product.price) 
+    : 0;
 
   if (loading) {
     return (
@@ -64,16 +72,39 @@ const ProductDetails = () => {
               />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
-              <p className="text-3xl font-semibold text-indigo-600 mb-4">
-                ${product.price?.toFixed(2)}
-              </p>
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
+                  {product.category && (
+                    <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm mb-4">
+                      {product.category}
+                    </span>
+                  )}
+                </div>
+                <WishlistButton product={product} />
+              </div>
               
-              {product.category && (
-                <span className="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm mb-4">
-                  {product.category}
-                </span>
-              )}
+              <div className="mb-4">
+                {product.onSale && product.originalPrice && discount > 0 ? (
+                  <div>
+                    <div className="flex items-center gap-3 mb-2">
+                      <p className="text-3xl font-bold text-red-600">
+                        ${product.price?.toFixed(2)}
+                      </p>
+                      <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                        -{discount}% OFF
+                      </span>
+                    </div>
+                    <p className="text-xl text-gray-400 line-through">
+                      ${product.originalPrice.toFixed(2)}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-3xl font-semibold text-indigo-600">
+                    ${product.price?.toFixed(2)}
+                  </p>
+                )}
+              </div>
 
               {product.description && (
                 <div className="mb-6">
