@@ -152,17 +152,22 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Shop All Products</h1>
+        {/* Header Section */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+            Shop All Products
+          </h1>
+          
+          {/* Product Tabs */}
+          <ProductTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-        {/* Product Tabs */}
-        <ProductTabs activeTab={activeTab} onTabChange={setActiveTab} />
+          {/* Search Bar */}
+          <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        </div>
 
-        {/* Search Bar */}
-        <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">
             <ProductFilters
@@ -186,16 +191,21 @@ const Home = () => {
             />
 
             {filteredAndSortedProducts.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-lg shadow-md">
-                <p className="text-gray-500 text-lg">No products found.</p>
-                <p className="text-gray-400 text-sm mt-2">
-                  Try adjusting your filters or search query.
+              <div className="text-center py-16 bg-white rounded-xl shadow-lg border border-gray-100">
+                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <p className="text-gray-700 text-xl font-semibold mb-2">No products found</p>
+                <p className="text-gray-500 text-sm mb-6">
+                  Try adjusting your filters or search query
                 </p>
                 <button
                   onClick={handleClearFilters}
-                  className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 font-semibold shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
                 >
-                  Clear Filters
+                  Clear All Filters
                 </button>
               </div>
             ) : (

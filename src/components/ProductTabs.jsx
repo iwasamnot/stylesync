@@ -1,31 +1,37 @@
 const ProductTabs = ({ activeTab, onTabChange }) => {
   const tabs = [
-    { id: 'all', label: 'All Products' },
-    { id: 'new', label: 'New Arrivals' },
-    { id: 'trending', label: 'Trending' },
-    { id: 'sale', label: 'Sale' },
+    { id: 'all', label: 'All Products', icon: '🛍️' },
+    { id: 'new', label: 'New Arrivals', icon: '✨' },
+    { id: 'trending', label: 'Trending', icon: '🔥' },
+    { id: 'sale', label: 'Sale', icon: '🏷️' },
   ];
 
   return (
-    <div className="border-b border-gray-200 mb-6">
-      <nav className="flex space-x-8" aria-label="Tabs">
+    <div className="mb-8">
+      <div className="bg-white rounded-xl shadow-md p-2 inline-flex gap-2 border border-gray-100">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             className={`
-              py-4 px-1 border-b-2 font-medium text-sm
+              relative px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-300
               ${
                 activeTab === tab.id
-                  ? 'border-indigo-500 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg transform scale-105'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
               }
             `}
           >
-            {tab.label}
+            <span className="flex items-center gap-2">
+              <span className="text-lg">{tab.icon}</span>
+              <span>{tab.label}</span>
+            </span>
+            {activeTab === tab.id && (
+              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1/2 h-0.5 bg-white rounded-full"></div>
+            )}
           </button>
         ))}
-      </nav>
+      </div>
     </div>
   );
 };
