@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { ToastProvider, useToast } from './context/ToastContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -59,15 +60,17 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <ToastProvider>
-            <AppContent />
-          </ToastProvider>
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <ToastProvider>
+              <AppContent />
+            </ToastProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
