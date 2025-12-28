@@ -69,6 +69,29 @@ Firebase is already configured with the following services:
 
 Configuration file: `src/lib/firebase.js`
 
+### Admin Account Setup
+
+To create an admin account, see the detailed guide in [ADMIN_SETUP.md](./ADMIN_SETUP.md).
+
+**Quick Steps:**
+1. Create a user account through the app
+2. Go to Firebase Console → Firestore Database
+3. Find the `users` collection and locate the user document (by UID)
+4. Update the `role` field from `"user"` to `"admin"`
+
+### Firestore Security Rules
+
+Security rules are defined in `firestore.rules`. Deploy them with:
+
+```bash
+firebase deploy --only firestore:rules
+```
+
+**Key Rules:**
+- **Users**: Can read own data; admins can read/write all
+- **Products**: Everyone can read; only admins can create/update/delete
+- **Orders**: Users can read own orders; admins can read/write all
+
 ## 📁 Project Structure
 
 ```
