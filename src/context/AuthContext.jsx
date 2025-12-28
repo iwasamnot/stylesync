@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { auth, db } from '../lib/firebase';
 import { 
   createUserWithEmailAndPassword, 
@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const value = {
+  const value = useMemo(() => ({
     currentUser,
     userRole,
     signup,
@@ -104,7 +104,7 @@ export const AuthProvider = ({ children }) => {
     isAdmin: userRole === 'admin',
     isUser: userRole === 'user',
     isGuest: userRole === 'guest',
-  };
+  }), [currentUser, userRole]);
 
   return (
     <AuthContext.Provider value={value}>
