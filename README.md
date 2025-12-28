@@ -115,9 +115,36 @@ npm run preview
 
 ## 🚀 Deployment
 
-### Firebase Hosting
+### Automatic Deployment via GitHub Actions
 
-The project is configured for Firebase Hosting. To deploy:
+The project includes a GitHub Actions workflow that automatically builds and deploys to Firebase Hosting whenever you push code to the `main` branch.
+
+#### Setup (One-time)
+
+1. **Generate Firebase Service Account Token**:
+   - Go to [Firebase Console](https://console.firebase.google.com/)
+   - Select your project: `stylesync-sistc`
+   - Go to Project Settings → Service Accounts
+   - Click "Generate New Private Key"
+   - Save the JSON file (keep it secure!)
+
+2. **Add Secret to GitHub**:
+   - Go to your GitHub repository: `https://github.com/iwasamnot/stylesync`
+   - Navigate to Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Name: `FIREBASE_SERVICE_ACCOUNT`
+   - Value: Paste the entire contents of the JSON file you downloaded
+   - Click "Add secret"
+
+3. **Push to main branch**:
+   ```bash
+   git push origin main
+   ```
+   The workflow will automatically trigger and deploy your site!
+
+#### Manual Deployment
+
+If you prefer to deploy manually:
 
 1. **Login to Firebase** (first time only):
    ```bash
@@ -135,18 +162,16 @@ The project is configured for Firebase Hosting. To deploy:
    npx firebase deploy --only hosting
    ```
 
-3. **Your site will be live at**:
-   ```
-   https://stylesync-sistc.web.app
-   ```
-   or
-   ```
-   https://stylesync-sistc.firebaseapp.com
-   ```
+### Live Site URLs
+
+Once deployed, your site will be available at:
+- https://stylesync-sistc.web.app
+- https://stylesync-sistc.firebaseapp.com
 
 **Note**: Firebase Hosting configuration files:
 - `firebase.json` - Hosting configuration
 - `.firebaserc` - Project ID configuration
+- `.github/workflows/firebase-deploy.yml` - GitHub Actions workflow
 
 ## 📄 License
 

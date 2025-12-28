@@ -26,4 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Firebase CLI tools integration
 - Deployment script (npm run deploy)
 - Production build successfully created
+- GitHub Actions workflow for automatic deployment to Firebase Hosting
+- CI/CD pipeline that builds and deploys on push to main branch
 
