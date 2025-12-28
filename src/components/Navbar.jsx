@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const { cartItemCount } = useCart();
@@ -9,19 +10,19 @@ const Navbar = () => {
   const { wishlistCount } = useWishlist();
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-xl font-light tracking-widest uppercase text-gray-900">StyleSync</span>
+            <span className="text-xl font-light tracking-widest uppercase text-gray-900 dark:text-white">StyleSync</span>
           </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
-              className="text-xs text-gray-600 hover:text-gray-900 uppercase tracking-widest font-light transition-colors"
+              className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
             >
               Shop
             </Link>
@@ -29,7 +30,7 @@ const Navbar = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-xs text-gray-600 hover:text-gray-900 uppercase tracking-widest font-light transition-colors"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
               >
                 Admin
               </Link>
@@ -38,22 +39,24 @@ const Navbar = () => {
             {currentUser ? (
               <Link
                 to="/profile"
-                className="text-xs text-gray-600 hover:text-gray-900 uppercase tracking-widest font-light transition-colors"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
               >
                 Account
               </Link>
             ) : (
               <Link
                 to="/login"
-                className="text-xs text-gray-600 hover:text-gray-900 uppercase tracking-widest font-light transition-colors"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
               >
                 Sign In
               </Link>
             )}
             
+            <ThemeToggle />
+            
             <Link
               to="/wishlist"
-              className="relative text-gray-600 hover:text-gray-900 transition-colors"
+              className="relative text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <svg
                 className="w-5 h-5"
@@ -76,7 +79,7 @@ const Navbar = () => {
             </Link>
             <Link
               to="/cart"
-              className="relative text-gray-600 hover:text-gray-900 transition-colors"
+              className="relative text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <svg
                 className="w-5 h-5"

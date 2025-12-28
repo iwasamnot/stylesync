@@ -66,15 +66,15 @@ const ProductFilters = ({
       {/* Filter content */}
       <div className={`${showFilters ? 'block' : 'hidden'} lg:block`}>
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-200">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs uppercase tracking-widest text-gray-900 font-light">
+            <h2 className="text-xs uppercase tracking-widest text-gray-900 dark:text-white font-light">
               Filters
             </h2>
             {hasActiveFilters && (
               <button
                 onClick={onClearFilters}
-                className="text-xs text-gray-500 hover:text-gray-900 uppercase tracking-widest font-light transition-colors"
+                className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
               >
                 Clear
               </button>
@@ -89,11 +89,11 @@ const ProductFilters = ({
               onClick={() => toggleSection('category')}
               className="w-full flex items-center justify-between mb-4"
             >
-              <h3 className="text-xs uppercase tracking-widest text-gray-900 font-light">
+              <h3 className="text-xs uppercase tracking-widest text-gray-900 dark:text-white font-light">
                 Category
               </h3>
               <svg
-                className={`w-4 h-4 text-gray-500 transform transition-transform duration-200 ${expandedSections.category ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-gray-500 dark:text-gray-400 transform transition-transform duration-200 ${expandedSections.category ? 'rotate-180' : ''}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -107,8 +107,8 @@ const ProductFilters = ({
                   onClick={() => onCategoryChange('')}
                   className={`block w-full text-left px-0 py-2 text-xs uppercase tracking-widest font-light transition-colors ${
                     selectedCategory === ''
-                      ? 'text-gray-900 border-b border-gray-900'
-                      : 'text-gray-500 hover:text-gray-900'
+                      ? 'text-gray-900 dark:text-white border-b border-gray-900 dark:border-white'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
                   All
@@ -119,8 +119,8 @@ const ProductFilters = ({
                     onClick={() => onCategoryChange(category)}
                     className={`block w-full text-left px-0 py-2 text-xs uppercase tracking-widest font-light transition-colors ${
                       selectedCategory === category
-                        ? 'text-gray-900 border-b border-gray-900'
-                        : 'text-gray-500 hover:text-gray-900'
+                        ? 'text-gray-900 dark:text-white border-b border-gray-900 dark:border-white'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                     }`}
                   >
                     {category}
@@ -136,11 +136,11 @@ const ProductFilters = ({
               onClick={() => toggleSection('price')}
               className="w-full flex items-center justify-between mb-4"
             >
-              <h3 className="text-xs uppercase tracking-widest text-gray-900 font-light">
+              <h3 className="text-xs uppercase tracking-widest text-gray-900 dark:text-white font-light">
                 Price
               </h3>
               <svg
-                className={`w-4 h-4 text-gray-500 transform transition-transform duration-200 ${expandedSections.price ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-gray-500 dark:text-gray-400 transform transition-transform duration-200 ${expandedSections.price ? 'rotate-180' : ''}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -156,8 +156,8 @@ const ProductFilters = ({
                     onClick={() => onPriceRangeChange(range.value)}
                     className={`block w-full text-left px-0 py-2 text-xs uppercase tracking-widest font-light transition-colors ${
                       priceRange === range.value
-                        ? 'text-gray-900 border-b border-gray-900'
-                        : 'text-gray-500 hover:text-gray-900'
+                        ? 'text-gray-900 dark:text-white border-b border-gray-900 dark:border-white'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                     }`}
                   >
                     {range.label}
@@ -173,14 +173,14 @@ const ProductFilters = ({
               onClick={() => toggleSection('size')}
               className="w-full flex items-center justify-between mb-4"
             >
-              <h3 className="text-xs uppercase tracking-widest text-gray-900 font-light">
+              <h3 className="text-xs uppercase tracking-widest text-gray-900 dark:text-white font-light">
                 Size
                 {selectedSizes.length > 0 && (
-                  <span className="ml-2 text-gray-500">({selectedSizes.length})</span>
+                  <span className="ml-2 text-gray-500 dark:text-gray-400">({selectedSizes.length})</span>
                 )}
               </h3>
               <svg
-                className={`w-4 h-4 text-gray-500 transform transition-transform duration-200 ${expandedSections.size ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-gray-500 dark:text-gray-400 transform transition-transform duration-200 ${expandedSections.size ? 'rotate-180' : ''}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -196,8 +196,8 @@ const ProductFilters = ({
                     onClick={() => onSizeChange(size, !selectedSizes.includes(size))}
                     className={`px-3 py-2 text-xs uppercase tracking-widest font-light transition-colors border ${
                       selectedSizes.includes(size)
-                        ? 'bg-black text-white border-black'
-                        : 'bg-white text-gray-700 border-gray-300 hover:border-gray-900'
+                        ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white'
+                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white'
                     }`}
                   >
                     {size}

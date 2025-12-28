@@ -10,6 +10,8 @@ import HeroBanner from '../components/HeroBanner';
 import PromoBanner from '../components/PromoBanner';
 import CategoryShowcase from '../components/CategoryShowcase';
 import StatsSection from '../components/StatsSection';
+import RecentlyViewed from '../components/RecentlyViewed';
+import NewsletterSignup from '../components/NewsletterSignup';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -192,7 +194,7 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Banner - Only show on "all" tab with no filters */}
         {showFeaturedSections && <HeroBanner />}
@@ -227,7 +229,7 @@ const Home = () => {
 
         {/* Header Section */}
         <div className="mb-12">
-          <h1 className="text-2xl font-light text-gray-900 mb-8 tracking-wide">
+          <h1 className="text-2xl font-light text-gray-900 dark:text-white mb-8 tracking-wide">
             {activeTab === 'all' ? 'All Products' : 
              activeTab === 'new' ? 'New Arrivals' :
              activeTab === 'trending' ? 'Trending' :
@@ -247,12 +249,12 @@ const Home = () => {
             {featuredProducts.onSale.length > 0 && (
               <div className="mb-20">
                 <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-xs uppercase tracking-widest text-gray-500 font-light">
+                  <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light">
                     On Sale
                   </h2>
                   <Link
                     to="/?tab=sale"
-                    className="text-xs text-gray-500 hover:text-gray-900 uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
+                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
                   >
                     View All
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -323,9 +325,15 @@ const Home = () => {
             )}
 
             {/* Divider */}
-            <div className="my-12 border-t border-gray-200"></div>
+            <div className="my-12 border-t border-gray-200 dark:border-gray-800"></div>
           </>
         )}
+
+        {/* Recently Viewed */}
+        {showFeaturedSections && <RecentlyViewed />}
+
+        {/* Newsletter */}
+        {showFeaturedSections && <NewsletterSignup />}
 
         {/* Main Products Section */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -355,7 +363,7 @@ const Home = () => {
             
             {showFeaturedSections && (
               <div className="mb-12">
-                <h2 className="text-xs uppercase tracking-widest text-gray-500 font-light mb-8">All Products</h2>
+                <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light mb-8">All Products</h2>
                 <ProductSort
                   sortBy={sortBy}
                   onSortChange={setSortBy}
