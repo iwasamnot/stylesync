@@ -48,18 +48,6 @@ Build for production:
 npm run build
 ```
 
-## Project Structure
-
-```
-src/
-├── components/     # Reusable UI components (Navbar, ProductCard)
-├── pages/         # Page components (Home, Login, ProductDetails, Cart)
-├── context/       # React Context providers (AuthContext, CartContext)
-├── lib/           # Firebase configuration and utilities
-├── App.jsx        # Main app component with routing
-└── main.jsx       # Entry point
-```
-
 ## 🔥 Firebase Setup
 
 Firebase is already configured with the following services:
@@ -132,4 +120,3 @@ This project is private and proprietary.
 ## 👤 Author
 
 StyleSync Developer
-
