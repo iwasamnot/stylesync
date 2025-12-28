@@ -29,3 +29,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions workflow for automatic deployment to Firebase Hosting
 - CI/CD pipeline that builds and deploys on push to main branch
 
+### Added - 2025-01-27 (Role-Based Access Control)
+- Complete authentication system with Firebase Auth (signup, login, logout)
+- User role management system (admin, user, guest) with Firestore integration
+- ProtectedRoute component for route guards and access control
+- AdminDashboard page with full CRUD operations for products
+- Product management (create, read, update, delete) for admins
+- Enhanced Login page with signup/login forms and error handling
+- Profile page for authenticated users with role display
+- Role-based navigation in Navbar (different links for admin/user/guest)
+- Full shopping cart functionality with add, remove, update quantity
+- Cart persistence using localStorage
+- Product listing from Firestore database
+- Product details page with full product information
+- Cart page with order summary and checkout button
+- Guest user functionality (browse products, limited cart access)
+- Normal user functionality (full cart, profile management)
+- Admin functionality (product management, user role viewing)
+- Protected routes for authenticated users and admin-only pages
+
