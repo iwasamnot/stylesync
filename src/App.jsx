@@ -4,6 +4,7 @@ import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { ToastProvider, useToast } from './context/ToastContext';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import ToastContainer from './components/ToastContainer';
 import Home from './pages/Home';
@@ -50,6 +51,7 @@ function AppContent() {
             }
           />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );

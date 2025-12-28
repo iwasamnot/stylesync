@@ -1,26 +1,41 @@
 import { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import ProductFilters from '../components/ProductFilters';
 import ProductSort from '../components/ProductSort';
 import SearchBar from '../components/SearchBar';
 import ProductTabs from '../components/ProductTabs';
 import LoadingSkeleton from '../components/LoadingSkeleton';
+import HeroBanner from '../components/HeroBanner';
+import PromoBanner from '../components/PromoBanner';
+import CategoryShowcase from '../components/CategoryShowcase';
+import StatsSection from '../components/StatsSection';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { useSearchParams } from 'react-router-dom';
 
 const Home = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
   const [priceRange, setPriceRange] = useState('all');
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [sortBy, setSortBy] = useState('newest');
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'all');
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    // Update URL when tab changes
+    const params = new URLSearchParams();
+    if (activeTab !== 'all') params.set('tab', activeTab);
+    if (selectedCategory) params.set('category', selectedCategory);
+    setSearchParams(params, { replace: true });
+  }, [activeTab, selectedCategory, setSearchParams]);
 
   const fetchProducts = async () => {
     try {
@@ -151,13 +166,59 @@ const Home = () => {
     );
   }
 
+  // Get featured products for different sections
+  const featuredProducts = useMemo(() => {
+    return {
+      newArrivals: allProducts.filter(p => p.newArrival).slice(0, 4),
+      trending: allProducts.filter(p => p.trending).slice(0, 4),
+      onSale: allProducts.filter(p => p.onSale).slice(0, 4),
+      bestsellers: allProducts.slice(0, 4),
+    };
+  }, [allProducts]);
+
+  const showFeaturedSections = activeTab === 'all' && !searchQuery && !selectedCategory && priceRange === 'all' && selectedSizes.length === 0;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Banner - Only show on "all" tab with no filters */}
+        {showFeaturedSections && <HeroBanner />}
+
+        {/* Stats Section */}
+        {showFeaturedSections && <StatsSection />}
+
+        {/* Category Showcase - Only show on "all" tab with no filters */}
+        {showFeaturedSections && categories.length > 0 && (
+          <CategoryShowcase categories={categories} />
+        )}
+
+        {/* Promotional Banners */}
+        {showFeaturedSections && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <PromoBanner
+              title="Free Shipping"
+              subtitle="On orders over $100"
+              link="/?tab=sale"
+              linkText="Shop Now"
+              gradient="from-green-500 to-emerald-600"
+            />
+            <PromoBanner
+              title="New Collection"
+              subtitle="Check out our latest arrivals"
+              link="/?tab=new"
+              linkText="Explore"
+              gradient="from-pink-500 to-rose-600"
+            />
+          </div>
+        )}
+
         {/* Header Section */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            Shop All Products
+            {activeTab === 'all' ? 'Shop All Products' : 
+             activeTab === 'new' ? 'New Arrivals' :
+             activeTab === 'trending' ? 'Trending Now' :
+             activeTab === 'sale' ? 'Sale Items' : 'Shop All Products'}
           </h1>
           
           {/* Product Tabs */}
@@ -167,6 +228,96 @@ const Home = () => {
           <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
         </div>
 
+        {/* Featured Sections - Only show when viewing all products */}
+        {showFeaturedSections && allProducts.length > 0 && (
+          <>
+            {featuredProducts.onSale.length > 0 && (
+              <div className="mb-16">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <span className="text-red-500">🏷️</span>
+                    On Sale Now
+                  </h2>
+                  <Link
+                    to="/?tab=sale"
+                    className="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-2 transition-colors"
+                  >
+                    View All
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {featuredProducts.onSale.map((product, index) => (
+                    <div key={product.id} className="animate-scale-in" style={{ animationDelay: `${index * 100}ms` }}>
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {featuredProducts.newArrivals.length > 0 && (
+              <div className="mb-16">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <span className="text-green-500">✨</span>
+                    New Arrivals
+                  </h2>
+                  <Link
+                    to="/?tab=new"
+                    className="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-2 transition-colors"
+                  >
+                    View All
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {featuredProducts.newArrivals.map((product, index) => (
+                    <div key={product.id} className="animate-scale-in" style={{ animationDelay: `${index * 100}ms` }}>
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {featuredProducts.trending.length > 0 && (
+              <div className="mb-16">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                    <span className="text-orange-500">🔥</span>
+                    Trending Now
+                  </h2>
+                  <Link
+                    to="/?tab=trending"
+                    className="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-2 transition-colors"
+                  >
+                    View All
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {featuredProducts.trending.map((product, index) => (
+                    <div key={product.id} className="animate-scale-in" style={{ animationDelay: `${index * 100}ms` }}>
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Divider */}
+            <div className="my-12 border-t border-gray-200"></div>
+          </>
+        )}
+
+        {/* Main Products Section */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">
@@ -184,11 +335,24 @@ const Home = () => {
 
           {/* Products Grid */}
           <div className="lg:col-span-3">
-            <ProductSort
-              sortBy={sortBy}
-              onSortChange={setSortBy}
-              productCount={filteredAndSortedProducts.length}
-            />
+            {!showFeaturedSections && (
+              <ProductSort
+                sortBy={sortBy}
+                onSortChange={setSortBy}
+                productCount={filteredAndSortedProducts.length}
+              />
+            )}
+            
+            {showFeaturedSections && (
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">All Products</h2>
+                <ProductSort
+                  sortBy={sortBy}
+                  onSortChange={setSortBy}
+                  productCount={filteredAndSortedProducts.length}
+                />
+              </div>
+            )}
 
             {filteredAndSortedProducts.length === 0 ? (
               <div className="text-center py-16 bg-white rounded-xl shadow-lg border border-gray-100">
