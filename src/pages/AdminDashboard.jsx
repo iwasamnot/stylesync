@@ -309,6 +309,49 @@ const AdminDashboard = () => {
                     placeholder="StyleSync"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Original Price ($)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.originalPrice}
+                    onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    placeholder="Leave empty if not on sale"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Set original price to show sale discount</p>
+                </div>
+                <div className="md:col-span-2">
+                  <div className="flex gap-6">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.onSale}
+                        onChange={(e) => setFormData({ ...formData, onSale: e.target.checked })}
+                        className="mr-2"
+                      />
+                      <span className="text-sm font-medium text-gray-700">On Sale</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.trending}
+                        onChange={(e) => setFormData({ ...formData, trending: e.target.checked })}
+                        className="mr-2"
+                      />
+                      <span className="text-sm font-medium text-gray-700">Trending</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.newArrival}
+                        onChange={(e) => setFormData({ ...formData, newArrival: e.target.checked })}
+                        className="mr-2"
+                      />
+                      <span className="text-sm font-medium text-gray-700">New Arrival</span>
+                    </label>
+                  </div>
+                </div>
               </div>
               <button
                 type="submit"
