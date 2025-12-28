@@ -192,7 +192,7 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Banner - Only show on "all" tab with no filters */}
         {showFeaturedSections && <HeroBanner />}
@@ -226,12 +226,12 @@ const Home = () => {
         )}
 
         {/* Header Section */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            {activeTab === 'all' ? 'Shop All Products' : 
+        <div className="mb-12">
+          <h1 className="text-2xl font-light text-gray-900 mb-8 tracking-wide">
+            {activeTab === 'all' ? 'All Products' : 
              activeTab === 'new' ? 'New Arrivals' :
-             activeTab === 'trending' ? 'Trending Now' :
-             activeTab === 'sale' ? 'Sale Items' : 'Shop All Products'}
+             activeTab === 'trending' ? 'Trending' :
+             activeTab === 'sale' ? 'Sale' : 'All Products'}
           </h1>
           
           {/* Product Tabs */}
@@ -253,11 +253,11 @@ const Home = () => {
                   </h2>
                   <Link
                     to="/?tab=sale"
-                    className="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-2 transition-colors"
+                    className="text-xs text-gray-500 hover:text-gray-900 uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
                   >
                     View All
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>
                   </Link>
                 </div>
@@ -272,10 +272,9 @@ const Home = () => {
             )}
 
             {featuredProducts.newArrivals.length > 0 && (
-              <div className="mb-16">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                    <span className="text-green-500">✨</span>
+              <div className="mb-20">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-xs uppercase tracking-widest text-gray-500 font-light">
                     New Arrivals
                   </h2>
                   <Link
@@ -299,11 +298,10 @@ const Home = () => {
             )}
 
             {featuredProducts.trending.length > 0 && (
-              <div className="mb-16">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                    <span className="text-orange-500">🔥</span>
-                    Trending Now
+              <div className="mb-20">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-xs uppercase tracking-widest text-gray-500 font-light">
+                    Trending
                   </h2>
                   <Link
                     to="/?tab=trending"
@@ -357,8 +355,8 @@ const Home = () => {
             )}
             
             {showFeaturedSections && (
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">All Products</h2>
+              <div className="mb-12">
+                <h2 className="text-xs uppercase tracking-widest text-gray-500 font-light mb-8">All Products</h2>
                 <ProductSort
                   sortBy={sortBy}
                   onSortChange={setSortBy}

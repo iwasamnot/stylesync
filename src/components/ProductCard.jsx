@@ -9,75 +9,65 @@ const ProductCard = ({ product }) => {
     : 0;
 
   return (
-    <div className="group relative">
+    <div className="group">
       <Link to={`/product/${product?.id || '1'}`} className="block">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-          <div className="aspect-square bg-gray-200 overflow-hidden relative">
+        <div className="bg-white overflow-hidden">
+          <div className="aspect-square bg-gray-100 overflow-hidden relative">
             <img
               src={product?.image || 'https://via.placeholder.com/300'}
               alt={product?.name || 'Product'}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-90"
             />
-            <div className="absolute top-2 left-2 flex flex-col gap-1">
+            <div className="absolute top-4 left-4">
               {product?.onSale && discount > 0 && (
-                <div className="bg-red-500 text-white px-2 py-1 rounded text-xs font-bold shadow-lg animate-pulse">
-                  -{discount}% OFF
-                </div>
+                <span className="bg-black text-white px-3 py-1 text-xs font-medium tracking-wide uppercase">
+                  {discount}% OFF
+                </span>
               )}
-              {product?.trending && !product?.onSale && (
-                <div className="bg-orange-500 text-white px-2 py-1 rounded text-xs font-semibold shadow-lg">
-                  🔥 TRENDING
-                </div>
-              )}
-              {product?.newArrival && !product?.onSale && !product?.trending && (
-                <div className="bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold shadow-lg">
-                  ✨ NEW
-                </div>
+              {product?.newArrival && !product?.onSale && (
+                <span className="bg-black text-white px-3 py-1 text-xs font-medium tracking-wide uppercase">
+                  NEW
+                </span>
               )}
             </div>
-            <div className="absolute top-2 right-2">
+            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
               <WishlistButton product={product} />
             </div>
             {!inStock && (
-              <div className="absolute bottom-2 left-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold shadow-lg text-center">
-                Out of Stock
+              <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+                <span className="text-sm font-medium tracking-wide uppercase text-gray-600">Out of Stock</span>
               </div>
             )}
           </div>
-        <div className="p-4">
-          {product?.category && (
-            <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-              {product.category}
-            </p>
-          )}
-          <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
-            {product?.name || 'Product Name'}
-          </h3>
-          <div className="flex items-center justify-between">
-            <div>
-              {product?.onSale && product?.originalPrice ? (
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="text-xl font-bold text-red-600">
+          <div className="pt-4">
+            {product?.category && (
+              <p className="text-xs text-gray-500 uppercase tracking-widest mb-1 font-light">
+                {product.category}
+              </p>
+            )}
+            <h3 className="text-sm font-light text-gray-900 mb-2 tracking-wide">
+              {product?.name || 'Product Name'}
+            </h3>
+            <div className="flex items-baseline justify-between">
+              <div>
+                {product?.onSale && product?.originalPrice ? (
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
                       ${product?.price?.toFixed(2) || '0.00'}
                     </p>
+                    <p className="text-xs text-gray-400 line-through">
+                      ${product.originalPrice.toFixed(2)}
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-400 line-through">
-                    ${product.originalPrice.toFixed(2)}
+                ) : (
+                  <p className="text-sm font-medium text-gray-900">
+                    ${product?.price?.toFixed(2) || '0.00'}
                   </p>
-                </div>
-              ) : (
-                <p className="text-xl font-bold text-indigo-600">
-                  ${product?.price?.toFixed(2) || '0.00'}
-                </p>
-              )}
+                )}
+              </div>
             </div>
-            {product?.brand && (
-              <p className="text-xs text-gray-400">{product.brand}</p>
-            )}
           </div>
         </div>
-      </div>
       </Link>
     </div>
   );

@@ -1,19 +1,19 @@
-const SearchBar = ({ searchQuery, onSearchChange, placeholder = "Search products..." }) => {
+const SearchBar = ({ searchQuery, onSearchChange, placeholder = "Search..." }) => {
   return (
-    <div className="mb-8">
-      <div className="relative max-w-2xl">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+    <div className="mb-12">
+      <div className="relative max-w-md border-b border-gray-300">
+        <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
           <svg
-            className="h-5 w-5 text-gray-400"
+            className="h-4 w-4 text-gray-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            strokeWidth={1.5}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
             />
           </svg>
         </div>
@@ -22,15 +22,15 @@ const SearchBar = ({ searchQuery, onSearchChange, placeholder = "Search products
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder={placeholder}
-          className="block w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 shadow-sm hover:shadow-md"
+          className="block w-full pl-8 pr-8 py-3 border-0 border-b border-gray-300 bg-transparent text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 transition-colors"
         />
         {searchQuery && (
           <button
             onClick={() => onSearchChange('')}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center"
+            className="absolute inset-y-0 right-0 flex items-center pr-2"
           >
-            <svg className="h-5 w-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg className="h-4 w-4 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         )}

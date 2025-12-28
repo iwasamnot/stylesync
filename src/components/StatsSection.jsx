@@ -1,19 +1,18 @@
 const StatsSection = () => {
   const stats = [
-    { label: 'Products', value: '500+', icon: '🛍️' },
-    { label: 'Happy Customers', value: '10K+', icon: '😊' },
-    { label: 'Orders Delivered', value: '50K+', icon: '📦' },
-    { label: 'Countries', value: '50+', icon: '🌍' },
+    { label: 'Products', value: '500+' },
+    { label: 'Customers', value: '10K+' },
+    { label: 'Orders', value: '50K+' },
+    { label: 'Countries', value: '50+' },
   ];
 
   return (
-    <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 mb-12 shadow-xl">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div className="border-t border-b border-gray-200 py-12 mb-16">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
         {stats.map((stat, index) => (
-          <div key={index} className="text-center text-white animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
-            <div className="text-4xl mb-2">{stat.icon}</div>
-            <div className="text-3xl font-bold mb-1">{stat.value}</div>
-            <div className="text-sm text-white/90">{stat.label}</div>
+          <div key={index} className="text-center">
+            <div className="text-3xl font-light text-gray-900 mb-2">{stat.value}</div>
+            <div className="text-xs uppercase tracking-widest text-gray-500 font-light">{stat.label}</div>
           </div>
         ))}
       </div>
