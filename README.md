@@ -69,6 +69,21 @@ Firebase is already configured with the following services:
 
 Configuration file: `src/lib/firebase.js`
 
+### ⚠️ Important: Enable Email/Password Authentication
+
+Before using the app, you must enable Email/Password authentication in Firebase Console:
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project: **stylesync-sistc**
+3. Navigate to **Authentication** → **Sign-in method**
+4. Click on **Email/Password**
+5. Toggle **Enable** to ON
+6. Click **Save**
+
+**Without this step, you'll get `auth/operation-not-allowed` errors!**
+
+For more troubleshooting, see [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
 ### Admin Account Setup
 
 To create an admin account, see the detailed guide in [ADMIN_SETUP.md](./ADMIN_SETUP.md).

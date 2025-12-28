@@ -1,5 +1,18 @@
 # Quick Admin Setup Guide
 
+## ⚠️ First: Enable Email/Password Authentication
+
+**Before anything else, enable Email/Password auth:**
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select project: **stylesync-sistc**
+3. Go to **Authentication** → **Sign-in method**
+4. Click **Email/Password**
+5. Toggle **Enable** to ON
+6. Click **Save**
+
+---
+
 ## Fastest Way to Create an Admin Account
 
 ### Step 1: Sign Up

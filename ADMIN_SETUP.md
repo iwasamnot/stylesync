@@ -2,6 +2,21 @@
 
 This guide explains how to set up admin accounts for the StyleSync application.
 
+## ⚠️ Prerequisites
+
+**Before creating accounts, make sure Email/Password authentication is enabled:**
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Select your project: **stylesync-sistc**
+3. Navigate to **Authentication** → **Sign-in method**
+4. Click on **Email/Password**
+5. Toggle **Enable** to ON
+6. Click **Save**
+
+**If you skip this step, you'll get `auth/operation-not-allowed` errors!**
+
+---
+
 ## Method 1: Using Firebase Console (Recommended)
 
 ### Step 1: Create a User Account
