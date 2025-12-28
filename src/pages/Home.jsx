@@ -3,6 +3,7 @@ import ProductCard from '../components/ProductCard';
 import ProductFilters from '../components/ProductFilters';
 import ProductSort from '../components/ProductSort';
 import SearchBar from '../components/SearchBar';
+import ProductTabs from '../components/ProductTabs';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -14,6 +15,7 @@ const Home = () => {
   const [priceRange, setPriceRange] = useState('all');
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [sortBy, setSortBy] = useState('newest');
+  const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
     fetchProducts();
@@ -43,6 +45,16 @@ const Home = () => {
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...allProducts];
+
+    // Tab filter (Sale, Trending, New Arrivals)
+    if (activeTab === 'sale') {
+      filtered = filtered.filter((product) => product.onSale === true);
+    } else if (activeTab === 'trending') {
+      filtered = filtered.filter((product) => product.trending === true);
+    } else if (activeTab === 'new') {
+      filtered = filtered.filter((product) => product.newArrival === true);
+    }
+    // 'all' shows all products
 
     // Search filter
     if (searchQuery) {
@@ -108,7 +120,7 @@ const Home = () => {
     });
 
     return sorted;
-  }, [allProducts, searchQuery, selectedCategory, priceRange, selectedSizes, sortBy]);
+  }, [allProducts, activeTab, searchQuery, selectedCategory, priceRange, selectedSizes, sortBy]);
 
   const handleSizeChange = (size, checked) => {
     if (checked) {
@@ -124,6 +136,7 @@ const Home = () => {
     setPriceRange('all');
     setSelectedSizes([]);
     setSortBy('newest');
+    setActiveTab('all');
   };
 
   if (loading) {
@@ -138,6 +151,9 @@ const Home = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Shop All Products</h1>
+
+        {/* Product Tabs */}
+        <ProductTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
         {/* Search Bar */}
         <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />

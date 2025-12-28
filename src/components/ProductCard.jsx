@@ -12,6 +12,21 @@ const ProductCard = ({ product }) => {
             alt={product?.name || 'Product'}
             className="w-full h-full object-cover"
           />
+          {product?.onSale && (
+            <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
+              SALE
+            </div>
+          )}
+          {product?.trending && (
+            <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-semibold">
+              TRENDING
+            </div>
+          )}
+          {product?.newArrival && (
+            <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold">
+              NEW
+            </div>
+          )}
           {!inStock && (
             <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
               Out of Stock
@@ -28,9 +43,22 @@ const ProductCard = ({ product }) => {
             {product?.name || 'Product Name'}
           </h3>
           <div className="flex items-center justify-between">
-            <p className="text-xl font-bold text-indigo-600">
-              ${product?.price?.toFixed(2) || '0.00'}
-            </p>
+            <div>
+              {product?.onSale && product?.originalPrice ? (
+                <div>
+                  <p className="text-xl font-bold text-red-600">
+                    ${product?.price?.toFixed(2) || '0.00'}
+                  </p>
+                  <p className="text-sm text-gray-400 line-through">
+                    ${product.originalPrice.toFixed(2)}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-xl font-bold text-indigo-600">
+                  ${product?.price?.toFixed(2) || '0.00'}
+                </p>
+              )}
+            </div>
             {product?.brand && (
               <p className="text-xs text-gray-400">{product.brand}</p>
             )}

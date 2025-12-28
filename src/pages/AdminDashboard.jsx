@@ -12,6 +12,7 @@ const AdminDashboard = () => {
   const [formData, setFormData] = useState({
     name: '',
     price: '',
+    originalPrice: '',
     description: '',
     category: '',
     image: '',
@@ -19,6 +20,9 @@ const AdminDashboard = () => {
     sizes: '',
     colors: '',
     brand: '',
+    onSale: false,
+    trending: false,
+    newArrival: false,
   });
 
   useEffect(() => {
@@ -46,6 +50,7 @@ const AdminDashboard = () => {
       const productData = {
         name: formData.name,
         price: parseFloat(formData.price),
+        originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
         description: formData.description,
         category: formData.category,
         image: formData.image || 'https://via.placeholder.com/300',
@@ -53,6 +58,9 @@ const AdminDashboard = () => {
         sizes: formData.sizes ? formData.sizes.split(',').map(s => s.trim()) : [],
         colors: formData.colors ? formData.colors.split(',').map(c => c.trim()) : [],
         brand: formData.brand || 'StyleSync',
+        onSale: formData.onSale,
+        trending: formData.trending,
+        newArrival: formData.newArrival,
         createdAt: editingProduct ? editingProduct.createdAt : new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -66,6 +74,7 @@ const AdminDashboard = () => {
       setFormData({
         name: '',
         price: '',
+        originalPrice: '',
         description: '',
         category: '',
         image: '',
@@ -73,6 +82,9 @@ const AdminDashboard = () => {
         sizes: '',
         colors: '',
         brand: '',
+        onSale: false,
+        trending: false,
+        newArrival: false,
       });
       setShowAddForm(false);
       setEditingProduct(null);
@@ -88,6 +100,7 @@ const AdminDashboard = () => {
     setFormData({
       name: product.name,
       price: product.price.toString(),
+      originalPrice: product.originalPrice?.toString() || '',
       description: product.description || '',
       category: product.category || '',
       image: product.image || '',
@@ -95,6 +108,9 @@ const AdminDashboard = () => {
       sizes: product.sizes?.join(', ') || '',
       colors: product.colors?.join(', ') || '',
       brand: product.brand || '',
+      onSale: product.onSale || false,
+      trending: product.trending || false,
+      newArrival: product.newArrival || false,
     });
     setShowAddForm(true);
   };
@@ -117,8 +133,22 @@ const AdminDashboard = () => {
     }
 
     try {
+      // Get existing products to check for duplicates
+      const existingProducts = await getDocs(collection(db, 'products'));
+      const existingNames = new Set(
+        existingProducts.docs.map(doc => doc.data().name)
+      );
+
       let added = 0;
+      let skipped = 0;
+      
       for (const product of sampleProducts) {
+        // Skip if product with same name already exists
+        if (existingNames.has(product.name)) {
+          skipped++;
+          continue;
+        }
+
         const productData = {
           ...product,
           createdAt: new Date().toISOString(),
@@ -127,7 +157,12 @@ const AdminDashboard = () => {
         await addDoc(collection(db, 'products'), productData);
         added++;
       }
-      alert(`Successfully added ${added} sample products!`);
+      
+      if (skipped > 0) {
+        alert(`Added ${added} new products. Skipped ${skipped} duplicates.`);
+      } else {
+        alert(`Successfully added ${added} sample products!`);
+      }
       fetchProducts();
     } catch (error) {
       console.error('Error adding sample products:', error);

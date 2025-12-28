@@ -4,6 +4,7 @@ export const sampleProducts = [
   {
     name: "Classic White T-Shirt",
     price: 24.99,
+    originalPrice: 29.99,
     description: "Premium cotton t-shirt with a comfortable fit. Perfect for everyday wear.",
     category: "T-Shirts",
     image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
@@ -11,6 +12,9 @@ export const sampleProducts = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["White"],
     brand: "StyleSync",
+    onSale: true,
+    trending: false,
+    newArrival: false,
   },
   {
     name: "Black Premium Tee",
@@ -22,6 +26,9 @@ export const sampleProducts = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Black"],
     brand: "StyleSync",
+    onSale: false,
+    trending: true,
+    newArrival: false,
   },
   {
     name: "Navy Blue Crew Neck",
@@ -33,12 +40,16 @@ export const sampleProducts = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Navy Blue"],
     brand: "StyleSync",
+    onSale: false,
+    trending: false,
+    newArrival: true,
   },
 
   // Jeans
   {
     name: "Slim Fit Blue Jeans",
     price: 79.99,
+    originalPrice: 99.99,
     description: "Classic blue denim jeans with slim fit. Comfortable and stylish.",
     category: "Jeans",
     image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500",
@@ -46,6 +57,9 @@ export const sampleProducts = [
     sizes: ["28", "30", "32", "34", "36"],
     colors: ["Blue"],
     brand: "StyleSync",
+    onSale: true,
+    trending: true,
+    newArrival: false,
   },
   {
     name: "Black Skinny Jeans",
@@ -57,6 +71,9 @@ export const sampleProducts = [
     sizes: ["28", "30", "32", "34"],
     colors: ["Black"],
     brand: "StyleSync",
+    onSale: false,
+    trending: false,
+    newArrival: true,
   },
   {
     name: "Relaxed Fit Denim",
@@ -68,12 +85,16 @@ export const sampleProducts = [
     sizes: ["30", "32", "34", "36", "38"],
     colors: ["Blue"],
     brand: "StyleSync",
+    onSale: false,
+    trending: false,
+    newArrival: false,
   },
 
   // Hoodies
   {
     name: "Gray Pullover Hoodie",
     price: 59.99,
+    originalPrice: 79.99,
     description: "Cozy gray hoodie perfect for casual wear. Soft and warm.",
     category: "Hoodies",
     image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500",
@@ -81,6 +102,9 @@ export const sampleProducts = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Gray"],
     brand: "StyleSync",
+    onSale: true,
+    trending: true,
+    newArrival: false,
   },
   {
     name: "Black Zip-Up Hoodie",
@@ -92,6 +116,9 @@ export const sampleProducts = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Black"],
     brand: "StyleSync",
+    onSale: false,
+    trending: false,
+    newArrival: true,
   },
   {
     name: "Navy Blue Hoodie",
@@ -103,6 +130,9 @@ export const sampleProducts = [
     sizes: ["M", "L", "XL"],
     colors: ["Navy Blue"],
     brand: "StyleSync",
+    onSale: false,
+    trending: true,
+    newArrival: false,
   },
 
   // Jackets
@@ -116,10 +146,14 @@ export const sampleProducts = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Blue"],
     brand: "StyleSync",
+    onSale: false,
+    trending: true,
+    newArrival: false,
   },
   {
     name: "Black Leather Jacket",
     price: 199.99,
+    originalPrice: 249.99,
     description: "Premium black leather jacket with zipper closure.",
     category: "Jackets",
     image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
@@ -127,6 +161,9 @@ export const sampleProducts = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black"],
     brand: "StyleSync",
+    onSale: true,
+    trending: false,
+    newArrival: false,
   },
   {
     name: "Bomber Jacket",
@@ -138,12 +175,16 @@ export const sampleProducts = [
     sizes: ["M", "L", "XL"],
     colors: ["Black", "Navy"],
     brand: "StyleSync",
+    onSale: false,
+    trending: false,
+    newArrival: true,
   },
 
   // Shoes
   {
     name: "White Sneakers",
     price: 89.99,
+    originalPrice: 119.99,
     description: "Classic white sneakers perfect for everyday wear.",
     category: "Shoes",
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
@@ -151,6 +192,9 @@ export const sampleProducts = [
     sizes: ["7", "8", "9", "10", "11", "12"],
     colors: ["White"],
     brand: "StyleSync",
+    onSale: true,
+    trending: true,
+    newArrival: false,
   },
   {
     name: "Black Running Shoes",
@@ -162,6 +206,9 @@ export const sampleProducts = [
     sizes: ["7", "8", "9", "10", "11"],
     colors: ["Black"],
     brand: "StyleSync",
+    onSale: false,
+    trending: false,
+    newArrival: true,
   },
   {
     name: "Casual Brown Boots",
@@ -173,6 +220,9 @@ export const sampleProducts = [
     sizes: ["8", "9", "10", "11", "12"],
     colors: ["Brown"],
     brand: "StyleSync",
+    onSale: false,
+    trending: true,
+    newArrival: false,
   },
 
   // Accessories
@@ -186,10 +236,14 @@ export const sampleProducts = [
     sizes: ["One Size"],
     colors: ["Black", "Navy", "Gray"],
     brand: "StyleSync",
+    onSale: false,
+    trending: false,
+    newArrival: true,
   },
   {
     name: "Leather Belt",
     price: 34.99,
+    originalPrice: 44.99,
     description: "Genuine leather belt with classic buckle.",
     category: "Accessories",
     image: "https://images.unsplash.com/photo-1624222247344-550fb60583fd?w=500",
@@ -197,6 +251,8 @@ export const sampleProducts = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Brown", "Black"],
     brand: "StyleSync",
+    onSale: true,
+    trending: false,
+    newArrival: false,
   },
 ];
-
