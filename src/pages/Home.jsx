@@ -167,18 +167,7 @@ const Home = () => {
     setActiveTab('all');
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Shop All Products</h1>
-          <LoadingSkeleton count={8} />
-        </div>
-      </div>
-    );
-  }
-
-  // Get featured products for different sections
+  // Get featured products for different sections - MUST be before any conditional returns
   const featuredProducts = useMemo(() => {
     return {
       newArrivals: allProducts.filter(p => p.newArrival).slice(0, 4),
@@ -190,6 +179,7 @@ const Home = () => {
 
   const showFeaturedSections = activeTab === 'all' && !searchQuery && !selectedCategory && priceRange === 'all' && selectedSizes.length === 0;
 
+  // Conditional return AFTER all hooks
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
