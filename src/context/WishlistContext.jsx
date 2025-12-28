@@ -9,7 +9,8 @@ export const useWishlist = () => {
 
 export const WishlistProvider = ({ children }) => {
   const [wishlistItems, setWishlistItems] = useState([]);
-  const { currentUser } = useAuth();
+  const auth = useAuth();
+  const currentUser = auth?.currentUser || null;
 
   // Load wishlist from localStorage on mount
   useEffect(() => {

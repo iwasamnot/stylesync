@@ -18,18 +18,27 @@ const Home = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(() => searchParams.get('category') || '');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [priceRange, setPriceRange] = useState('all');
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [sortBy, setSortBy] = useState('newest');
-  const [activeTab, setActiveTab] = useState(() => searchParams.get('tab') || 'all');
+  const [activeTab, setActiveTab] = useState('all');
+
+  // Initialize from URL params only once
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    const tabParam = searchParams.get('tab');
+    if (categoryParam) setSelectedCategory(categoryParam);
+    if (tabParam) setActiveTab(tabParam);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   useEffect(() => {
-    // Update URL when tab or category changes
+    // Update URL when tab or category changes (skip initial render)
     const params = new URLSearchParams();
     if (activeTab !== 'all') params.set('tab', activeTab);
     if (selectedCategory) params.set('category', selectedCategory);
@@ -38,8 +47,7 @@ const Home = () => {
     if (newParams !== currentParams) {
       setSearchParams(params, { replace: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab, selectedCategory]);
+  }, [activeTab, selectedCategory, searchParams, setSearchParams]);
 
   const fetchProducts = async () => {
     try {
