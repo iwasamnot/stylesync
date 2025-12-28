@@ -245,11 +245,10 @@ const Home = () => {
         {showFeaturedSections && allProducts.length > 0 && (
           <>
             {featuredProducts.onSale.length > 0 && (
-              <div className="mb-16">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                    <span className="text-red-500">🏷️</span>
-                    On Sale Now
+              <div className="mb-20">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-xs uppercase tracking-widest text-gray-500 font-light">
+                    On Sale
                   </h2>
                   <Link
                     to="/?tab=sale"
@@ -279,7 +278,7 @@ const Home = () => {
                   </h2>
                   <Link
                     to="/?tab=new"
-                    className="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-2 transition-colors"
+                    className="text-xs text-gray-500 hover:text-gray-900 uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
                   >
                     View All
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,7 +304,7 @@ const Home = () => {
                   </h2>
                   <Link
                     to="/?tab=trending"
-                    className="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-2 transition-colors"
+                    className="text-xs text-gray-500 hover:text-gray-900 uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
                   >
                     View All
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -378,7 +377,7 @@ const Home = () => {
                 </p>
                 <button
                   onClick={handleClearFilters}
-                  className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 font-semibold shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105"
+                  className="px-6 py-3 border border-black text-xs uppercase tracking-widest text-gray-900 font-light hover:bg-black hover:text-white transition-colors"
                 >
                   Clear All Filters
                 </button>
