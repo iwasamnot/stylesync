@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../lib/firebase';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { sampleProducts } from '../data/sampleProducts';
 
 const AdminDashboard = () => {
   const [products, setProducts] = useState([]);
@@ -15,6 +16,9 @@ const AdminDashboard = () => {
     category: '',
     image: '',
     stock: '',
+    sizes: '',
+    colors: '',
+    brand: '',
   });
 
   useEffect(() => {
@@ -46,7 +50,11 @@ const AdminDashboard = () => {
         category: formData.category,
         image: formData.image || 'https://via.placeholder.com/300',
         stock: parseInt(formData.stock) || 0,
-        createdAt: new Date().toISOString(),
+        sizes: formData.sizes ? formData.sizes.split(',').map(s => s.trim()) : [],
+        colors: formData.colors ? formData.colors.split(',').map(c => c.trim()) : [],
+        brand: formData.brand || 'StyleSync',
+        createdAt: editingProduct ? editingProduct.createdAt : new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       if (editingProduct) {
@@ -62,6 +70,9 @@ const AdminDashboard = () => {
         category: '',
         image: '',
         stock: '',
+        sizes: '',
+        colors: '',
+        brand: '',
       });
       setShowAddForm(false);
       setEditingProduct(null);
@@ -81,6 +92,9 @@ const AdminDashboard = () => {
       category: product.category || '',
       image: product.image || '',
       stock: product.stock?.toString() || '0',
+      sizes: product.sizes?.join(', ') || '',
+      colors: product.colors?.join(', ') || '',
+      brand: product.brand || '',
     });
     setShowAddForm(true);
   };
@@ -97,6 +111,30 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleAddSampleProducts = async () => {
+    if (!window.confirm(`This will add ${sampleProducts.length} sample products. Continue?`)) {
+      return;
+    }
+
+    try {
+      let added = 0;
+      for (const product of sampleProducts) {
+        const productData = {
+          ...product,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        await addDoc(collection(db, 'products'), productData);
+        added++;
+      }
+      alert(`Successfully added ${added} sample products!`);
+      fetchProducts();
+    } catch (error) {
+      console.error('Error adding sample products:', error);
+      alert('Error adding sample products');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -110,23 +148,34 @@ const AdminDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <button
-            onClick={() => {
-              setShowAddForm(!showAddForm);
-              setEditingProduct(null);
-              setFormData({
-                name: '',
-                price: '',
-                description: '',
-                category: '',
-                image: '',
-                stock: '',
-              });
-            }}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-          >
-            {showAddForm ? 'Cancel' : 'Add Product'}
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handleAddSampleProducts}
+              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+            >
+              Add Sample Products
+            </button>
+            <button
+              onClick={() => {
+                setShowAddForm(!showAddForm);
+                setEditingProduct(null);
+                setFormData({
+                  name: '',
+                  price: '',
+                  description: '',
+                  category: '',
+                  image: '',
+                  stock: '',
+                  sizes: '',
+                  colors: '',
+                  brand: '',
+                });
+              }}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+            >
+              {showAddForm ? 'Cancel' : 'Add Product'}
+            </button>
+          </div>
         </div>
 
         {showAddForm && (
@@ -193,6 +242,36 @@ const AdminDashboard = () => {
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows="3"
                     className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Sizes (comma-separated)</label>
+                  <input
+                    type="text"
+                    value={formData.sizes}
+                    onChange={(e) => setFormData({ ...formData, sizes: e.target.value })}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    placeholder="e.g., S, M, L, XL"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Colors (comma-separated)</label>
+                  <input
+                    type="text"
+                    value={formData.colors}
+                    onChange={(e) => setFormData({ ...formData, colors: e.target.value })}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    placeholder="e.g., Black, White, Navy"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Brand</label>
+                  <input
+                    type="text"
+                    value={formData.brand}
+                    onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+                    placeholder="StyleSync"
                   />
                 </div>
               </div>
