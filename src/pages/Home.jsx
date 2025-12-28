@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import ProductFilters from '../components/ProductFilters';
 import ProductSort from '../components/ProductSort';
@@ -12,7 +12,6 @@ import CategoryShowcase from '../components/CategoryShowcase';
 import StatsSection from '../components/StatsSection';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import { useSearchParams } from 'react-router-dom';
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
