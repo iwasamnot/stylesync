@@ -54,3 +54,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Firebase Analytics: Added browser check to prevent initialization errors in non-browser environments
 - Profile page navigation: Fixed potential navigation loop by checking loading state
 
+### Added - 2025-01-27 (Security & Admin Setup)
+- Firestore security rules (firestore.rules) with role-based access control
+- Comprehensive admin setup guide (ADMIN_SETUP.md)
+- Quick admin setup guide (QUICK_ADMIN_GUIDE.md)
+- Security rules for users, products, orders, and carts collections
+- Firebase configuration updated to include Firestore rules deployment
+
