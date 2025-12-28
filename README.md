@@ -113,6 +113,41 @@ npm run build
 npm run preview
 ```
 
+## 🚀 Deployment
+
+### Firebase Hosting
+
+The project is configured for Firebase Hosting. To deploy:
+
+1. **Login to Firebase** (first time only):
+   ```bash
+   npx firebase login
+   ```
+   This will open a browser window for authentication.
+
+2. **Deploy to Firebase Hosting**:
+   ```bash
+   npm run deploy
+   ```
+   Or manually:
+   ```bash
+   npm run build
+   npx firebase deploy --only hosting
+   ```
+
+3. **Your site will be live at**:
+   ```
+   https://stylesync-sistc.web.app
+   ```
+   or
+   ```
+   https://stylesync-sistc.firebaseapp.com
+   ```
+
+**Note**: Firebase Hosting configuration files:
+- `firebase.json` - Hosting configuration
+- `.firebaserc` - Project ID configuration
+
 ## 📄 License
 
 This project is private and proprietary.

@@ -22,4 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - .gitignore file for Node.js projects
 - Git repository initialization and GitHub integration
 - Automatic commit workflow setup
+- Firebase Hosting configuration (firebase.json, .firebaserc)
+- Firebase CLI tools integration
+- Deployment script (npm run deploy)
+- Production build successfully created
 
