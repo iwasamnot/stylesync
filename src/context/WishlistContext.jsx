@@ -9,8 +9,15 @@ export const useWishlist = () => {
 
 export const WishlistProvider = ({ children }) => {
   const [wishlistItems, setWishlistItems] = useState([]);
-  const auth = useAuth();
-  const currentUser = auth?.currentUser || null;
+  // Safely get auth - handle case where context might not be ready
+  let currentUser = null;
+  try {
+    const auth = useAuth();
+    currentUser = auth?.currentUser || null;
+  } catch (error) {
+    // Auth context not ready yet
+    console.warn('Auth context not ready:', error);
+  }
 
   // Load wishlist from localStorage on mount
   useEffect(() => {
