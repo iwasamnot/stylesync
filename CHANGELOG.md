@@ -61,3 +61,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Security rules for users, products, orders, and carts collections
 - Firebase configuration updated to include Firestore rules deployment
 
+### Added - 2025-01-27 (E-commerce Features)
+- Sample apparel products dataset (18 products: T-Shirts, Jeans, Hoodies, Jackets, Shoes, Accessories)
+- Advanced product filtering system:
+  - Category filter (T-Shirts, Jeans, Hoodies, Jackets, Shoes, Accessories)
+  - Price range filter ($0-50, $50-100, $100-200, $200+)
+  - Size filter (S, M, L, XL, XXL, numeric sizes, One Size)
+- Product sorting functionality:
+  - Sort by newest first
+  - Sort by price (low to high, high to low)
+  - Sort by name (A to Z, Z to A)
+- Search functionality (search by product name, description, category, brand)
+- Enhanced ProductCard component with stock status and category display
+- ProductFilters component with responsive mobile/desktop layout
+- ProductSort component with product count display
+- SearchBar component with icon
+- Admin Dashboard: "Add Sample Products" button for quick product seeding
+- Admin Dashboard: Enhanced product form with sizes, colors, and brand fields
+- Responsive filter sidebar with mobile toggle
+- Real-time product count display based on active filters
+
