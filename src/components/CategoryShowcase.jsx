@@ -10,6 +10,8 @@ const CategoryShowcase = ({ categories }) => {
     'Accessories': '👜',
   };
 
+  if (!categories || categories.length === 0) return null;
+
   return (
     <div className="mb-16">
       <h2 className="text-3xl font-bold text-gray-900 mb-6">Shop by Category</h2>

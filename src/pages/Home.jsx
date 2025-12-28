@@ -18,23 +18,28 @@ const Home = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
+  const [selectedCategory, setSelectedCategory] = useState(() => searchParams.get('category') || '');
   const [priceRange, setPriceRange] = useState('all');
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [sortBy, setSortBy] = useState('newest');
-  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'all');
+  const [activeTab, setActiveTab] = useState(() => searchParams.get('tab') || 'all');
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   useEffect(() => {
-    // Update URL when tab changes
+    // Update URL when tab or category changes
     const params = new URLSearchParams();
     if (activeTab !== 'all') params.set('tab', activeTab);
     if (selectedCategory) params.set('category', selectedCategory);
-    setSearchParams(params, { replace: true });
-  }, [activeTab, selectedCategory, setSearchParams]);
+    const newParams = params.toString();
+    const currentParams = searchParams.toString();
+    if (newParams !== currentParams) {
+      setSearchParams(params, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, selectedCategory]);
 
   const fetchProducts = async () => {
     try {
@@ -187,7 +192,7 @@ const Home = () => {
         {showFeaturedSections && <StatsSection />}
 
         {/* Category Showcase - Only show on "all" tab with no filters */}
-        {showFeaturedSections && categories.length > 0 && (
+        {showFeaturedSections && categories && categories.length > 0 && (
           <CategoryShowcase categories={categories} />
         )}
 
