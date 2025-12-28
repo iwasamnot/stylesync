@@ -50,4 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed - 2025-01-27
 - GitHub Actions workflow: Updated Node.js version from 18 to 20 for Firebase CLI v15+ compatibility
+- Infinite refresh loop: Memoized AuthContext and CartContext values to prevent unnecessary re-renders
+- Firebase Analytics: Added browser check to prevent initialization errors in non-browser environments
+- Profile page navigation: Fixed potential navigation loop by checking loading state
 
