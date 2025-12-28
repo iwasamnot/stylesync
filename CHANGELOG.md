@@ -48,3 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin functionality (product management, user role viewing)
 - Protected routes for authenticated users and admin-only pages
 
+### Fixed - 2025-01-27
+- GitHub Actions workflow: Updated Node.js version from 18 to 20 for Firebase CLI v15+ compatibility
+
