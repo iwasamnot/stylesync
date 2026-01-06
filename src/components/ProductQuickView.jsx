@@ -69,6 +69,16 @@ const ProductQuickView = ({ product, isOpen, onClose }) => {
                   ${product.price?.toFixed(2)}
                 </p>
               )}
+              {product.onSale && discount > 0 && (
+                <div className="mt-3 inline-flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.22em] bg-black text-white dark:bg-white dark:text-black">
+                    Sale
+                  </span>
+                  <span className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.22em] bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
+                    {discount}% off
+                  </span>
+                </div>
+              )}
             </div>
 
             {product.sizes && product.sizes.length > 0 && (

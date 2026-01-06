@@ -60,6 +60,24 @@ service cloud.firestore {
       // Users can read and write their own cart
       allow read, write: if isOwner(userId);
     }
+
+    // Reviews collection
+    match /reviews/{reviewId} {
+      // Everyone can read reviews
+      allow read: if true;
+
+      // Authenticated users can create reviews for themselves only
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.productId is string
+        && request.resource.data.comment is string
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5;
+
+      // Users can update/delete their own reviews; admins can manage all
+      allow update, delete: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+    }
     
     // Deny all other access
     match /{document=**} {

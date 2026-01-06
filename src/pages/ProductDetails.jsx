@@ -104,6 +104,16 @@ const ProductDetails = () => {
                 <h1 className="text-3xl font-light text-gray-900 dark:text-white mb-4 tracking-wide">
                   {product.name}
                 </h1>
+                {product.onSale && product.originalPrice && discount > 0 && (
+                  <div className="inline-flex items-center gap-2 mb-4">
+                    <span className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.22em] bg-black text-white dark:bg-white dark:text-black">
+                      Sale
+                    </span>
+                    <span className="px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.22em] bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white">
+                      {discount}% off
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="flex gap-2">
                 <WishlistButton product={product} />
@@ -176,6 +186,7 @@ const ProductDetails = () => {
               </label>
               <div className="flex items-center gap-4">
                 <button
+                  type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="border border-gray-300 dark:border-gray-700 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white"
                 >
@@ -183,6 +194,7 @@ const ProductDetails = () => {
                 </button>
                 <span className="text-sm text-gray-900 dark:text-white">{quantity}</span>
                 <button
+                  type="button"
                   onClick={() => setQuantity(quantity + 1)}
                   className="border border-gray-300 dark:border-gray-700 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white"
                 >
@@ -197,6 +209,7 @@ const ProductDetails = () => {
             </div>
 
             <button
+              type="button"
               onClick={handleAddToCart}
               disabled={product.stock === 0}
               className="w-full border border-black dark:border-white text-black dark:text-white px-6 py-3 text-xs uppercase tracking-widest font-light hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-8"

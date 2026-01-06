@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - URL navigation for category/tab links (URL params now sync properly with Home state)
 - Removed placeholder contact/shipping/returns links and fake footer details
 - Button behavior across the app (added explicit `type="button"` where needed)
+- Product reviews: Firestore rules now allow reading/writing reviews; timestamp sorting fixed
 
 ### Added - 2025-01-27
 - Initial project scaffold with React + Vite setup

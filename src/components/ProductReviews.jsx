@@ -25,7 +25,14 @@ const ProductReviews = ({ productId }) => {
         id: doc.id,
         ...doc.data(),
       }));
-      setReviews(reviewsList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+      const toMillis = (ts) => {
+        if (!ts) return 0;
+        if (typeof ts.toMillis === 'function') return ts.toMillis();
+        if (typeof ts.seconds === 'number') return ts.seconds * 1000;
+        const d = new Date(ts);
+        return Number.isFinite(d.getTime()) ? d.getTime() : 0;
+      };
+      setReviews(reviewsList.sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt)));
     } catch (error) {
       console.error('Error fetching reviews:', error);
     } finally {
@@ -95,9 +102,16 @@ const ProductReviews = ({ productId }) => {
             </div>
           )}
         </div>
-        {currentUser && !showForm && (
+        {!showForm && (
           <button
-            onClick={() => setShowForm(true)}
+            type="button"
+            onClick={() => {
+              if (!currentUser) {
+                showToast('Please log in to leave a review', 'info');
+                return;
+              }
+              setShowForm(true);
+            }}
             className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-light"
           >
             Write Review
@@ -204,7 +218,15 @@ const ProductReviews = ({ productId }) => {
                 </div>
                 {review.createdAt && (
                   <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {new Date(review.createdAt.seconds * 1000).toLocaleDateString()}
+                    {(() => {
+                      const d =
+                        typeof review.createdAt?.toDate === 'function'
+                          ? review.createdAt.toDate()
+                          : typeof review.createdAt?.seconds === 'number'
+                            ? new Date(review.createdAt.seconds * 1000)
+                            : null;
+                      return d ? d.toLocaleDateString() : '';
+                    })()}
                   </span>
                 )}
               </div>
