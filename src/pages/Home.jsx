@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import ProductFilters from '../components/ProductFilters';
@@ -24,6 +24,7 @@ const Home = () => {
   const searchParamsString = searchParams.toString();
   const { theme } = useTheme();
   const isFun = theme === 'fun';
+  const syncingFromUrlRef = useRef(false);
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,6 +36,7 @@ const Home = () => {
 
   useEffect(() => {
     // Sync URL -> state (so clicking links like "/?tab=new" actually updates UI)
+    syncingFromUrlRef.current = true;
     const categoryParam = searchParams.get('category') || '';
     const tabParamRaw = searchParams.get('tab') || 'all';
     const allowedTabs = new Set(['all', 'new', 'trending', 'sale']);
@@ -42,6 +44,12 @@ const Home = () => {
 
     if (categoryParam !== selectedCategory) setSelectedCategory(categoryParam);
     if (tabParam !== activeTab) setActiveTab(tabParam);
+
+    // Allow state->URL sync again after this change is applied
+    const t = window.setTimeout(() => {
+      syncingFromUrlRef.current = false;
+    }, 0);
+    return () => window.clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParamsString]);
 
@@ -51,6 +59,7 @@ const Home = () => {
 
   useEffect(() => {
     // Sync state -> URL
+    if (syncingFromUrlRef.current) return;
     const params = new URLSearchParams();
     if (activeTab !== 'all') params.set('tab', activeTab);
     if (selectedCategory) params.set('category', selectedCategory);
