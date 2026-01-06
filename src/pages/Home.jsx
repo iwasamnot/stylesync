@@ -17,6 +17,7 @@ import { collection, getDocs } from 'firebase/firestore';
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const searchParamsString = searchParams.toString();
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,30 +27,32 @@ const Home = () => {
   const [sortBy, setSortBy] = useState('newest');
   const [activeTab, setActiveTab] = useState('all');
 
-  // Initialize from URL params only once
   useEffect(() => {
-    const categoryParam = searchParams.get('category');
-    const tabParam = searchParams.get('tab');
-    if (categoryParam) setSelectedCategory(categoryParam);
-    if (tabParam) setActiveTab(tabParam);
+    // Sync URL -> state (so clicking links like "/?tab=new" actually updates UI)
+    const categoryParam = searchParams.get('category') || '';
+    const tabParamRaw = searchParams.get('tab') || 'all';
+    const allowedTabs = new Set(['all', 'new', 'trending', 'sale']);
+    const tabParam = allowedTabs.has(tabParamRaw) ? tabParamRaw : 'all';
+
+    if (categoryParam !== selectedCategory) setSelectedCategory(categoryParam);
+    if (tabParam !== activeTab) setActiveTab(tabParam);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchParamsString]);
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   useEffect(() => {
-    // Update URL when tab or category changes (skip initial render)
+    // Sync state -> URL
     const params = new URLSearchParams();
     if (activeTab !== 'all') params.set('tab', activeTab);
     if (selectedCategory) params.set('category', selectedCategory);
     const newParams = params.toString();
-    const currentParams = searchParams.toString();
-    if (newParams !== currentParams) {
+    if (newParams !== searchParamsString) {
       setSearchParams(params, { replace: true });
     }
-  }, [activeTab, selectedCategory, searchParams, setSearchParams]);
+  }, [activeTab, selectedCategory, searchParamsString, setSearchParams]);
 
   const fetchProducts = async () => {
     try {
@@ -184,9 +187,9 @@ const Home = () => {
   // Conditional return AFTER all hooks
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Shop All Products</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Shop All Products</h1>
           <LoadingSkeleton count={8} />
         </div>
       </div>
@@ -194,7 +197,7 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Banner - Only show on "all" tab with no filters */}
         {showFeaturedSections && <HeroBanner />}
@@ -275,12 +278,12 @@ const Home = () => {
             {featuredProducts.newArrivals.length > 0 && (
               <div className="mb-20">
                 <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-xs uppercase tracking-widest text-gray-500 font-light">
+                  <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light">
                     New Arrivals
                   </h2>
                   <Link
                     to="/?tab=new"
-                    className="text-xs text-gray-500 hover:text-gray-900 uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
+                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
                   >
                     View All
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,12 +304,12 @@ const Home = () => {
             {featuredProducts.trending.length > 0 && (
               <div className="mb-20">
                 <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-xs uppercase tracking-widest text-gray-500 font-light">
+                  <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light">
                     Trending
                   </h2>
                   <Link
                     to="/?tab=trending"
-                    className="text-xs text-gray-500 hover:text-gray-900 uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
+                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light flex items-center gap-2 transition-colors"
                   >
                     View All
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -373,19 +376,19 @@ const Home = () => {
             )}
 
             {filteredAndSortedProducts.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-xl shadow-lg border border-gray-100">
-                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+              <div className="text-center py-16 bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800">
+                <div className="mx-auto w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
                   <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <p className="text-gray-700 text-xl font-semibold mb-2">No products found</p>
-                <p className="text-gray-500 text-sm mb-6">
+                <p className="text-gray-700 dark:text-gray-200 text-xl font-semibold mb-2">No products found</p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
                   Try adjusting your filters or search query
                 </p>
                 <button
                   onClick={handleClearFilters}
-                  className="px-6 py-3 border border-black text-xs uppercase tracking-widest text-gray-900 font-light hover:bg-black hover:text-white transition-colors"
+                  className="px-6 py-3 border border-black dark:border-white text-xs uppercase tracking-widest text-gray-900 dark:text-white font-light hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
                 >
                   Clear All Filters
                 </button>

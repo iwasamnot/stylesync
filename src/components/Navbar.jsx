@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import ThemeToggle from './ThemeToggle';
+import Logo from './Logo';
 
 const Navbar = () => {
   const { cartItemCount } = useCart();
@@ -15,6 +16,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center">
+            <Logo className="w-8 h-8 mr-3" />
             <span className="text-xl font-light tracking-widest uppercase text-gray-900 dark:text-white">StyleSync</span>
           </Link>
 
@@ -106,7 +108,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center space-x-4">
             <Link
               to="/cart"
-              className="relative text-gray-700 hover:text-gray-900"
+              className="relative text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <svg
                 className="w-6 h-6"

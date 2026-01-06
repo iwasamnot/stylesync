@@ -23,7 +23,7 @@ function AppContent() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-white dark:bg-gray-900">
+      <div className="min-h-screen bg-transparent">
         <Navbar />
         <ToastContainer toasts={toasts} removeToast={removeToast} />
         <Routes>

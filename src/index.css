@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme tokens (light/dark/fun) */
+:root {
+  --page-bg: #ffffff;
+  --scrollbar-track: #f1f1f1;
+  --scrollbar-thumb: #888;
+  --scrollbar-thumb-hover: #555;
+  --focus-ring: #6366f1;
+}
+
+html.dark {
+  --page-bg: #111827; /* gray-900 */
+  --scrollbar-track: #111827;
+  --scrollbar-thumb: #4b5563; /* gray-600 */
+  --scrollbar-thumb-hover: #6b7280; /* gray-500 */
+  --focus-ring: #a5b4fc; /* indigo-300 */
+}
+
+html.fun {
+  --page-bg: #fff7ed; /* orange-50 */
+  --scrollbar-track: #ffedd5; /* orange-100 */
+  --scrollbar-thumb: #fb7185; /* rose-400 */
+  --scrollbar-thumb-hover: #f43f5e; /* rose-500 */
+  --focus-ring: #ec4899; /* pink-500 */
+}
+
+body {
+  background: var(--page-bg);
+}
+
+html.fun body {
+  background-image:
+    radial-gradient(1200px 600px at 10% 0%, rgba(236, 72, 153, 0.18), transparent 60%),
+    radial-gradient(1000px 500px at 90% 10%, rgba(168, 85, 247, 0.16), transparent 55%),
+    radial-gradient(900px 500px at 50% 100%, rgba(34, 211, 238, 0.12), transparent 55%);
+  background-attachment: fixed;
+}
+
 /* Custom animations */
 @keyframes slide-in {
   from {
@@ -57,16 +94,16 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* Smooth transitions for all interactive elements */
@@ -76,7 +113,7 @@ button, a, input, select, textarea {
 
 /* Focus styles */
 *:focus {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
