@@ -72,6 +72,68 @@ html.fun body::before {
   100% { background-position: 0% 0%; }
 }
 
+/* Fun theme: make UI feel rounder + bouncier */
+html.fun .rounded-md,
+html.fun .rounded-lg,
+html.fun .rounded-xl,
+html.fun .rounded-2xl {
+  border-radius: 1.25rem !important;
+}
+
+html.fun .rounded-full {
+  border-radius: 9999px !important;
+}
+
+html.fun .shadow-md,
+html.fun .shadow-lg,
+html.fun .shadow-xl,
+html.fun .shadow-2xl {
+  box-shadow: 0 14px 30px rgba(236, 72, 153, 0.10), 0 10px 18px rgba(168, 85, 247, 0.10) !important;
+}
+
+/* Fun theme: animated gradient helpers (used by banners) */
+.fun-gradient-shift {
+  background: linear-gradient(90deg, #fb7185, #d946ef, #8b5cf6, #22d3ee, #fb7185);
+  background-size: 400% 100%;
+  animation: fun-gradient-shift 10s ease-in-out infinite;
+}
+
+@keyframes fun-gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.fun-sparkles {
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.55) 0 1px, transparent 2px),
+    radial-gradient(circle at 45% 65%, rgba(255,255,255,0.45) 0 1px, transparent 2px),
+    radial-gradient(circle at 75% 35%, rgba(255,255,255,0.50) 0 1px, transparent 2px),
+    radial-gradient(circle at 90% 75%, rgba(255,255,255,0.35) 0 1px, transparent 2px);
+  background-size: 180px 180px;
+  animation: fun-sparkle-drift 12s linear infinite;
+}
+
+@keyframes fun-sparkle-drift {
+  0% { background-position: 0 0; }
+  100% { background-position: 180px 180px; }
+}
+
+/* Fun theme: subtle wobble on hover for "group" cards */
+html.fun .group:hover img {
+  transform: scale(1.03) rotate(-0.6deg);
+}
+
+html.fun button:hover,
+html.fun a:hover {
+  transform: translateY(-1px);
+}
+
+html.fun button:active,
+html.fun a:active {
+  transform: translateY(0px) scale(0.98);
+}
+
 /* Custom animations */
 @keyframes slide-in {
   from {

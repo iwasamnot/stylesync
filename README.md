@@ -42,7 +42,7 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 Use the theme switcher in the navbar to switch between:
 - **Light**
 - **Dark**
-- **Fun** (animated, colorful background + fun hero styling)
+- **Fun** (animated gradient background, fun-mode banner, rounder UI, lively promos)
 
 The selected theme is persisted in localStorage.
 

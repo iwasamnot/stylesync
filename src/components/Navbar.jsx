@@ -4,11 +4,14 @@ import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
+import FunModeBanner from './FunModeBanner';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
   const { cartItemCount } = useCart();
   const { currentUser, userRole, isAdmin } = useAuth();
   const { wishlistCount } = useWishlist();
+  const { theme } = useTheme();
 
   return (
     <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
@@ -133,6 +136,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      {theme === 'fun' && <FunModeBanner />}
     </nav>
   );
 };

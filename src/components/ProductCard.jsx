@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { calculateDiscount } from '../utils/helpers';
 import WishlistButton from './WishlistButton';
 import ProductQuickView from './ProductQuickView';
+import { useTheme } from '../context/ThemeContext';
 
 const ProductCard = ({ product }) => {
   const [showQuickView, setShowQuickView] = useState(false);
+  const { theme } = useTheme();
+  const isFun = theme === 'fun';
   const inStock = (product?.stock || 0) > 0;
   const discount = product?.onSale && product?.originalPrice 
     ? calculateDiscount(product.originalPrice, product.price) 
@@ -14,23 +17,37 @@ const ProductCard = ({ product }) => {
   return (
     <>
       <div className="group">
-        <div className="bg-white dark:bg-gray-900 overflow-hidden">
-          <div className="aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden relative">
+        <div className={`bg-white dark:bg-gray-900 overflow-hidden ${isFun ? 'rounded-2xl border border-white/60 shadow-lg' : ''}`}>
+          <div className={`aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden relative ${isFun ? 'rounded-2xl' : ''}`}>
             <Link to={`/product/${product?.id || '1'}`}>
               <img
                 src={product?.image || 'https://via.placeholder.com/300'}
                 alt={product?.name || 'Product'}
-                className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-90"
+                className={`w-full h-full object-cover transition-all duration-300 group-hover:opacity-90 ${isFun ? 'group-hover:brightness-105' : ''}`}
               />
             </Link>
             <div className="absolute top-4 left-4">
               {product?.onSale && discount > 0 && (
-                <span className="bg-black dark:bg-white text-white dark:text-black px-3 py-1 text-xs font-medium tracking-wide uppercase">
+                <span
+                  className={[
+                    'px-3 py-1 text-xs font-medium tracking-wide uppercase',
+                    isFun
+                      ? 'rounded-full bg-gradient-to-r from-rose-500 via-fuchsia-500 to-indigo-500 text-white shadow-sm'
+                      : 'bg-black dark:bg-white text-white dark:text-black',
+                  ].join(' ')}
+                >
                   {discount}% OFF
                 </span>
               )}
               {product?.newArrival && !product?.onSale && (
-                <span className="bg-black dark:bg-white text-white dark:text-black px-3 py-1 text-xs font-medium tracking-wide uppercase">
+                <span
+                  className={[
+                    'px-3 py-1 text-xs font-medium tracking-wide uppercase',
+                    isFun
+                      ? 'rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-sm'
+                      : 'bg-black dark:bg-white text-white dark:text-black',
+                  ].join(' ')}
+                >
                   NEW
                 </span>
               )}
@@ -43,7 +60,10 @@ const ProductCard = ({ product }) => {
                   e.preventDefault();
                   setShowQuickView(true);
                 }}
-                className="p-2 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                className={[
+                  'p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors',
+                  isFun ? 'rounded-full bg-white/90 dark:bg-gray-800 shadow-md hover:rotate-6' : 'bg-white dark:bg-gray-800',
+                ].join(' ')}
                 aria-label="Quick view"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -58,7 +78,7 @@ const ProductCard = ({ product }) => {
               </div>
             )}
           </div>
-          <div className="pt-4">
+          <div className={`pt-4 ${isFun ? 'px-4 pb-4' : ''}`}>
             {product?.category && (
               <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-1 font-light">
                 {product.category}

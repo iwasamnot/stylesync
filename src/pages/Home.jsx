@@ -14,12 +14,16 @@ import RecentlyViewed from '../components/RecentlyViewed';
 import NewsletterSignup from '../components/NewsletterSignup';
 import SaleBanner from '../components/SaleBanner';
 import SalePopup from '../components/SalePopup';
+import FunPromoStrip from '../components/FunPromoStrip';
+import { useTheme } from '../context/ThemeContext';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchParamsString = searchParams.toString();
+  const { theme } = useTheme();
+  const isFun = theme === 'fun';
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -202,6 +206,11 @@ const Home = () => {
     <div className="min-h-screen bg-transparent">
       <SalePopup enabled={showFeaturedSections && featuredProducts.onSale.length > 0} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {isFun && showFeaturedSections && (
+          <div className="mb-6">
+            <FunPromoStrip />
+          </div>
+        )}
         {showFeaturedSections && featuredProducts.onSale.length > 0 && (
           <div className="mb-10">
             <SaleBanner />

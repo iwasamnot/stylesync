@@ -5,7 +5,10 @@ const ThemeToggle = () => {
 
   return (
     <div
-      className="flex items-center gap-1 rounded-full border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur px-1 py-1"
+      className={[
+        'flex items-center gap-1 rounded-full border bg-white/80 dark:bg-gray-900/80 backdrop-blur px-1 py-1',
+        theme === 'fun' ? 'border-white/70 shadow-lg' : 'border-gray-200 dark:border-gray-800',
+      ].join(' ')}
       role="group"
       aria-label="Theme switcher"
     >

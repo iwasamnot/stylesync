@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 
 const ProductFilters = ({ 
   categories, 
@@ -11,6 +12,8 @@ const ProductFilters = ({
   onClearFilters
 }) => {
   const [showFilters, setShowFilters] = useState(false);
+  const { theme } = useTheme();
+  const isFun = theme === 'fun';
   const [expandedSections, setExpandedSections] = useState({
     category: true,
     price: true,
@@ -34,13 +37,23 @@ const ProductFilters = ({
   const hasActiveFilters = selectedCategory || priceRange !== 'all' || selectedSizes.length > 0;
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden sticky top-24">
+    <div
+      className={[
+        'overflow-hidden sticky top-24 border',
+        isFun
+          ? 'rounded-2xl bg-white/70 dark:bg-gray-900/70 backdrop-blur border-white/70 dark:border-white/10 shadow-lg'
+          : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800',
+      ].join(' ')}
+    >
       {/* Mobile filter toggle */}
       <div className="lg:hidden">
         <button
           type="button"
           onClick={() => setShowFilters(!showFilters)}
-          className="w-full flex items-center justify-between px-6 py-4 bg-black text-white text-xs uppercase tracking-widest font-light"
+          className={[
+            'w-full flex items-center justify-between px-6 py-4 text-xs uppercase tracking-widest font-light',
+            isFun ? 'fun-gradient-shift text-white' : 'bg-black text-white',
+          ].join(' ')}
         >
           <span className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,7 +80,12 @@ const ProductFilters = ({
       {/* Filter content */}
       <div className={`${showFilters ? 'block' : 'hidden'} lg:block`}>
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <div
+          className={[
+            'px-6 py-4 border-b',
+            isFun ? 'border-white/60 dark:border-white/10' : 'border-gray-200 dark:border-gray-800',
+          ].join(' ')}
+        >
           <div className="flex items-center justify-between">
             <h2 className="text-xs uppercase tracking-widest text-gray-900 dark:text-white font-light">
               Filters
