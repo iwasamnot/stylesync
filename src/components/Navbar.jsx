@@ -8,6 +8,7 @@ import Logo from './Logo';
 import FunModeBanner from './FunModeBanner';
 import { useTheme } from '../context/ThemeContext';
 import SearchModal from './SearchModal';
+import PwaInstallButton from './PwaInstallButton';
 
 const Navbar = () => {
   const { cartItemCount } = useCart();
@@ -76,6 +77,8 @@ const Navbar = () => {
               </span>
             </button>
             
+            <PwaInstallButton />
+
             {isAdmin && (
               <Link
                 to="/admin"

@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import ToastContainer from './components/ToastContainer';
+import OfflineBanner from './components/OfflineBanner';
 
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
@@ -37,6 +38,7 @@ function AppContent() {
       <div className="min-h-screen bg-transparent">
         <Navbar />
         <ToastContainer toasts={toasts} removeToast={removeToast} />
+        <OfflineBanner />
         <Suspense
           fallback={
             <div className="min-h-[60vh] flex items-center justify-center">

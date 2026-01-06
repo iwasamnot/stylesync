@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Branding: custom logo + favicon
 - Global search modal (Ctrl/⌘K or `/`) with product autocomplete
 - Route code-splitting (faster initial load) + simple page transition animation
+- PWA support (install prompt + offline banner + auto-updating service worker)
 
 ### Fixed - 2026-01-06
 - Dark mode inconsistencies and initial theme flash (theme applied before first paint)

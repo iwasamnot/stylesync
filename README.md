@@ -22,6 +22,7 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 - **Sale Promotions**: Sale banner + one-time-per-session sale popup on the homepage
 - **Branding**: Custom logo component + favicon
 - **Global Search**: Search modal with autocomplete (Ctrl/⌘K or `/`)
+- **PWA**: Installable app + offline support (service worker)
 - **Authentication System**: Sign up, login, logout with Firebase Auth
 - **Role-Based Access Control**: Admin, User, and Guest roles
 - **Admin Dashboard**: Full product management (CRUD operations)
@@ -51,6 +52,12 @@ The selected theme is persisted in localStorage.
 
 - Open the global search modal with **Ctrl/⌘K** (or press **/**) from anywhere in the app.
 - Type at least 2 characters to see product suggestions.
+
+## 📲 Install (PWA)
+
+StyleSync is installable as a Progressive Web App:
+- On supported browsers you’ll see an **Install** option in the navbar.
+- The app includes a service worker with **auto-updates** and basic **offline support**.
 
 ## Getting Started
 
