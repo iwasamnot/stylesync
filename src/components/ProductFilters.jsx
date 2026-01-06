@@ -38,6 +38,7 @@ const ProductFilters = ({
       {/* Mobile filter toggle */}
       <div className="lg:hidden">
         <button
+          type="button"
           onClick={() => setShowFilters(!showFilters)}
           className="w-full flex items-center justify-between px-6 py-4 bg-black text-white text-xs uppercase tracking-widest font-light"
         >
@@ -73,6 +74,7 @@ const ProductFilters = ({
             </h2>
             {hasActiveFilters && (
               <button
+                type="button"
                 onClick={onClearFilters}
                 className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
               >
@@ -86,6 +88,7 @@ const ProductFilters = ({
           {/* Category Filter */}
           <div>
             <button
+              type="button"
               onClick={() => toggleSection('category')}
               className="w-full flex items-center justify-between mb-4"
             >
@@ -104,6 +107,7 @@ const ProductFilters = ({
             {expandedSections.category && (
               <div className="space-y-2 animate-fade-in">
                 <button
+                  type="button"
                   onClick={() => onCategoryChange('')}
                   className={`block w-full text-left px-0 py-2 text-xs uppercase tracking-widest font-light transition-colors ${
                     selectedCategory === ''
@@ -116,6 +120,7 @@ const ProductFilters = ({
                 {categories.map((category) => (
                   <button
                     key={category}
+                    type="button"
                     onClick={() => onCategoryChange(category)}
                     className={`block w-full text-left px-0 py-2 text-xs uppercase tracking-widest font-light transition-colors ${
                       selectedCategory === category
@@ -133,6 +138,7 @@ const ProductFilters = ({
           {/* Price Range Filter */}
           <div>
             <button
+              type="button"
               onClick={() => toggleSection('price')}
               className="w-full flex items-center justify-between mb-4"
             >
@@ -153,6 +159,7 @@ const ProductFilters = ({
                 {priceRanges.map((range) => (
                   <button
                     key={range.value}
+                    type="button"
                     onClick={() => onPriceRangeChange(range.value)}
                     className={`block w-full text-left px-0 py-2 text-xs uppercase tracking-widest font-light transition-colors ${
                       priceRange === range.value
@@ -170,6 +177,7 @@ const ProductFilters = ({
           {/* Size Filter */}
           <div>
             <button
+              type="button"
               onClick={() => toggleSection('size')}
               className="w-full flex items-center justify-between mb-4"
             >
@@ -193,6 +201,7 @@ const ProductFilters = ({
                 {allSizes.map((size) => (
                   <button
                     key={size}
+                    type="button"
                     onClick={() => onSizeChange(size, !selectedSizes.includes(size))}
                     className={`px-3 py-2 text-xs uppercase tracking-widest font-light transition-colors border ${
                       selectedSizes.includes(size)

@@ -21,6 +21,7 @@ const Toast = ({ message, type = 'success', onClose, duration = 3000 }) => {
       <div className={`${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px]`}>
         <span>{message}</span>
         <button
+          type="button"
           onClick={onClose}
           className="ml-auto text-white hover:text-gray-200"
         >

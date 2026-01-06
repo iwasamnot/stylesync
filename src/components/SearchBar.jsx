@@ -28,6 +28,7 @@ const SearchBar = ({ searchQuery, onSearchChange, placeholder = "Search..." }) =
         />
         {searchQuery && (
           <button
+            type="button"
             onClick={() => onSearchChange('')}
             className="absolute inset-y-0 right-0 flex items-center pr-2"
           >

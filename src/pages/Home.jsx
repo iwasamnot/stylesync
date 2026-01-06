@@ -395,6 +395,7 @@ const Home = () => {
                   Try adjusting your filters or search query
                 </p>
                 <button
+                  type="button"
                   onClick={handleClearFilters}
                   className="px-6 py-3 border border-black dark:border-white text-xs uppercase tracking-widest text-gray-900 dark:text-white font-light hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors"
                 >

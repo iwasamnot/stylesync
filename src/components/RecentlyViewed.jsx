@@ -13,6 +13,7 @@ const RecentlyViewed = () => {
           Recently Viewed
         </h2>
         <button
+          type="button"
           onClick={clearRecentlyViewed}
           className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
         >

@@ -38,6 +38,7 @@ const ProductCard = ({ product }) => {
             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
               <WishlistButton product={product} />
               <button
+                type="button"
                 onClick={(e) => {
                   e.preventDefault();
                   setShowQuickView(true);

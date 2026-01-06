@@ -12,6 +12,7 @@ const ProductTabs = ({ activeTab, onTabChange }) => {
         {tabs.map((tab) => (
           <button
             key={tab.id}
+            type="button"
             onClick={() => onTabChange(tab.id)}
             className={`
               relative pb-4 text-xs uppercase tracking-widest font-light transition-colors

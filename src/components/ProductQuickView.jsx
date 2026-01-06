@@ -38,6 +38,7 @@ const ProductQuickView = ({ product, isOpen, onClose }) => {
               className="w-full h-auto"
             />
             <button
+              type="button"
               onClick={onClose}
               className="absolute top-4 right-4 bg-white dark:bg-gray-800 p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
@@ -89,6 +90,7 @@ const ProductQuickView = ({ product, isOpen, onClose }) => {
               <label className="block text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2">Quantity</label>
               <div className="flex items-center gap-4">
                 <button
+                  type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="border border-gray-300 dark:border-gray-700 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
@@ -96,6 +98,7 @@ const ProductQuickView = ({ product, isOpen, onClose }) => {
                 </button>
                 <span className="text-sm">{quantity}</span>
                 <button
+                  type="button"
                   onClick={() => setQuantity(quantity + 1)}
                   className="border border-gray-300 dark:border-gray-700 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
@@ -105,6 +108,7 @@ const ProductQuickView = ({ product, isOpen, onClose }) => {
             </div>
 
             <button
+              type="button"
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
               className="w-full border border-black dark:border-white text-black dark:text-white px-6 py-3 text-xs uppercase tracking-widest font-light hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

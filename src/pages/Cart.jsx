@@ -54,6 +54,7 @@ const Cart = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Shopping Cart</h1>
           <button
+            type="button"
             onClick={clearCart}
             className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm font-medium"
           >
@@ -78,6 +79,7 @@ const Cart = () => {
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
+                        type="button"
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
                         className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800"
                       >
@@ -85,6 +87,7 @@ const Cart = () => {
                       </button>
                       <span className="w-12 text-center font-medium text-gray-900 dark:text-white">{item.quantity}</span>
                       <button
+                        type="button"
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
                         className="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-800"
                       >
@@ -96,6 +99,7 @@ const Cart = () => {
                         ${(item.price * item.quantity).toFixed(2)}
                       </p>
                       <button
+                        type="button"
                         onClick={() => removeFromCart(item.id)}
                         className="mt-2 text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                       >
@@ -126,6 +130,7 @@ const Cart = () => {
                 </div>
               </div>
               <button
+                type="button"
                 onClick={handleCheckout}
                 className="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700 font-medium"
               >

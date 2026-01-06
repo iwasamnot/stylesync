@@ -6,6 +6,7 @@ const WishlistButton = ({ product, className = '' }) => {
 
   return (
     <button
+      type="button"
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
