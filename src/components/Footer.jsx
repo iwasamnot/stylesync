@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Logo from './Logo';
 
 const Footer = () => {
   return (
@@ -7,7 +8,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
-            <h3 className="text-sm uppercase tracking-widest text-gray-900 dark:text-white font-light mb-6">StyleSync</h3>
+            <div className="flex items-center gap-3 mb-6">
+              <Logo className="w-8 h-8" />
+              <h3 className="text-sm uppercase tracking-widest text-gray-900 dark:text-white font-light">StyleSync</h3>
+            </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 font-light leading-relaxed">
               Timeless elegance. Modern sophistication.
             </p>

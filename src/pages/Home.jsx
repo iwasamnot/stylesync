@@ -17,6 +17,7 @@ import { collection, getDocs } from 'firebase/firestore';
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const searchParamsString = searchParams.toString();
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,30 +27,32 @@ const Home = () => {
   const [sortBy, setSortBy] = useState('newest');
   const [activeTab, setActiveTab] = useState('all');
 
-  // Initialize from URL params only once
   useEffect(() => {
-    const categoryParam = searchParams.get('category');
-    const tabParam = searchParams.get('tab');
-    if (categoryParam) setSelectedCategory(categoryParam);
-    if (tabParam) setActiveTab(tabParam);
+    // Sync URL -> state (so clicking links like "/?tab=new" actually updates UI)
+    const categoryParam = searchParams.get('category') || '';
+    const tabParamRaw = searchParams.get('tab') || 'all';
+    const allowedTabs = new Set(['all', 'new', 'trending', 'sale']);
+    const tabParam = allowedTabs.has(tabParamRaw) ? tabParamRaw : 'all';
+
+    if (categoryParam !== selectedCategory) setSelectedCategory(categoryParam);
+    if (tabParam !== activeTab) setActiveTab(tabParam);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchParamsString]);
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   useEffect(() => {
-    // Update URL when tab or category changes (skip initial render)
+    // Sync state -> URL
     const params = new URLSearchParams();
     if (activeTab !== 'all') params.set('tab', activeTab);
     if (selectedCategory) params.set('category', selectedCategory);
     const newParams = params.toString();
-    const currentParams = searchParams.toString();
-    if (newParams !== currentParams) {
+    if (newParams !== searchParamsString) {
       setSearchParams(params, { replace: true });
     }
-  }, [activeTab, selectedCategory, searchParams, setSearchParams]);
+  }, [activeTab, selectedCategory, searchParamsString, setSearchParams]);
 
   const fetchProducts = async () => {
     try {
