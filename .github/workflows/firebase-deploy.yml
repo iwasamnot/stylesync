@@ -27,10 +27,11 @@ jobs:
         run: npm run build
 
       - name: Deploy Firestore Rules
-        run: |
-          printf '%s' "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > "${RUNNER_TEMP}/firebase-sa.json"
-          export GOOGLE_APPLICATION_CREDENTIALS="${RUNNER_TEMP}/firebase-sa.json"
-          npx firebase deploy --only firestore:rules --project stylesync-sistc
+        uses: w9jds/firebase-action@v13.35.1
+        with:
+          args: deploy --only firestore:rules --project stylesync-sistc
+        env:
+          FIREBASE_SERVICE_ACCOUNT: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
