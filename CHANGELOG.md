@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fun theme polish: fun-mode banner, promo strip, rounder cards, and animated promo gradients
 - Sale promotions: homepage sale banner + one-time-per-session sale popup
 - Branding: custom logo + favicon
+- Global search modal (Ctrl/⌘K or `/`) with product autocomplete
+- Route code-splitting (faster initial load) + simple page transition animation
 
 ### Fixed - 2026-01-06
 - Dark mode inconsistencies and initial theme flash (theme applied before first paint)

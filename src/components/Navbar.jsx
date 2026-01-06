@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
@@ -6,15 +7,42 @@ import ThemeToggle from './ThemeToggle';
 import Logo from './Logo';
 import FunModeBanner from './FunModeBanner';
 import { useTheme } from '../context/ThemeContext';
+import SearchModal from './SearchModal';
 
 const Navbar = () => {
   const { cartItemCount } = useCart();
   const { currentUser, userRole, isAdmin } = useAuth();
   const { wishlistCount } = useWishlist();
   const { theme } = useTheme();
+  const location = useLocation();
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    // Close search when route changes
+    setSearchOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      const isK = e.key?.toLowerCase?.() === 'k';
+      const isSlash = e.key === '/';
+      const isMetaCombo = (e.metaKey || e.ctrlKey) && isK;
+      if (isMetaCombo || isSlash) {
+        // Avoid triggering while typing in inputs
+        const el = document.activeElement;
+        const tag = el?.tagName?.toLowerCase?.();
+        if (tag === 'input' || tag === 'textarea' || el?.isContentEditable) return;
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   return (
     <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -31,6 +59,22 @@ const Navbar = () => {
             >
               Shop
             </Link>
+
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors inline-flex items-center gap-2"
+              aria-label="Search (Ctrl/⌘ K)"
+              title="Search (Ctrl/⌘ K)"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+              Search
+              <span className="ml-1 hidden lg:inline-flex items-center rounded-md border border-gray-200 dark:border-gray-800 px-2 py-0.5 text-[10px] tracking-widest text-gray-500 dark:text-gray-400">
+                Ctrl/⌘K
+              </span>
+            </button>
             
             {isAdmin && (
               <Link
@@ -109,6 +153,17 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-4">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
+              aria-label="Search"
+              title="Search"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            </button>
             <Link
               to="/cart"
               className="relative text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"

@@ -21,6 +21,7 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 - **Themes**: Light / Dark / Fun theme switcher (saved to localStorage)
 - **Sale Promotions**: Sale banner + one-time-per-session sale popup on the homepage
 - **Branding**: Custom logo component + favicon
+- **Global Search**: Search modal with autocomplete (Ctrl/⌘K or `/`)
 - **Authentication System**: Sign up, login, logout with Firebase Auth
 - **Role-Based Access Control**: Admin, User, and Guest roles
 - **Admin Dashboard**: Full product management (CRUD operations)
@@ -45,6 +46,11 @@ Use the theme switcher in the navbar to switch between:
 - **Fun** (animated gradient background, fun-mode banner, rounder UI, lively promos)
 
 The selected theme is persisted in localStorage.
+
+## 🔎 Search
+
+- Open the global search modal with **Ctrl/⌘K** (or press **/**) from anywhere in the app.
+- Type at least 2 characters to see product suggestions.
 
 ## Getting Started
 
