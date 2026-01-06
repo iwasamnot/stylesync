@@ -34,7 +34,7 @@ const ProductFilters = ({
   const hasActiveFilters = selectedCategory || priceRange !== 'all' || selectedSizes.length > 0;
 
   return (
-    <div className="bg-white border border-gray-200 overflow-hidden sticky top-24">
+    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 overflow-hidden sticky top-24">
       {/* Mobile filter toggle */}
       <div className="lg:hidden">
         <button

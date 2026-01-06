@@ -7,10 +7,10 @@ const Wishlist = () => {
 
   if (wishlistItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">My Wishlist</h1>
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">My Wishlist</h1>
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-md p-12 text-center">
             <svg
               className="mx-auto h-24 w-24 text-gray-400"
               fill="none"
@@ -24,8 +24,8 @@ const Wishlist = () => {
                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
               />
             </svg>
-            <h2 className="mt-4 text-xl font-semibold text-gray-900">Your wishlist is empty</h2>
-            <p className="mt-2 text-gray-500">Start adding items you love to your wishlist</p>
+            <h2 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">Your wishlist is empty</h2>
+            <p className="mt-2 text-gray-500 dark:text-gray-400">Start adding items you love to your wishlist</p>
             <Link
               to="/"
               className="mt-6 inline-block bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition-colors"
@@ -39,15 +39,15 @@ const Wishlist = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             My Wishlist ({wishlistItems.length})
           </h1>
           <button
             onClick={clearWishlist}
-            className="text-red-600 hover:text-red-700 text-sm font-medium"
+            className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm font-medium"
           >
             Clear Wishlist
           </button>

@@ -106,7 +106,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center space-x-4">
             <Link
               to="/cart"
-              className="relative text-gray-700 hover:text-gray-900"
+              className="relative text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <svg
                 className="w-6 h-6"
