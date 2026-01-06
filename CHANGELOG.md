@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - 2026-01-06
+- Theme system: **Light / Dark / Fun** with navbar switcher and persistence
+- Fun theme visuals: animated gradient background + fun hero styling
+- Sale promotions: homepage sale banner + one-time-per-session sale popup
+- Branding: custom logo + favicon
+
+### Fixed - 2026-01-06
+- Dark mode inconsistencies and initial theme flash (theme applied before first paint)
+- URL navigation for category/tab links (URL params now sync properly with Home state)
+- Removed placeholder contact/shipping/returns links and fake footer details
+- Button behavior across the app (added explicit `type="button"` where needed)
+
 ### Added - 2025-01-27
 - Initial project scaffold with React + Vite setup
 - Tailwind CSS configuration and PostCSS setup

@@ -18,6 +18,9 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 - Responsive navigation with role-based links
 - React Router setup with protected routes
 - Context API for state management (Auth, Cart)
+- **Themes**: Light / Dark / Fun theme switcher (saved to localStorage)
+- **Sale Promotions**: Sale banner + one-time-per-session sale popup on the homepage
+- **Branding**: Custom logo component + favicon
 - **Authentication System**: Sign up, login, logout with Firebase Auth
 - **Role-Based Access Control**: Admin, User, and Guest roles
 - **Admin Dashboard**: Full product management (CRUD operations)
@@ -33,6 +36,15 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 - User order history
 - Product reviews and ratings
 - Search and filter functionality
+
+## 🎨 Themes
+
+Use the theme switcher in the navbar to switch between:
+- **Light**
+- **Dark**
+- **Fun** (animated, colorful background + fun hero styling)
+
+The selected theme is persisted in localStorage.
 
 ## Getting Started
 
@@ -59,6 +71,10 @@ Build for production:
 ```bash
 npm run build
 ```
+
+### Notes on navigation (Firebase Hosting)
+
+The app is a single-page application (React Router). Firebase Hosting is configured with a rewrite so deep links like `/cart`, `/wishlist`, `/product/:id`, `/admin` work on refresh.
 
 ## 🔥 Firebase Setup
 
