@@ -9,8 +9,10 @@ const SaleBanner = ({ className = '' }) => {
     <Link
       to="/?tab=sale"
       className={[
-        'group relative block w-full overflow-hidden rounded-xl border border-black/10 dark:border-white/10 text-white shadow-sm',
-        isFun ? 'fun-gradient-shift' : 'bg-gradient-to-r from-rose-500 via-fuchsia-500 to-indigo-500',
+        'group relative block w-full overflow-hidden rounded-xl border shadow-sm',
+        isFun
+          ? 'border-black/10 dark:border-white/10 text-white fun-gradient-shift'
+          : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white',
         className,
       ].join(' ')}
       aria-label="Shop sale"
@@ -18,7 +20,12 @@ const SaleBanner = ({ className = '' }) => {
       {isFun && <div className="absolute inset-0 fun-sparkles opacity-35 pointer-events-none" />}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-5 py-4">
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-[10px] uppercase tracking-[0.22em]">
+          <span
+            className={[
+              'inline-flex items-center rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.22em]',
+              isFun ? 'bg-white/15' : 'bg-gray-100 dark:bg-gray-800',
+            ].join(' ')}
+          >
             Limited time
           </span>
           <p className="text-sm sm:text-base font-light tracking-wide">
@@ -38,7 +45,7 @@ const SaleBanner = ({ className = '' }) => {
           </svg>
         </div>
       </div>
-      <div className="h-1 w-full bg-white/25" />
+      <div className={['h-1 w-full', isFun ? 'bg-white/25' : 'bg-gray-100 dark:bg-gray-800'].join(' ')} />
     </Link>
   );
 };
