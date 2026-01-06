@@ -33,10 +33,43 @@ body {
 
 html.fun body {
   background-image:
-    radial-gradient(1200px 600px at 10% 0%, rgba(236, 72, 153, 0.18), transparent 60%),
-    radial-gradient(1000px 500px at 90% 10%, rgba(168, 85, 247, 0.16), transparent 55%),
-    radial-gradient(900px 500px at 50% 100%, rgba(34, 211, 238, 0.12), transparent 55%);
+    radial-gradient(1200px 600px at 10% 0%, rgba(236, 72, 153, 0.30), transparent 60%),
+    radial-gradient(1000px 500px at 90% 10%, rgba(168, 85, 247, 0.26), transparent 55%),
+    radial-gradient(900px 500px at 50% 100%, rgba(34, 211, 238, 0.22), transparent 55%),
+    conic-gradient(from 180deg at 50% 50%, rgba(236, 72, 153, 0.08), rgba(168, 85, 247, 0.08), rgba(34, 211, 238, 0.08), rgba(236, 72, 153, 0.08));
   background-attachment: fixed;
+  background-size: 120% 120%;
+  animation: fun-bg-pan 14s ease-in-out infinite;
+}
+
+/* Fun theme: subtle confetti overlay */
+html.fun body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.25) 0 2px, transparent 3px),
+    radial-gradient(circle at 70% 20%, rgba(168, 85, 247, 0.22) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 70%, rgba(34, 211, 238, 0.20) 0 2px, transparent 3px),
+    radial-gradient(circle at 30% 80%, rgba(251, 146, 60, 0.18) 0 2px, transparent 3px);
+  background-size: 220px 220px;
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+  filter: blur(0.15px);
+}
+
+/* Keep app content above the fun overlay */
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes fun-bg-pan {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 0%; }
 }
 
 /* Custom animations */

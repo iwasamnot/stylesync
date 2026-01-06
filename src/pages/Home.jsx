@@ -12,6 +12,8 @@ import CategoryShowcase from '../components/CategoryShowcase';
 import StatsSection from '../components/StatsSection';
 import RecentlyViewed from '../components/RecentlyViewed';
 import NewsletterSignup from '../components/NewsletterSignup';
+import SaleBanner from '../components/SaleBanner';
+import SalePopup from '../components/SalePopup';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -198,7 +200,13 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-transparent">
+      <SalePopup enabled={showFeaturedSections && featuredProducts.onSale.length > 0} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {showFeaturedSections && featuredProducts.onSale.length > 0 && (
+          <div className="mb-10">
+            <SaleBanner />
+          </div>
+        )}
         {/* Hero Banner - Only show on "all" tab with no filters */}
         {showFeaturedSections && <HeroBanner />}
 
