@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - 2026-01-XX (AI Assistant for Product Recommendations & Size Guessing)
+- **AI Assistant Chat Interface**:
+  - Floating action button with chat window
+  - Natural language conversation interface
+  - Message history with auto-scroll
+  - Typing indicator for realistic chat experience
+  - Quick action buttons: Size Help, Recommend, My Profile
+  - Integrated on Home page and Product Details page
+- **Size Recommendation System**:
+  - Calculates clothing size based on gender, age, weight, height
+  - Supports body measurements: chest, waist, hips
+  - Category-specific sizing (T-Shirts, Jeans, Shoes, Hoodies, Jackets, Accessories)
+  - Supports letter sizes (S, M, L, XL, XXL) and numeric sizes (28, 30, 32, etc.)
+  - BMI-based estimation when measurements are missing
+  - Age-adjusted sizing calculations
+  - Finds closest available size when recommended size is out of stock
+  - Auto-selects recommended size on product details page
+  - "AI Size Help" button on product size selector
+- **Product Recommendation System**:
+  - Recommends products based on user profile and preferences
+  - Considers preferred size, categories, and price range
+  - Scores products by relevance (trending, on sale, new arrivals)
+  - Uses browsing history for personalization
+  - Filters products by size availability
+- **User Profile Management**:
+  - UserProfileContext for managing user measurements and preferences
+  - Profile stored in Firestore (authenticated users) and localStorage (guests)
+  - UserProfileForm modal for collecting body measurements
+  - Supports: gender, age, weight, height, chest, waist, hips, preferred size, price range
+  - Natural language extraction of measurements from chat
+- **Natural Language Processing**:
+  - Extracts measurements from conversational text
+  - Understands queries about size, products, recommendations
+  - Supports multiple input formats (kg/lbs, cm/feet-inches)
+  - Context-aware responses based on current product and user profile
+- **Firestore Integration**:
+  - userProfiles collection for storing user measurements
+  - Secure rules: users can read/write their own profiles
+  - Automatic sync between Firestore and localStorage
+
 ### Added - 2026-01-XX (Fluid Animations & Ready.so-Inspired Design)
 - **Framer Motion Integration**: Installed framer-motion library for smooth, performant animations
 - **Fluid Background Animations**:

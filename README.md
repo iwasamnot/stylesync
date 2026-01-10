@@ -32,6 +32,17 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 - **Product Details**: View individual product information
 - **User Profile**: View profile and manage account
 - **Protected Routes**: Route guards for authenticated and admin-only pages
+- **🤖 AI Assistant** (Product Recommendations & Size Guessing):
+  - AI-powered chat interface for product recommendations
+  - Size recommendation system based on gender, age, weight, height, and body measurements
+  - Automatic size selection when AI recommends a size
+  - Natural language processing for extracting measurements from chat
+  - User profile management (measurements stored in Firestore/localStorage)
+  - Category-specific sizing algorithms (T-Shirts, Jeans, Shoes, etc.)
+  - Product recommendations based on user preferences and browsing history
+  - Quick action buttons: Size Help, Recommend Products, My Profile
+  - "AI Size Help" button on product details page
+  - Integrated on Home page (product recommendations) and Product Details page (size recommendations)
 - **🎨 Fluid Animations & Motion Design** (Ready.so-Inspired):
   - Framer Motion integration for smooth, performant animations
   - Fluid morphing blob backgrounds with organic movement
@@ -54,8 +65,8 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 - Checkout flow and payment integration
 - Order management system
 - User order history
-- Product reviews and ratings
-- Search and filter functionality
+- Enhanced AI assistant with machine learning models
+- Advanced product recommendations using collaborative filtering
 
 ## 🎨 Themes
 
@@ -71,10 +82,43 @@ The selected theme is persisted in localStorage.
 - Open the global search modal with **Ctrl/⌘K** (or press **/**) from anywhere in the app.
 - Type at least 2 characters to see product suggestions.
 
+## 🤖 AI Assistant
+
+StyleSync includes an AI-powered assistant to help you find the perfect products and sizes:
+
+### Features:
+- **Size Recommendations**: Get personalized size recommendations based on your measurements
+- **Product Recommendations**: Discover products tailored to your preferences
+- **Natural Language Chat**: Ask questions naturally like "What size should I get?" or "I'm a 25-year-old male, 180cm tall, 75kg"
+
+### How to Use:
+
+1. **Setup Your Profile**:
+   - Click the AI Assistant button (floating button in bottom right)
+   - Click "My Profile" button or tell the assistant your measurements
+   - Fill in: Gender, Age, Weight (kg), Height (cm)
+   - Optional: Chest, Waist, Hips measurements for more accuracy
+
+2. **Get Size Recommendations**:
+   - On any product page, click "AI Size Help" next to the size selector
+   - Or ask: "What size should I get for this product?"
+   - The AI will recommend a size and automatically select it if available
+
+3. **Get Product Recommendations**:
+   - On the home page, click "Recommend" in the AI Assistant
+   - Or ask: "Recommend products for me" or "Show me jeans in my size"
+   - The AI will suggest products based on your profile and preferences
+
+### Example Conversations:
+- "I'm a 30-year-old female, 165cm tall, 60kg" - Sets your profile
+- "What size should I get for these jeans?" - Gets size recommendation
+- "Recommend some t-shirts" - Gets product recommendations
+- "What's my profile?" - Shows your saved measurements
+
 ## 📲 Install (PWA)
 
 StyleSync is installable as a Progressive Web App:
-- On supported browsers you’ll see an **Install** option in the navbar.
+- On supported browsers you'll see an **Install** option in the navbar.
 - The app includes a service worker with **auto-updates** and basic **offline support**.
 
 ## Getting Started
