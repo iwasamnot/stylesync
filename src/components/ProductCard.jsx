@@ -132,7 +132,7 @@ const ProductCard = ({ product, index = 0 }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </motion.button>
-            </div>
+            </motion.div>
             {!inStock && (
               <div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 flex items-center justify-center">
                 <span className="text-sm font-medium tracking-wide uppercase text-gray-600 dark:text-gray-400">Out of Stock</span>
