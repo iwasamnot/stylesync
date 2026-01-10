@@ -9,11 +9,8 @@ import SearchBar from '../components/SearchBar';
 import ProductTabs from '../components/ProductTabs';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import HeroBanner from '../components/HeroBanner';
-import PromoBanner from '../components/PromoBanner';
 import CategoryShowcase from '../components/CategoryShowcase';
-import StatsSection from '../components/StatsSection';
 import RecentlyViewed from '../components/RecentlyViewed';
-import NewsletterSignup from '../components/NewsletterSignup';
 import SaleBanner from '../components/SaleBanner';
 import SalePopup from '../components/SalePopup';
 import FunPromoStrip from '../components/FunPromoStrip';
@@ -230,32 +227,9 @@ const Home = () => {
         {/* Hero Banner - Only show on "all" tab with no filters */}
         {showFeaturedSections && <HeroBanner />}
 
-        {/* Stats Section */}
-        {showFeaturedSections && <StatsSection />}
-
         {/* Category Showcase - Only show on "all" tab with no filters */}
         {showFeaturedSections && categories && categories.length > 0 && (
           <CategoryShowcase categories={categories} />
-        )}
-
-        {/* Promotional Banners */}
-        {showFeaturedSections && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <PromoBanner
-              title="Free Shipping"
-              subtitle="On orders over $100"
-              link="/?tab=sale"
-              linkText="Shop Now"
-              gradient="from-green-500 to-emerald-600"
-            />
-            <PromoBanner
-              title="New Collection"
-              subtitle="Check out our latest arrivals"
-              link="/?tab=new"
-              linkText="Explore"
-              gradient="from-pink-500 to-rose-600"
-            />
-          </div>
         )}
 
         {/* Header Section */}
@@ -358,11 +332,8 @@ const Home = () => {
           </>
         )}
 
-        {/* Recently Viewed */}
+        {/* Recently Viewed - Show at bottom */}
         {showFeaturedSections && <RecentlyViewed />}
-
-        {/* Newsletter */}
-        {showFeaturedSections && <NewsletterSignup />}
 
         {/* Main Products Section */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
