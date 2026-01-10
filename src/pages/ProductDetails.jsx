@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, query, where, limit, getDocs } from 'firebase/firestore';
+import { motion } from 'framer-motion';
 import { db } from '../lib/firebase';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
@@ -12,6 +13,7 @@ import SocialShare from '../components/SocialShare';
 import ProductReviews from '../components/ProductReviews';
 import RelatedProducts from '../components/RelatedProducts';
 import AIAssistant from '../components/AIAssistant';
+import Confetti from '../components/Confetti';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -24,6 +26,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     fetchProduct();
@@ -68,6 +71,8 @@ const ProductDetails = () => {
     };
     addToCart(itemToAdd);
     showToast(`${quantity} x ${product.name} added to cart!`, 'success');
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 3000);
   };
 
   const discount = product?.onSale && product?.originalPrice 
@@ -233,14 +238,16 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            <button
+            <motion.button
               type="button"
               onClick={handleAddToCart}
               disabled={product.stock === 0}
-              className="w-full border border-black dark:border-white text-black dark:text-white px-6 py-3 text-xs uppercase tracking-widest font-light hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-8"
+              className="w-full border border-black dark:border-white text-black dark:text-white px-6 py-3 text-xs uppercase tracking-widest font-light hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-8 btn-fluid ripple-effect"
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
             >
               {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-            </button>
+            </motion.button>
           </div>
         </div>
 

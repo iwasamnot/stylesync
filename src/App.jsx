@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
@@ -13,6 +14,7 @@ import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import ToastContainer from './components/ToastContainer';
 import OfflineBanner from './components/OfflineBanner';
+import ScrollIndicator from './components/ScrollIndicator';
 
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
@@ -22,33 +24,38 @@ const Profile = lazy(() => import('./pages/Profile'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const Wishlist = lazy(() => import('./pages/Wishlist'));
 
-function RouteTransition({ children }) {
-  const location = useLocation();
-  return (
-    <div key={location.key} className="animate-fade-in">
-      {children}
-    </div>
-  );
-}
-
 function AppContent() {
   const { toasts, removeToast } = useToast();
+  const location = useLocation();
 
   return (
-    <Router>
-      <div className="min-h-screen bg-transparent">
-        <Navbar />
-        <ToastContainer toasts={toasts} removeToast={removeToast} />
-        <OfflineBanner />
-        <Suspense
-          fallback={
-            <div className="min-h-[60vh] flex items-center justify-center">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900 dark:border-white" />
-            </div>
-          }
-        >
-          <RouteTransition>
-            <Routes>
+    <div className="min-h-screen bg-transparent">
+      <ScrollIndicator />
+      <Navbar />
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <OfflineBanner />
+      <Suspense
+        fallback={
+          <div className="min-h-[60vh] flex items-center justify-center">
+            <motion.div
+              className="rounded-full h-10 w-10 border-2 border-gray-900 dark:border-white"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+              style={{ borderTopColor: 'transparent' }}
+            />
+          </div>
+        }
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="page-transition"
+          >
+            <Routes location={location}>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
@@ -76,11 +83,11 @@ function AppContent() {
                 }
               />
             </Routes>
-          </RouteTransition>
-        </Suspense>
-        <Footer />
-      </div>
-    </Router>
+          </motion.div>
+        </AnimatePresence>
+      </Suspense>
+      <Footer />
+    </div>
   );
 }
 
@@ -94,7 +101,9 @@ function App() {
               <WishlistProvider>
                 <RecentlyViewedProvider>
                   <ToastProvider>
-                    <AppContent />
+                    <Router>
+                      <AppContent />
+                    </Router>
                   </ToastProvider>
                 </RecentlyViewedProvider>
               </WishlistProvider>

@@ -53,21 +53,29 @@ const ProductCard = ({ product, index = 0 }) => {
         onHoverEnd={() => setIsHovered(false)}
       >
         <motion.div
-          className={`bg-white dark:bg-gray-900 overflow-hidden fluid-hover ${
+          className={`bg-white dark:bg-gray-900 overflow-hidden card-hover-3d ${
             isFun ? 'rounded-2xl border border-white/60 shadow-lg' : 'rounded-lg'
-          } ${isHovered ? 'shadow-2xl' : 'shadow-md'}`}
-          whileHover={{ y: -8 }}
+          } ${isHovered ? 'shadow-2xl pulse-glow' : 'shadow-md'}`}
+          whileHover={{ 
+            y: -12,
+            rotateX: 2,
+            rotateY: 2,
+            transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+          }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformStyle: 'preserve-3d' }}
         >
-          <div className={`aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden relative ${isFun ? 'rounded-2xl' : 'rounded-t-lg'}`}>
+          <div className={`aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden relative image-zoom ${isFun ? 'rounded-2xl' : 'rounded-t-lg'}`}>
             <Link to={`/product/${product?.id || '1'}`}>
               <motion.img
                 src={product?.image || 'https://via.placeholder.com/300'}
                 alt={product?.name || 'Product'}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-500"
                 variants={imageVariants}
                 initial="rest"
                 animate={isHovered ? 'hover' : 'rest'}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               />
             </Link>
             <motion.div

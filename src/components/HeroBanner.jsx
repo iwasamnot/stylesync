@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
+import ParticleSystem from './ParticleSystem';
 
 const HeroBanner = () => {
   const { theme } = useTheme();
@@ -58,21 +59,24 @@ const HeroBanner = () => {
       <motion.div
         variants={blobVariants}
         animate="animate"
-        className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-white/10 rounded-full blur-[80px] pointer-events-none"
+        className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-white/10 rounded-full blur-[80px] pointer-events-none morph-blob-multi"
       />
       <motion.div
         variants={blobVariants}
         animate="animate"
         transition={{ duration: 25, delay: -5 }}
-        className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-purple-500/15 rounded-full blur-[100px] pointer-events-none"
+        className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-purple-500/15 rounded-full blur-[100px] pointer-events-none morph-blob-multi"
       />
       <motion.div
         variants={blobVariants}
         animate="animate"
         transition={{ duration: 30, delay: -10 }}
-        className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-cyan-400/10 rounded-full blur-[60px] pointer-events-none"
+        className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-cyan-400/10 rounded-full blur-[60px] pointer-events-none morph-blob-multi"
         style={{ transform: 'translate(-50%, -50%)' }}
       />
+
+      {/* Particle System */}
+      {isFun && <ParticleSystem count={20} />}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 w-full">
         <motion.div
