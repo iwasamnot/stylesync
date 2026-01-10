@@ -14,6 +14,7 @@ import RecentlyViewed from '../components/RecentlyViewed';
 import SaleBanner from '../components/SaleBanner';
 import SalePopup from '../components/SalePopup';
 import FunPromoStrip from '../components/FunPromoStrip';
+import AIAssistant from '../components/AIAssistant';
 import { useTheme } from '../context/ThemeContext';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
@@ -401,6 +402,9 @@ const Home = () => {
           </div>
         </div>
       </div>
+      
+      {/* AI Assistant */}
+      <AIAssistant allProducts={allProducts} />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { WishlistProvider } from './context/WishlistContext';
 import { ToastProvider, useToast } from './context/ToastContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { RecentlyViewedProvider } from './context/RecentlyViewedContext';
+import { UserProfileProvider } from './context/UserProfileContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -88,15 +89,17 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <AuthProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <RecentlyViewedProvider>
-                <ToastProvider>
-                  <AppContent />
-                </ToastProvider>
-              </RecentlyViewedProvider>
-            </WishlistProvider>
-          </CartProvider>
+          <UserProfileProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <RecentlyViewedProvider>
+                  <ToastProvider>
+                    <AppContent />
+                  </ToastProvider>
+                </RecentlyViewedProvider>
+              </WishlistProvider>
+            </CartProvider>
+          </UserProfileProvider>
         </AuthProvider>
       </ThemeProvider>
     </ErrorBoundary>

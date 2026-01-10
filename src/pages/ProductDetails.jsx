@@ -11,6 +11,7 @@ import ImageZoom from '../components/ImageZoom';
 import SocialShare from '../components/SocialShare';
 import ProductReviews from '../components/ProductReviews';
 import RelatedProducts from '../components/RelatedProducts';
+import AIAssistant from '../components/AIAssistant';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -148,9 +149,33 @@ const ProductDetails = () => {
 
             {product.sizes && product.sizes.length > 0 && (
               <div className="mb-6">
-                <label className="block text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light mb-2">
-                  Size
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light">
+                    Size
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const aiButton = document.querySelector('[aria-label="Open AI Assistant"]');
+                      if (aiButton) aiButton.click();
+                      setTimeout(() => {
+                        const input = document.querySelector('input[placeholder="Ask me anything..."]');
+                        if (input) {
+                          input.value = 'What size should I get?';
+                          input.dispatchEvent(new Event('input', { bubbles: true }));
+                          const sendButton = input.closest('form')?.querySelector('button[type="submit"]');
+                          if (sendButton) sendButton.click();
+                        }
+                      }, 500);
+                    }}
+                    className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light flex items-center gap-1 transition-colors"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    AI Size Help
+                  </button>
+                </div>
                 <select
                   value={selectedSize}
                   onChange={(e) => setSelectedSize(e.target.value)}
@@ -225,6 +250,17 @@ const ProductDetails = () => {
         {/* Reviews */}
         <ProductReviews productId={id} />
       </div>
+      
+      {/* AI Assistant */}
+      <AIAssistant 
+        product={product} 
+        onSizeRecommendation={(recommendedSize) => {
+          if (product.sizes && product.sizes.includes(recommendedSize)) {
+            setSelectedSize(recommendedSize);
+            showToast(`Size ${recommendedSize} has been selected for you!`, 'success');
+          }
+        }}
+      />
     </div>
   );
 };

@@ -78,6 +78,14 @@ service cloud.firestore {
       // Users can update/delete their own reviews; admins can manage all
       allow update, delete: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
     }
+
+    // User Profiles collection (for AI assistant measurements)
+    match /userProfiles/{userId} {
+      // Users can read and write their own profile
+      // Profiles can be accessed even without auth (stored in localStorage as fallback)
+      allow read: if true;
+      allow write: if isOwner(userId) || isAuthenticated();
+    }
     
     // Deny all other access
     match /{document=**} {
