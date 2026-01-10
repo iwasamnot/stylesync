@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import { getThemeClasses } from '../utils/themeStyles';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,7 +14,10 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   
   const { login, signup } = useAuth();
+  const { theme } = useTheme();
+  const isFun = theme === 'fun';
   const navigate = useNavigate();
+  const themeClasses = getThemeClasses(theme, isFun);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,34 +41,57 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-transparent flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center"
+        >
+          <h2 className={themeClasses.heading.h1 + ' text-center'}>
             {isLogin ? 'Sign in to StyleSync' : 'Create your account'}
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
             {isLogin ? "Don't have an account? " : 'Already have an account? '}
             <button
               onClick={() => {
                 setIsLogin(!isLogin);
                 setError('');
               }}
-              className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+              className={`font-medium transition-colors ${
+                isFun
+                  ? 'text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300'
+                  : 'text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300'
+              }`}
             >
               {isLogin ? 'Sign up' : 'Sign in'}
             </button>
           </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-8 rounded-lg shadow-md space-y-6">
+        </motion.div>
+        
+        <motion.form
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="space-y-6"
+          onSubmit={handleSubmit}
+        >
+          <div className={`${themeClasses.container} p-8 space-y-6`}>
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/40 text-red-700 dark:text-red-200 px-4 py-3 rounded">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/40 text-red-700 dark:text-red-200 px-4 py-3 rounded-lg text-sm"
+              >
                 {error}
-              </div>
+              </motion.div>
             )}
             
             {!isLogin && (
-              <div>
-                <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <label htmlFor="displayName" className={themeClasses.label}>
                   Full Name
                 </label>
                 <input
@@ -72,15 +101,19 @@ const Login = () => {
                   required={!isLogin}
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  className={themeClasses.input}
                   placeholder="John Doe"
                 />
-              </div>
+              </motion.div>
             )}
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Email address
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <label htmlFor="email" className={themeClasses.label}>
+                Email Address
               </label>
               <input
                 id="email"
@@ -90,13 +123,17 @@ const Login = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className={themeClasses.input}
                 placeholder="you@example.com"
               />
-            </div>
+            </motion.div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.25 }}
+            >
+              <label htmlFor="password" className={themeClasses.label}>
                 Password
               </label>
               <input
@@ -107,29 +144,43 @@ const Login = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className={themeClasses.input}
                 placeholder="••••••••"
                 minLength={6}
               />
-            </div>
+            </motion.div>
 
-            <div>
-              <button
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <motion.button
                 type="submit"
                 disabled={loading}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`w-full ${themeClasses.button.primary} disabled:opacity-50 disabled:cursor-not-allowed`}
+                whileHover={loading ? {} : { scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
               >
                 {loading ? 'Processing...' : isLogin ? 'Sign in' : 'Sign up'}
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           </div>
-        </form>
+        </motion.form>
 
-        <div className="text-center">
-          <Link to="/" className="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-center"
+        >
+          <Link
+            to="/"
+            className="text-xs uppercase tracking-widest font-light text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >
             ← Back to home
           </Link>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
