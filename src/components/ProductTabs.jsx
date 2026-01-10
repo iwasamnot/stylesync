@@ -7,15 +7,15 @@ const ProductTabs = ({ activeTab, onTabChange }) => {
   ];
 
   return (
-    <div className="mb-12 border-b border-gray-200 dark:border-gray-800">
-      <div className="flex space-x-8">
+    <div className="mb-4 border-b border-gray-200 dark:border-gray-800">
+      <div className="flex space-x-6">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => onTabChange(tab.id)}
             className={`
-              relative pb-4 text-xs uppercase tracking-widest font-light transition-colors
+              relative pb-3 text-xs uppercase tracking-widest font-light transition-colors
               ${
                 activeTab === tab.id
                   ? 'text-gray-900 dark:text-white'

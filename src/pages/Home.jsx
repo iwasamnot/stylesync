@@ -223,7 +223,7 @@ const Home = () => {
           </div>
         )}
         {showFeaturedSections && featuredProducts.onSale.length > 0 && (
-          <div className="mb-10">
+          <div className="mb-6">
             <SaleBanner />
           </div>
         )}
@@ -240,7 +240,7 @@ const Home = () => {
 
         {/* Promotional Banners */}
         {showFeaturedSections && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             <PromoBanner
               title="Free Shipping"
               subtitle="On orders over $100"
@@ -259,8 +259,8 @@ const Home = () => {
         )}
 
         {/* Header Section */}
-        <div className="mb-12">
-          <h1 className="text-2xl font-light text-gray-900 dark:text-white mb-8 tracking-wide">
+        <div className="mb-6">
+          <h1 className="text-2xl font-light text-gray-900 dark:text-white mb-4 tracking-wide">
             {activeTab === 'all' ? 'All Products' : 
              activeTab === 'new' ? 'New Arrivals' :
              activeTab === 'trending' ? 'Trending' :
@@ -271,15 +271,17 @@ const Home = () => {
           <ProductTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
           {/* Search Bar */}
-          <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+          <div className="mt-4">
+            <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+          </div>
         </div>
 
         {/* Featured Sections - Only show when viewing all products */}
         {showFeaturedSections && allProducts.length > 0 && (
           <>
             {featuredProducts.onSale.length > 0 && (
-              <ScrollReveal direction="up" delay={0.1} className="mb-20">
-                <div className="flex items-center justify-between mb-8">
+              <ScrollReveal direction="up" delay={0.1} className="mb-10">
+                <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light">
                     On Sale
                   </h2>
@@ -293,7 +295,7 @@ const Home = () => {
                     </svg>
                   </Link>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {featuredProducts.onSale.map((product, index) => (
                     <ProductCard key={product.id} product={product} index={index} />
                   ))}
@@ -302,8 +304,8 @@ const Home = () => {
             )}
 
             {featuredProducts.newArrivals.length > 0 && (
-              <ScrollReveal direction="up" delay={0.2} className="mb-20">
-                <div className="flex items-center justify-between mb-8">
+              <ScrollReveal direction="up" delay={0.2} className="mb-10">
+                <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light">
                     New Arrivals
                   </h2>
@@ -317,7 +319,7 @@ const Home = () => {
                     </svg>
                   </Link>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {featuredProducts.newArrivals.map((product, index) => (
                     <ProductCard key={product.id} product={product} index={index + featuredProducts.onSale.length} />
                   ))}
@@ -326,8 +328,8 @@ const Home = () => {
             )}
 
             {featuredProducts.trending.length > 0 && (
-              <ScrollReveal direction="up" delay={0.3} className="mb-20">
-                <div className="flex items-center justify-between mb-8">
+              <ScrollReveal direction="up" delay={0.3} className="mb-10">
+                <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light">
                     Trending
                   </h2>
@@ -341,7 +343,7 @@ const Home = () => {
                     </svg>
                   </Link>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {featuredProducts.trending.map((product, index) => (
                     <ProductCard key={product.id} product={product} index={index + featuredProducts.onSale.length + featuredProducts.newArrivals.length} />
                   ))}
@@ -351,7 +353,7 @@ const Home = () => {
 
             {/* Divider */}
             <ScrollReveal direction="none" delay={0.4}>
-              <div className="my-12 border-t border-gray-200 dark:border-gray-800"></div>
+              <div className="my-6 border-t border-gray-200 dark:border-gray-800"></div>
             </ScrollReveal>
           </>
         )}
@@ -389,8 +391,8 @@ const Home = () => {
             )}
             
             {showFeaturedSections && (
-              <div className="mb-12">
-                <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light mb-8">All Products</h2>
+              <div className="mb-6">
+                <h2 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light mb-4">All Products</h2>
                 <ProductSort
                   sortBy={sortBy}
                   onSortChange={setSortBy}

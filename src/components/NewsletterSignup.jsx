@@ -14,12 +14,12 @@ const NewsletterSignup = () => {
   };
 
   return (
-    <div className="border-t border-b border-gray-200 dark:border-gray-800 py-12 my-16">
+    <div className="border-t border-b border-gray-200 dark:border-gray-800 py-8 my-8">
       <div className="max-w-2xl mx-auto text-center">
-        <h3 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light mb-4">
+        <h3 className="text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 font-light mb-3">
           Newsletter
         </h3>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-6 font-light">
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 font-light">
           Subscribe to receive updates on new arrivals and special offers.
         </p>
         <form onSubmit={handleSubmit} className="flex gap-2 max-w-md mx-auto">
