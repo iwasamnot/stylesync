@@ -140,7 +140,7 @@ const AIAssistant = ({ product = null, allProducts = [], onSizeRecommendation = 
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed bottom-24 right-6 z-50 w-[420px] max-w-[calc(100vw-3rem)] max-h-[calc(100vh-8rem)] glass-morphism backdrop-blur-xl bg-white/90 dark:bg-gray-900/90 border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-24 right-6 z-50 w-[420px] max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-8rem)] glass-morphism backdrop-blur-xl bg-white/90 dark:bg-gray-900/90 border border-white/20 dark:border-gray-700/50 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Fluid Background Blobs */}
             <motion.div
@@ -346,7 +346,11 @@ const AIAssistant = ({ product = null, allProducts = [], onSizeRecommendation = 
                             value={measurements.gender}
                             onChange={(e) => handleInputChange('gender', e.target.value)}
                             className={`w-full border ${
-                              isFun
+                              measurements.gender
+                                ? isFun
+                                  ? 'border-purple-400 dark:border-purple-500 bg-purple-50/50 dark:bg-purple-900/30'
+                                  : 'border-gray-900 dark:border-white bg-gray-100 dark:bg-gray-800'
+                                : isFun
                                 ? 'border-purple-200 dark:border-purple-700 bg-white/80 dark:bg-gray-800/80'
                                 : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800'
                             } text-gray-900 dark:text-white px-4 py-2.5 text-sm rounded-lg focus:outline-none focus:ring-2 ${
@@ -400,7 +404,11 @@ const AIAssistant = ({ product = null, allProducts = [], onSizeRecommendation = 
                             step="0.1"
                             placeholder="70"
                             className={`w-full border ${
-                              isFun
+                              measurements.weight
+                                ? isFun
+                                  ? 'border-purple-400 dark:border-purple-500 bg-purple-50/50 dark:bg-purple-900/30'
+                                  : 'border-gray-900 dark:border-white bg-gray-100 dark:bg-gray-800'
+                                : isFun
                                 ? 'border-purple-200 dark:border-purple-700 bg-white/80 dark:bg-gray-800/80'
                                 : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800'
                             } text-gray-900 dark:text-white px-4 py-2.5 text-sm rounded-lg focus:outline-none focus:ring-2 ${
@@ -423,7 +431,11 @@ const AIAssistant = ({ product = null, allProducts = [], onSizeRecommendation = 
                             max="250"
                             placeholder="175"
                             className={`w-full border ${
-                              isFun
+                              measurements.height
+                                ? isFun
+                                  ? 'border-purple-400 dark:border-purple-500 bg-purple-50/50 dark:bg-purple-900/30'
+                                  : 'border-gray-900 dark:border-white bg-gray-100 dark:bg-gray-800'
+                                : isFun
                                 ? 'border-purple-200 dark:border-purple-700 bg-white/80 dark:bg-gray-800/80'
                                 : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800'
                             } text-gray-900 dark:text-white px-4 py-2.5 text-sm rounded-lg focus:outline-none focus:ring-2 ${
