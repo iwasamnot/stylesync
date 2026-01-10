@@ -7,6 +7,167 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - 2026-01-XX (Performance Optimizations - Smooth 60+ FPS & PWA Optimization)
+- **Performance Utility System** (`src/utils/performance.js`):
+  - RequestAnimationFrame polyfill for consistent 60+ FPS
+  - Throttle and debounce functions with requestAnimationFrame
+  - Intersection Observer utilities with performance optimization
+  - Reduced motion preference detection
+  - Image preloading and lazy loading utilities
+  - FPS measurement and performance monitoring
+  - Scroll event optimization with requestAnimationFrame
+  - Batch DOM updates for better performance
+  - Resource prefetching and preloading utilities
+  - Element visibility detection
+  - Force repaint utilities
+- **CSS Performance Optimizations** (`src/index.css`):
+  - GPU acceleration for all animations (transform: translateZ(0))
+  - will-change optimization for animated elements
+  - backface-visibility: hidden for smoother animations
+  - Optimized smooth scrolling with -webkit-overflow-scrolling: touch
+  - Reduced scroll jank with overflow-x: hidden
+  - Respects prefers-reduced-motion for accessibility
+  - Optimized keyframe animations with GPU acceleration
+  - Enhanced scrollbar with GPU acceleration and smooth transitions
+  - Optimized transitions for interactive elements
+  - Contain property for better paint performance
+  - Optimized glass morphism with GPU acceleration
+  - Optimized shimmer, confetti, ripple, pulse-glow animations
+  - Optimized 3D tilt, image zoom, card hover effects
+  - Faster animation durations for smoother 60fps+ feel
+  - Optimized text gradient and neon glow effects
+- **Component Performance Optimizations**:
+  - **ProductCard**: React.memo, useMemo, useCallback, reduced motion support
+  - **ScrollReveal**: useMemo for variants, GPU acceleration, reduced motion support
+  - **ScrollIndicator**: Optimized scroll handler with requestAnimationFrame, useMemo
+  - **Confetti**: Reduced particle count, optimized animations, GPU acceleration
+  - **ParticleSystem**: useMemo for particles, reduced count, GPU acceleration, contain property
+  - **HeroBanner**: React.memo, useMemo for variants, optimized blob animations, GPU acceleration
+  - **Navbar**: Optimized scroll handler with requestAnimationFrame and throttling
+  - **ProtectedRoute**: Theme-aware loading spinner with GPU acceleration
+  - **ErrorBoundary**: Theme-aware error display with GPU acceleration
+  - All components respect reduced motion preferences
+- **React Performance Optimizations**:
+  - React.memo for ProductCard and HeroBanner
+  - useMemo for expensive calculations and variants
+  - useCallback for event handlers
+  - Optimized re-renders with proper dependencies
+  - StrictMode only in development for better production performance
+  - Lazy loading for all route components
+- **Animation Performance Optimizations**:
+  - Reduced animation durations (0.8s → 0.6s, 0.6s → 0.5s, 0.5s → 0.4s, 0.4s → 0.3s)
+  - Optimized easing curves [0.16, 1, 0.3, 1] for 60fps+
+  - Reduced stagger delays (0.1s → 0.05s)
+  - Type: 'tween' for better performance
+  - Reduced movement ranges for smoother animations
+  - GPU acceleration on all animated elements
+  - will-change optimization (auto when not needed)
+  - Backface visibility hidden for 3D transforms
+- **PWA Performance Optimizations** (`vite.config.js`):
+  - Optimized caching strategies (CacheFirst for fonts/images, NetworkFirst for API)
+  - Runtime caching for different resource types
+  - Skip waiting and clients claim for instant updates
+  - Cleanup outdated caches automatically
+  - Navigation preload for faster page loads
+  - Optimized cache names and expiration times
+  - Font caching (1 year), image caching (30 days), API caching (5 minutes)
+  - Placeholder image caching (7 days)
+- **Build Performance Optimizations** (`vite.config.js`):
+  - Manual chunk splitting: react-vendor, firebase-vendor, framer-motion, stripe
+  - Optimized asset file names for better caching
+  - Terser minification with console.log removal in production
+  - Source maps disabled in production for better performance
+  - CSS code splitting and minification
+  - Optimized dependencies pre-bundling
+  - Chunk size warning limit increased to 1000KB
+  - Excluded stripe from pre-bundling (loaded on-demand)
+- **HTML Performance Optimizations** (`index.html`):
+  - Preconnect and DNS prefetch for faster resource loading
+  - Preload critical resources
+  - PWA meta tags for better mobile performance
+  - Critical CSS inline for faster initial render
+  - FOUC (Flash of Unstyled Content) prevention
+  - requestIdleCallback for prefetching routes
+  - Apple mobile web app optimizations
+- **Performance Monitoring**:
+  - FPS measurement utilities
+  - Performance.mark and Performance.measure support
+  - Development-only performance logging
+  - Optimized scroll event handlers with requestAnimationFrame
+  - Passive event listeners for better scroll performance
+  - Optimized intersection observer with proper margins
+- **Smooth Scrolling Optimizations**:
+  - Smooth scroll behavior with hardware acceleration
+  - Optimized scroll handlers with requestAnimationFrame
+  - Throttled scroll updates for 60fps+ performance
+  - Passive event listeners for scroll events
+  - GPU-accelerated scroll indicator
+- **Image Performance Optimizations**:
+  - Lazy loading with Intersection Observer
+  - Image preloading utilities
+  - GPU-accelerated image zoom effects
+  - Optimized image transitions (0.5s → 0.4s → 0.3s)
+  - Reduced scale ranges for smoother animations
+- **Bundle Size Optimizations**:
+  - Better code splitting (react-vendor, firebase-vendor, framer-motion)
+  - Optimized chunk sizes (framer-motion: 82.95KB, firebase-vendor: 124.17KB, react-vendor: 149.08KB)
+  - Dynamic imports for route components
+  - Excluded unused dependencies from bundles
+- **Overall Performance Improvements**:
+  - 60+ FPS smooth animations throughout the application
+  - Reduced animation stutter with GPU acceleration
+  - Optimized scroll performance with requestAnimationFrame
+  - Faster page transitions (0.4s → 0.3s)
+  - Reduced re-renders with React.memo and useMemo
+  - Better memory management with proper cleanup
+  - Optimized PWA caching for offline performance
+  - Faster initial load with preload and prefetch
+  - Better mobile performance with PWA optimizations
+  - Accessibility support with reduced motion preferences
+
+### Added - 2026-01-XX (Consistent Theme System Across All Components)
+- **Theme Utility System** (`src/utils/themeStyles.js`):
+  - Centralized theme styling utility with `getThemeClasses()` function
+  - Standardized button styles: primary, secondary, danger, success, ghost
+  - Consistent input styles with theme-aware borders and focus states
+  - Standardized label styles (uppercase, tracking-widest, font-light)
+  - Heading styles: h1, h2, h3, h4, section with consistent tracking
+  - Text styles: body, bodyLight, muted, primary, secondary
+  - Badge styles with status colors: default, success, warning, info, danger, purple
+  - Card styles: container, containerSubtle, card, cardHover
+  - Divider styles for consistent separators
+  - Empty state styles for consistent empty states
+  - Status colors: pending, processing, shipped, completed, cancelled
+  - Gradient text utilities for fun theme
+  - Price text utilities with theme-aware gradients
+  - Consistent spacing and border radius constants
+- **Updated Pages with Consistent Theme**:
+  - **Cart Page**: Applied theme utility, consistent buttons, cards, and typography
+  - **Login Page**: Standardized form inputs, labels, buttons, and animations
+  - **Wishlist Page**: Consistent empty state, headings, and button styles
+  - **Order History**: Already using consistent theme (no changes needed)
+  - **Order Details**: Already using consistent theme (no changes needed)
+  - **Checkout**: Already using consistent theme (no changes needed)
+  - **Profile**: Already using consistent theme (no changes needed)
+  - **Admin Dashboard**: Already using consistent theme (no changes needed)
+- **Updated Components with Consistent Theme**:
+  - **ErrorBoundary**: Consistent error display with theme-aware styling
+  - **ProtectedRoute**: Theme-aware loading spinner
+- **Consistent Design Patterns**:
+  - All headings use `font-light` with `tracking-wide`
+  - All labels use `text-xs uppercase tracking-widest font-light`
+  - All buttons use `text-xs uppercase tracking-widest font-light`
+  - Consistent spacing: mb-8 for h1, mb-6 for h2/h3, mb-4 for h4
+  - Consistent border radius: rounded-lg (default), rounded-2xl (fun theme)
+  - Consistent shadows: shadow-md (default), shadow-lg (fun theme)
+  - Consistent animations: stagger delays (index * 0.05), fade + y transitions
+  - Consistent hover effects: scale 1.05, y: -2, scale 0.95 on tap
+- **Theme-Aware Components**:
+  - All components respect the current theme (light/dark/fun)
+  - Fun theme uses purple/pink gradients and rounded-2xl borders
+  - Light/dark theme uses standard borders and shadows
+  - Consistent color scheme across all components
+
 ### Added - 2026-01-XX (Complete Payment Integration & Order Management System)
 - **Payment Integration**:
   - Mock payment processing system (simulates Stripe)

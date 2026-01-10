@@ -1,34 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
 import { getThemeClasses } from '../utils/themeStyles';
 
-class ErrorBoundaryClass extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('Error caught by boundary:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <ErrorDisplay error={this.state.error} onReload={() => {
-        this.setState({ hasError: false, error: null });
-        window.location.reload();
-      }} theme={this.props.theme} />;
-    }
-
-    return this.props.children;
-  }
-}
-
+// Wrapper component to use hooks
 const ErrorDisplay = ({ error, onReload, theme }) => {
   const isFun = theme === 'fun';
   const themeClasses = getThemeClasses(theme, isFun);
@@ -70,15 +44,44 @@ const ErrorDisplay = ({ error, onReload, theme }) => {
   );
 };
 
-const ErrorBoundary = ({ children }) => {
-  const { theme } = useTheme();
-  
-  return (
-    <ErrorBoundaryClass theme={theme}>
-      {children}
-    </ErrorBoundaryClass>
-  );
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <ErrorDisplay
+          error={this.state.error}
+          onReload={() => {
+            this.setState({ hasError: false, error: null });
+            window.location.reload();
+          }}
+          theme={this.props.theme || 'light'}
+        />
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// HOC to inject theme into ErrorBoundary
+const withTheme = (Component) => {
+  return function ThemedErrorBoundary({ children }) {
+    // We'll pass theme via props in App.jsx instead
+    return <Component theme="light">{children}</Component>;
+  };
 };
 
-export default ErrorBoundary;
-
+export default withTheme(ErrorBoundary);

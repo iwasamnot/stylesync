@@ -1,46 +1,61 @@
-import { useState } from 'react';
+import { useState, useMemo, memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { calculateDiscount } from '../utils/helpers';
 import WishlistButton from './WishlistButton';
 import ProductQuickView from './ProductQuickView';
 import { useTheme } from '../context/ThemeContext';
+import { prefersReducedMotion } from '../utils/performance';
 
-const ProductCard = ({ product, index = 0 }) => {
+const ProductCard = memo(({ product, index = 0 }) => {
   const [showQuickView, setShowQuickView] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { theme } = useTheme();
+  const shouldReduceMotion = useReducedMotion() || prefersReducedMotion();
   const isFun = theme === 'fun';
-  const inStock = (product?.stock || 0) > 0;
-  const discount = product?.onSale && product?.originalPrice 
-    ? calculateDiscount(product.originalPrice, product.price) 
-    : 0;
+  
+  // Memoize calculations
+  const inStock = useMemo(() => (product?.stock || 0) > 0, [product?.stock]);
+  const discount = useMemo(() => {
+    return product?.onSale && product?.originalPrice 
+      ? calculateDiscount(product.originalPrice, product.price) 
+      : 0;
+  }, [product?.onSale, product?.originalPrice, product?.price]);
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 40, scale: 0.95 },
+  // Optimize variants with reduced motion support
+  const cardVariants = useMemo(() => ({
+    hidden: { 
+      opacity: 0, 
+      y: shouldReduceMotion ? 0 : 30, 
+      scale: shouldReduceMotion ? 1 : 0.95 
+    },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.6,
-        delay: index * 0.1,
-        ease: [0.16, 1, 0.3, 1],
+        duration: shouldReduceMotion ? 0.1 : 0.5,
+        delay: shouldReduceMotion ? 0 : index * 0.05, // Reduced delay
+        ease: [0.16, 1, 0.3, 1], // Optimized for 60fps+
       },
     },
-  };
+  }), [index, shouldReduceMotion]);
 
-  const imageVariants = {
-    rest: { scale: 1, filter: 'brightness(1)' },
+  // Optimize image variants with transform-only animations
+  const imageVariants = useMemo(() => ({
+    rest: { scale: 1 },
     hover: {
-      scale: 1.05,
-      filter: 'brightness(1.1)',
+      scale: 1.08, // Slightly increased for smoother feel
       transition: {
-        duration: 0.4,
+        duration: 0.3, // Faster for smoother feel
         ease: [0.16, 1, 0.3, 1],
       },
     },
-  };
+  }), []);
+
+  const handleHoverStart = useCallback(() => setIsHovered(true), []);
+  const handleHoverEnd = useCallback(() => setIsHovered(false), []);
+  const toggleQuickView = useCallback(() => setShowQuickView(prev => !prev), []);
 
   return (
     <>
@@ -49,8 +64,8 @@ const ProductCard = ({ product, index = 0 }) => {
         variants={cardVariants}
         initial="hidden"
         animate="visible"
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
+        onHoverStart={handleHoverStart}
+        onHoverEnd={handleHoverEnd}
       >
         <motion.div
           className={`bg-white dark:bg-gray-900 overflow-hidden card-hover-3d ${
@@ -70,12 +85,18 @@ const ProductCard = ({ product, index = 0 }) => {
               <motion.img
                 src={product?.image || 'https://via.placeholder.com/300'}
                 alt={product?.name || 'Product'}
-                className="w-full h-full object-cover transition-transform duration-500"
-                variants={imageVariants}
+                className="w-full h-full object-cover"
+                variants={shouldReduceMotion ? { rest: { scale: 1 }, hover: { scale: 1 } } : imageVariants}
                 initial="rest"
                 animate={isHovered ? 'hover' : 'rest'}
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={shouldReduceMotion ? {} : { scale: 1.1 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                loading="lazy" // Lazy load images
+                style={{
+                  willChange: isHovered ? 'transform' : 'auto',
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                }}
               />
             </Link>
             <motion.div
@@ -124,7 +145,7 @@ const ProductCard = ({ product, index = 0 }) => {
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
-                  setShowQuickView(true);
+                  toggleQuickView();
                 }}
                 className={[
                   'p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white',
@@ -200,11 +221,13 @@ const ProductCard = ({ product, index = 0 }) => {
       <ProductQuickView 
         product={product} 
         isOpen={showQuickView} 
-        onClose={() => setShowQuickView(false)} 
+        onClose={toggleQuickView} 
       />
     </>
   );
-};
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;
 

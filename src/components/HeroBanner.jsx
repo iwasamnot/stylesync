@@ -1,52 +1,70 @@
+import { useMemo, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import ParticleSystem from './ParticleSystem';
+import { prefersReducedMotion } from '../utils/performance';
 
-const HeroBanner = () => {
+const HeroBanner = memo(() => {
   const { theme } = useTheme();
+  const shouldReduceMotion = useReducedMotion() || prefersReducedMotion();
   const isFun = theme === 'fun';
 
-  const containerVariants = {
+  // Memoize variants for better performance
+  const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
+        staggerChildren: shouldReduceMotion ? 0 : 0.1, // Faster for smoother feel
+        delayChildren: shouldReduceMotion ? 0 : 0.15, // Reduced delay
       },
     },
-  };
+  }), [shouldReduceMotion]);
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+  const itemVariants = useMemo(() => ({
+    hidden: { 
+      opacity: 0, 
+      y: shouldReduceMotion ? 0 : 20, // Reduced movement
+    },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
+        duration: shouldReduceMotion ? 0.1 : 0.6, // Faster for smoother feel
+        ease: [0.16, 1, 0.3, 1], // Optimized easing for 60fps+
+        type: 'tween', // Use tween for better performance
       },
     },
-  };
+  }), [shouldReduceMotion]);
 
-  const blobVariants = {
-    animate: {
-      x: [0, 100, 0],
-      y: [0, -50, 0],
-      scale: [1, 1.2, 1],
+  // Optimize blob variants with reduced motion support
+  const blobVariants = useMemo(() => ({
+    animate: shouldReduceMotion ? {
+      x: 0,
+      y: 0,
+      scale: 1,
+      borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%',
+      transition: {
+        duration: 0.1,
+      },
+    } : {
+      x: [0, 80, 0], // Reduced movement for smoother animation
+      y: [0, -40, 0],
+      scale: [1, 1.15, 1], // Reduced scale for smoother animation
       borderRadius: [
         '60% 40% 30% 70% / 60% 30% 70% 40%',
         '30% 60% 70% 40% / 50% 60% 30% 60%',
         '60% 40% 30% 70% / 60% 30% 70% 40%',
       ],
       transition: {
-        duration: 20,
+        duration: 18, // Faster for smoother feel
         repeat: Infinity,
-        ease: 'easeInOut',
+        ease: [0.16, 1, 0.3, 1], // Optimized easing for 60fps+
+        type: 'tween', // Use tween for better performance
       },
     },
-  };
+  }), [shouldReduceMotion]);
 
   return (
     <div
@@ -55,24 +73,43 @@ const HeroBanner = () => {
         isFun ? 'bg-gradient-to-br from-rose-500 via-fuchsia-500 to-cyan-500' : 'bg-black dark:bg-gray-950',
       ].join(' ')}
     >
-      {/* Fluid morphing blobs */}
+      {/* Optimized Fluid morphing blobs with GPU acceleration */}
       <motion.div
         variants={blobVariants}
         animate="animate"
         className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-white/10 rounded-full blur-[80px] pointer-events-none morph-blob-multi"
+        style={{
+          // GPU acceleration for smooth 60fps+ animations
+          willChange: 'transform, border-radius',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          // Use contain for better performance
+          contain: 'layout style paint',
+        }}
       />
       <motion.div
         variants={blobVariants}
         animate="animate"
-        transition={{ duration: 25, delay: -5 }}
+        transition={shouldReduceMotion ? { duration: 0.1 } : { duration: 20, delay: -5, type: 'tween' }} // Faster for smoother feel
         className="absolute -bottom-40 -right-40 w-[600px] h-[600px] bg-purple-500/15 rounded-full blur-[100px] pointer-events-none morph-blob-multi"
+        style={{
+          willChange: 'transform, border-radius',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          contain: 'layout style paint',
+        }}
       />
       <motion.div
         variants={blobVariants}
         animate="animate"
-        transition={{ duration: 30, delay: -10 }}
+        transition={shouldReduceMotion ? { duration: 0.1 } : { duration: 22, delay: -8, type: 'tween' }} // Faster for smoother feel
         className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-cyan-400/10 rounded-full blur-[60px] pointer-events-none morph-blob-multi"
-        style={{ transform: 'translate(-50%, -50%)' }}
+        style={{
+          transform: 'translate(-50%, -50%) translateZ(0)', // GPU acceleration
+          willChange: 'transform, border-radius',
+          backfaceVisibility: 'hidden',
+          contain: 'layout style paint',
+        }}
       />
 
       {/* Particle System */}
@@ -161,7 +198,9 @@ const HeroBanner = () => {
       </div>
     </div>
   );
-};
+});
+
+HeroBanner.displayName = 'HeroBanner';
 
 export default HeroBanner;
 

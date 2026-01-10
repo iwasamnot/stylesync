@@ -2,6 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance Optimizations - GPU Acceleration */
+* {
+  /* Enable hardware acceleration */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  /* Optimize scrolling performance */
+  -webkit-overflow-scrolling: touch;
+  /* Reduce scroll jank */
+  overflow-x: hidden;
+}
+
+/* Smooth animations with GPU acceleration */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    /* Use transform for better performance */
+    will-change: auto;
+  }
+  
+  /* Optimize animated elements */
+  .animate,
+  [class*="animate-"],
+  [class*="motion-"] {
+    will-change: transform, opacity;
+    transform: translateZ(0); /* Force GPU acceleration */
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Theme tokens (light/dark/fun) */
 :root {
   --page-bg: #ffffff;
@@ -177,32 +224,37 @@ html.fun a:active {
   animation: scale-in 0.3s ease-out;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
+/* Optimized Custom scrollbar with GPU acceleration */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background: var(--scrollbar-track);
+  transform: translateZ(0); /* GPU acceleration */
+  will-change: background;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: 4px;
+  transform: translateZ(0); /* GPU acceleration */
+  will-change: background;
+  transition: background 0.2s ease; /* Smooth color transitions */
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
 
-/* Smooth transitions for all interactive elements */
+/* Optimized smooth transitions for all interactive elements */
 button, a, input, select, textarea {
-  transition: all 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Focus styles */
@@ -211,15 +263,18 @@ button, a, input, select, textarea {
   outline-offset: 2px;
 }
 
-/* Loading spinner */
+/* Optimized Loading spinner with GPU acceleration */
 @keyframes spin {
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg) translateZ(0); /* GPU acceleration */
   }
 }
 
 .animate-spin {
   animation: spin 1s linear infinite;
+  will-change: transform;
+  transform: translateZ(0); /* Force GPU layer */
+  backface-visibility: hidden;
 }
 
 /* ============================================
@@ -254,6 +309,12 @@ button, a, input, select, textarea {
   width: 400px;
   height: 400px;
   opacity: 0.6;
+  /* GPU acceleration for smooth 60fps+ animations */
+  will-change: transform, border-radius;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Use contain for better performance */
+  contain: layout style paint;
 }
 
 .fluid-blob-2 {
@@ -268,34 +329,45 @@ button, a, input, select, textarea {
   background: radial-gradient(circle, rgba(168, 85, 247, 0.12), rgba(99, 102, 241, 0.08));
 }
 
-/* Floating animation */
+/* Optimized Floating animation with GPU acceleration */
 @keyframes float {
   0%, 100% {
-    transform: translateY(0px) rotate(0deg);
+    transform: translateY(0px) rotate(0deg) translateZ(0);
   }
   33% {
-    transform: translateY(-20px) rotate(2deg);
+    transform: translateY(-20px) rotate(2deg) translateZ(0);
   }
   66% {
-    transform: translateY(-10px) rotate(-1deg);
+    transform: translateY(-10px) rotate(-1deg) translateZ(0);
   }
 }
 
 .float-animation {
   animation: float 6s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0); /* Force GPU layer */
+  backface-visibility: hidden;
 }
 
 .float-animation-delayed {
   animation: float 6s ease-in-out infinite;
   animation-delay: -2s;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
-/* Glass morphism effect */
+/* Optimized Glass morphism effect with GPU acceleration */
 .glass-morphism {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  /* GPU acceleration for smooth backdrop blur */
+  transform: translateZ(0);
+  will-change: backdrop-filter, background;
+  /* Use contain for better performance */
+  contain: layout style paint;
 }
 
 .dark .glass-morphism {
@@ -303,21 +375,25 @@ button, a, input, select, textarea {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Smooth scroll reveal animation */
+/* Optimized Smooth scroll reveal animation with GPU acceleration */
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(60px);
+    transform: translateY(60px) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 }
 
 .reveal-up {
-  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: reveal-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Faster for smoother feel */
   opacity: 0;
+  /* GPU acceleration */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .reveal-up-delayed-1 {
@@ -526,6 +602,7 @@ button, a, input, select, textarea {
   }
 }
 
+/* Optimized Shimmer with GPU acceleration */
 .shimmer {
   background: linear-gradient(
     90deg,
@@ -535,6 +612,10 @@ button, a, input, select, textarea {
   );
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
+  /* GPU acceleration */
+  will-change: background-position;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .dark .shimmer {
@@ -546,24 +627,30 @@ button, a, input, select, textarea {
   );
 }
 
-/* 3D Tilt Effect */
+/* Optimized 3D Tilt Effect with GPU acceleration */
 .tilt-3d {
   transform-style: preserve-3d;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  /* GPU acceleration for smooth 60fps+ animations */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .tilt-3d:hover {
-  transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.02);
+  transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.02) translateZ(0);
 }
 
 /* Confetti animation */
+/* Optimized Confetti animation with GPU acceleration */
 @keyframes confetti-fall {
   0% {
-    transform: translateY(-100vh) rotate(0deg);
+    transform: translateY(-100vh) rotate(0deg) translateZ(0);
     opacity: 1;
   }
   100% {
-    transform: translateY(100vh) rotate(720deg);
+    transform: translateY(100vh) rotate(540deg) translateZ(0); /* Reduced rotation for smoother animation */
     opacity: 0;
   }
 }
@@ -572,19 +659,26 @@ button, a, input, select, textarea {
   position: fixed;
   width: 10px;
   height: 10px;
-  animation: confetti-fall 3s linear forwards;
+  animation: confetti-fall 2.5s linear forwards; /* Faster for smoother feel */
   pointer-events: none;
   z-index: 9999;
+  /* GPU acceleration */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Use contain for better performance */
+  contain: layout style paint;
 }
 
 /* Ripple effect */
+/* Optimized Ripple effect with GPU acceleration */
 @keyframes ripple {
   0% {
-    transform: scale(0);
+    transform: scale(0) translateZ(0);
     opacity: 1;
   }
   100% {
-    transform: scale(4);
+    transform: scale(4) translateZ(0);
     opacity: 0;
   }
 }
@@ -592,6 +686,9 @@ button, a, input, select, textarea {
 .ripple-effect {
   position: relative;
   overflow: hidden;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: contents;
 }
 
 .ripple-effect::after {
@@ -601,12 +698,15 @@ button, a, input, select, textarea {
   height: 100px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
-  transform: scale(0);
-  animation: ripple 0.6s ease-out;
+  transform: scale(0) translateZ(0);
+  animation: ripple 0.5s ease-out; /* Faster for smoother feel */
   top: 50%;
   left: 50%;
   margin-left: -50px;
   margin-top: -50px;
+  /* GPU acceleration */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Magnetic hover effect */
@@ -660,22 +760,30 @@ button, a, input, select, textarea {
   animation: spotlight 5s ease infinite;
 }
 
-/* Pulse glow effect */
+/* Optimized Pulse glow effect with GPU acceleration */
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow: 0 0 20px rgba(99, 102, 241, 0.4),
                 0 0 40px rgba(168, 85, 247, 0.3),
                 0 0 60px rgba(236, 72, 153, 0.2);
+    transform: translateZ(0) scale(1);
   }
   50% {
     box-shadow: 0 0 30px rgba(99, 102, 241, 0.6),
                 0 0 60px rgba(168, 85, 247, 0.5),
                 0 0 90px rgba(236, 72, 153, 0.4);
+    transform: translateZ(0) scale(1.02);
   }
 }
 
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+  /* GPU acceleration */
+  will-change: box-shadow, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Use filter for better performance on some browsers */
+  filter: blur(0.5px); /* Subtle blur for smoother glow */
 }
 
 /* Morphing blob with multiple colors */
@@ -704,9 +812,10 @@ button, a, input, select, textarea {
 }
 
 /* Floating particles system */
+/* Optimized Floating particles with GPU acceleration */
 @keyframes float-particle {
   0% {
-    transform: translateY(100vh) translateX(0) rotate(0deg);
+    transform: translateY(100vh) translateX(0) rotate(0deg) translateZ(0);
     opacity: 0;
   }
   10% {
@@ -716,7 +825,7 @@ button, a, input, select, textarea {
     opacity: 1;
   }
   100% {
-    transform: translateY(-100vh) translateX(200px) rotate(360deg);
+    transform: translateY(-100vh) translateX(150px) rotate(360deg) translateZ(0); /* Reduced x translation */
     opacity: 0;
   }
 }
@@ -727,11 +836,17 @@ button, a, input, select, textarea {
   height: 6px;
   background: linear-gradient(135deg, #6366f1, #ec4899);
   border-radius: 50%;
-  animation: float-particle 20s linear infinite;
+  animation: float-particle 18s linear infinite; /* Faster for smoother feel */
   box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  /* GPU acceleration for smooth 60fps+ animations */
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Use contain for better performance */
+  contain: layout style paint;
 }
 
-/* Text gradient animation */
+/* Optimized Text gradient animation with GPU acceleration */
 @keyframes text-gradient {
   0%, 100% {
     background-position: 0% 50%;
@@ -739,6 +854,13 @@ button, a, input, select, textarea {
   50% {
     background-position: 100% 50%;
   }
+}
+
+/* Add GPU acceleration to text gradient elements */
+.text-gradient {
+  will-change: background-position;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .text-gradient-animated {
@@ -750,20 +872,23 @@ button, a, input, select, textarea {
   animation: text-gradient 5s ease infinite;
 }
 
-/* Scale and fade on scroll */
+/* Optimized Scale and fade on scroll with GPU acceleration */
 @keyframes scale-fade-in {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.95) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateZ(0);
   }
 }
 
 .scale-fade-in {
-  animation: scale-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: scale-fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Faster for smoother feel */
+  /* GPU acceleration */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Neon glow effect */
@@ -786,13 +911,20 @@ button, a, input, select, textarea {
 }
 
 /* Image zoom on hover */
+/* Optimized Image Zoom with GPU acceleration */
 .image-zoom {
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
+  position: relative;
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: contents;
 }
 
 .image-zoom:hover img {
-  transform: scale(1.1);
+  transform: scale(1.1) translateZ(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Faster for smoother feel */
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* Smooth blur backdrop */
@@ -802,13 +934,19 @@ button, a, input, select, textarea {
 }
 
 /* Enhanced card hover */
+/* Optimized Card Hover 3D with GPU acceleration */
 .card-hover-3d {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease; /* Separate transitions */
+  /* GPU acceleration for smooth 60fps+ hover effects */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .card-hover-3d:hover {
-  transform: translateY(-12px) rotateX(2deg) rotateY(2deg);
+  transform: translateY(-8px) rotateX(1deg) rotateY(1deg) translateZ(0); /* Reduced rotation for smoother animation */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2),
               0 0 0 1px rgba(255, 255, 255, 0.05);
 }

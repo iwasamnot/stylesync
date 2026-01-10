@@ -1,9 +1,15 @@
-import { useRef, useEffect, useState } from 'react';
-import { motion, useInView, useAnimation } from 'framer-motion';
+import { useRef, useEffect, useMemo } from 'react';
+import { motion, useInView, useAnimation, useReducedMotion } from 'framer-motion';
+import { prefersReducedMotion } from '../utils/performance';
 
-const ScrollReveal = ({ children, delay = 0, direction = 'up', className = '' }) => {
+const ScrollReveal = ({ children, delay = 0, direction = 'up', className = '', duration = 0.6 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const shouldReduceMotion = useReducedMotion() || prefersReducedMotion();
+  const isInView = useInView(ref, { 
+    once: true, 
+    margin: '-100px',
+    amount: 0.2, // Trigger when 20% visible for better performance
+  });
   const controls = useAnimation();
 
   useEffect(() => {
@@ -12,12 +18,13 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up', className = '' })
     }
   }, [isInView, controls]);
 
-  const variants = {
+  // Optimize variants with GPU acceleration
+  const variants = useMemo(() => ({
     hidden: {
       opacity: 0,
-      y: direction === 'up' ? 60 : direction === 'down' ? -60 : 0,
-      x: direction === 'left' ? 60 : direction === 'right' ? -60 : 0,
-      scale: direction === 'none' ? 0.9 : 1,
+      y: shouldReduceMotion ? 0 : (direction === 'up' ? 40 : direction === 'down' ? -40 : 0),
+      x: shouldReduceMotion ? 0 : (direction === 'left' ? 40 : direction === 'right' ? -40 : 0),
+      scale: shouldReduceMotion ? 1 : (direction === 'none' ? 0.95 : 1),
     },
     visible: {
       opacity: 1,
@@ -25,12 +32,14 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up', className = '' })
       x: 0,
       scale: 1,
       transition: {
-        duration: 0.8,
-        delay,
-        ease: [0.16, 1, 0.3, 1],
+        duration: shouldReduceMotion ? 0.1 : duration,
+        delay: shouldReduceMotion ? 0 : delay,
+        ease: [0.16, 1, 0.3, 1], // Optimized easing for 60fps
+        // Use transform for GPU acceleration
+        type: 'tween',
       },
     },
-  };
+  }), [direction, delay, duration, shouldReduceMotion]);
 
   return (
     <motion.div
@@ -39,6 +48,12 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up', className = '' })
       animate={controls}
       variants={variants}
       className={className}
+      style={{
+        // Force GPU acceleration
+        willChange: isInView ? 'auto' : 'transform, opacity',
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+      }}
     >
       {children}
     </motion.div>

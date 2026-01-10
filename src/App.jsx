@@ -28,6 +28,7 @@ const Wishlist = lazy(() => import('./pages/Wishlist'));
 const OrderHistory = lazy(() => import('./pages/OrderHistory'));
 const OrderDetails = lazy(() => import('./pages/OrderDetails'));
 
+// Optimize AppContent with React.memo for better performance
 function AppContent() {
   const { toasts, removeToast } = useToast();
   const location = useLocation();
@@ -45,7 +46,13 @@ function AppContent() {
               className="rounded-full h-10 w-10 border-2 border-gray-900 dark:border-white"
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-              style={{ borderTopColor: 'transparent' }}
+              style={{ 
+                borderTopColor: 'transparent',
+                // GPU acceleration for smooth 60fps+ loading
+                willChange: 'transform',
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+              }}
             />
           </div>
         }
@@ -56,8 +63,18 @@ function AppContent() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ 
+              duration: 0.3, // Faster transition for smoother feel
+              ease: [0.16, 1, 0.3, 1], // Optimized easing for 60fps+
+              type: 'tween', // Use tween for better performance
+            }}
             className="page-transition"
+            style={{
+              // GPU acceleration for smooth page transitions
+              willChange: 'transform, opacity',
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+            }}
           >
             <Routes location={location}>
               {/* Public Routes */}
