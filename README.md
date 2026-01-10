@@ -6,10 +6,12 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 
 - **Framework**: React 18 (Vite)
 - **Styling**: Tailwind CSS 3
-- **Animations**: Framer Motion
-- **Backend**: Firebase v9 (Firestore, Auth, Analytics)
+- **Animations**: Framer Motion (with GPU acceleration)
+- **Backend**: Firebase v12 (Firestore, Auth, Analytics)
 - **Routing**: React Router DOM v6
-- **Build Tool**: Vite
+- **Build Tool**: Vite 5
+- **PWA**: Vite PWA Plugin with Workbox
+- **Performance**: Custom performance utilities with requestAnimationFrame
 
 ## 📋 Features
 
@@ -77,6 +79,35 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
   - Button ripple effects
   - Parallax scrolling effects
   - Glass morphism navbar with blur on scroll
+- **⚡ Performance Optimizations** (60+ FPS & PWA):
+  - GPU acceleration for all animations (transform: translateZ(0))
+  - RequestAnimationFrame optimizations for smooth 60+ FPS
+  - React.memo, useMemo, and useCallback for optimized re-renders
+  - Optimized scroll handlers with throttling and requestAnimationFrame
+  - Reduced animation durations for smoother feel
+  - will-change optimization for animated elements
+  - PWA caching strategies (CacheFirst/NetworkFirst)
+  - Code splitting (react-vendor, firebase-vendor, framer-motion)
+  - Lazy loading for images and route components
+  - Performance monitoring and FPS measurement utilities
+  - Respects prefers-reduced-motion for accessibility
+  - Optimized bundle sizes and asset caching
+  - Preload and prefetch critical resources
+  - FOUC (Flash of Unstyled Content) prevention
+  - Faster page transitions (0.4s → 0.3s)
+  - Smooth scrolling with hardware acceleration
+- **🎨 Consistent Theme System**:
+  - Centralized theme utility (`src/utils/themeStyles.js`)
+  - Standardized button styles (primary, secondary, danger, success, ghost)
+  - Consistent input styles with theme-aware borders
+  - Standardized label, heading, and text styles
+  - Badge styles with status colors
+  - Card, container, and divider styles
+  - Empty state and status color utilities
+  - Gradient text utilities for fun theme
+  - Price text utilities with theme-aware gradients
+  - Consistent spacing, border radius, and shadows
+  - All components respect current theme (light/dark/fun)
 
 ### 🔄 In Progress / Planned
 - Real Stripe payment integration (requires backend server)
@@ -140,7 +171,17 @@ StyleSync includes an AI-powered assistant to help you find the perfect products
 
 StyleSync is installable as a Progressive Web App:
 - On supported browsers you'll see an **Install** option in the navbar.
-- The app includes a service worker with **auto-updates** and basic **offline support**.
+- The app includes a service worker with **auto-updates** and optimized **offline support**.
+- **Optimized Caching Strategies**:
+  - Fonts: Cached for 1 year (CacheFirst)
+  - Images: Cached for 30 days (CacheFirst)
+  - API calls: Cached for 5 minutes (NetworkFirst)
+  - Static resources: StaleWhileRevalidate for instant updates
+  - Navigation preload for faster page loads
+- **Performance Features**:
+  - Skip waiting for instant service worker updates
+  - Automatic cleanup of outdated caches
+  - Prefetch routes on idle for faster navigation
 
 ## Getting Started
 
@@ -223,26 +264,99 @@ firebase deploy --only firestore:rules
 
 ```
 src/
-├── components/     # Reusable UI components
-│   ├── Navbar.jsx          # Responsive navigation bar
-│   └── ProductCard.jsx     # Product display card
-├── pages/         # Page components
-│   ├── Home.jsx            # Homepage with product grid
-│   ├── Login.jsx           # Authentication page
-│   ├── ProductDetails.jsx  # Individual product page
-│   └── Cart.jsx            # Shopping cart page
-├── context/       # React Context providers
-│   ├── AuthContext.jsx     # Authentication state
-│   └── CartContext.jsx     # Shopping cart state
-├── lib/           # Firebase configuration
-│   └── firebase.js         # Firebase initialization
-├── App.jsx        # Main app component with routing
-└── main.jsx       # Application entry point
+├── components/        # Reusable UI components
+│   ├── Navbar.jsx           # Responsive navigation with scroll optimization
+│   ├── ProductCard.jsx      # Product display card (React.memo optimized)
+│   ├── HeroBanner.jsx       # Hero section with optimized animations
+│   ├── ScrollReveal.jsx     # Scroll-triggered animations (GPU accelerated)
+│   ├── ScrollIndicator.jsx  # Scroll progress bar (requestAnimationFrame)
+│   ├── AIAssistant.jsx      # AI-powered assistant component
+│   ├── Confetti.jsx         # Confetti animation (optimized particles)
+│   └── ParticleSystem.jsx   # Floating particles (memoized & GPU accelerated)
+├── pages/            # Page components (lazy loaded)
+│   ├── Home.jsx             # Homepage with product grid
+│   ├── Login.jsx            # Authentication page (theme-consistent)
+│   ├── ProductDetails.jsx   # Individual product page
+│   ├── Cart.jsx             # Shopping cart (theme-consistent)
+│   ├── Checkout.jsx         # 3-step checkout flow
+│   ├── OrderHistory.jsx     # User order history
+│   ├── OrderDetails.jsx     # Order details page
+│   ├── Profile.jsx          # User profile management
+│   ├── Wishlist.jsx         # Wishlist page (theme-consistent)
+│   └── AdminDashboard.jsx   # Admin product management
+├── context/          # React Context providers
+│   ├── AuthContext.jsx      # Authentication state
+│   ├── CartContext.jsx      # Shopping cart state
+│   ├── OrderContext.jsx     # Order management state
+│   ├── WishlistContext.jsx  # Wishlist state
+│   ├── ThemeContext.jsx     # Theme state (light/dark/fun)
+│   ├── ToastContext.jsx     # Toast notifications
+│   ├── UserProfileContext.jsx  # User profile (measurements/preferences)
+│   └── RecentlyViewedContext.jsx  # Recently viewed products
+├── utils/            # Utility functions
+│   ├── themeStyles.js       # Centralized theme utility
+│   ├── performance.js       # Performance utilities (requestAnimationFrame, FPS)
+│   ├── helpers.js           # General helper functions
+│   ├── sizeRecommendation.js  # AI size recommendation algorithm
+│   └── productRecommendation.js  # AI product recommendation algorithm
+├── lib/              # Firebase configuration
+│   └── firebase.js          # Firebase initialization
+├── hooks/            # Custom React hooks
+│   └── useToast.js          # Toast notification hook
+├── data/             # Sample data
+│   └── sampleProducts.js    # Sample product data
+├── App.jsx           # Main app component with routing
+└── main.jsx          # Application entry point (StrictMode only in dev)
 ```
 
 ## 📝 Changelog
 
 See [CHANGELOG.md](./CHANGELOG.md) for a detailed list of changes and features.
+
+### Recent Major Updates
+
+- **⚡ Performance Optimizations**: Smooth 60+ FPS animations with GPU acceleration, optimized PWA caching, and reduced bundle sizes
+- **🎨 Consistent Theme System**: Centralized theme utility with standardized components across all pages
+- **💳 Payment & Orders**: Complete checkout flow with order management and tracking
+- **🤖 AI Assistant**: Product recommendations and size guessing based on user measurements
+- **🎨 Fluid Animations**: Ready.so-inspired design with smooth, performant animations
+
+## 🎯 Key Features Summary
+
+### E-commerce Features
+- ✅ Full shopping cart with persistence
+- ✅ 3-step checkout flow (Shipping → Payment → Review)
+- ✅ Order management and tracking
+- ✅ Wishlist/Favorites system
+- ✅ Product filtering, sorting, and search
+- ✅ Admin product management (CRUD)
+- ✅ User authentication and profiles
+- ✅ Role-based access control (Admin/User/Guest)
+
+### Performance Features
+- ✅ 60+ FPS smooth animations (GPU accelerated)
+- ✅ Optimized PWA caching strategies
+- ✅ Code splitting for faster loads
+- ✅ Lazy loading for routes and images
+- ✅ RequestAnimationFrame optimizations
+- ✅ React.memo, useMemo, useCallback for optimized re-renders
+- ✅ Respects prefers-reduced-motion for accessibility
+
+### UI/UX Features
+- ✅ Three themes: Light, Dark, Fun (with animated gradients)
+- ✅ Consistent design system across all pages
+- ✅ Fluid animations inspired by ready.so
+- ✅ Glass morphism effects
+- ✅ Smooth page transitions
+- ✅ Toast notifications
+- ✅ Loading skeletons
+- ✅ Responsive design for all devices
+
+### AI Features
+- ✅ Size recommendations based on measurements
+- ✅ Product recommendations based on preferences
+- ✅ Natural language processing for measurements
+- ✅ User profile management for personalized experience
 
 ## 🛠️ Development
 
@@ -263,17 +377,52 @@ npm install
 npm run dev
 ```
 
+The development server runs with:
+- Hot Module Replacement (HMR)
+- Source maps for debugging
+- React StrictMode for development checks
+- Performance monitoring utilities available
+
 ### Build for Production
 
 ```bash
 npm run build
 ```
 
+Production build includes:
+- Code minification (Terser)
+- Tree shaking
+- Code splitting (react-vendor, firebase-vendor, framer-motion)
+- CSS minification and optimization
+- Console.log removal
+- Source maps disabled for better performance
+- PWA service worker generation
+
 ### Preview Production Build
 
 ```bash
 npm run preview
 ```
+
+## ⚡ Performance
+
+### Optimization Features
+
+- **60+ FPS Animations**: All animations use GPU acceleration with `transform: translateZ(0)`
+- **Optimized Re-renders**: React.memo, useMemo, and useCallback used throughout
+- **Smooth Scrolling**: RequestAnimationFrame optimizations for scroll handlers
+- **Lazy Loading**: Route components and images loaded on-demand
+- **Code Splitting**: Automatic chunk splitting for better caching
+- **PWA Caching**: Intelligent caching strategies for offline support
+- **Reduced Motion**: Respects user's prefers-reduced-motion preference
+- **Performance Monitoring**: FPS measurement and performance utilities available in development
+
+### Performance Tips
+
+- Use React DevTools Profiler to identify performance bottlenecks
+- Monitor FPS using the built-in performance utilities
+- Check network tab for bundle sizes and loading times
+- Use Lighthouse to audit performance, PWA, and accessibility scores
 
 ## 🚀 Deployment
 

@@ -5,7 +5,42 @@ All notable changes to the StyleSync project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# Changelog
+
+All notable changes to the StyleSync project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [Unreleased]
+
+### Changed - 2026-01-XX (Performance Optimizations - Smooth 60+ FPS & PWA Optimization)
+- **Improved Animation Performance**:
+  - All animations now run at 60+ FPS with GPU acceleration
+  - Reduced animation durations for smoother feel
+  - Optimized easing curves for better performance
+  - Reduced movement ranges and stagger delays
+- **Improved React Performance**:
+  - Added React.memo to ProductCard and HeroBanner
+  - Optimized re-renders with useMemo and useCallback
+  - StrictMode only in development for better production performance
+- **Improved Scroll Performance**:
+  - Optimized scroll handlers with requestAnimationFrame
+  - Added throttling and passive event listeners
+  - GPU-accelerated scroll indicator
+- **Improved Bundle Sizes**:
+  - Better code splitting (react-vendor, firebase-vendor, framer-motion)
+  - Optimized chunk sizes for better caching
+  - Dynamic imports for route components
+- **Improved PWA Performance**:
+  - Optimized caching strategies for different resource types
+  - Faster service worker updates with skip waiting
+  - Navigation preload for faster page loads
+- **Improved Build Performance**:
+  - Terser minification with console.log removal
+  - Source maps disabled in production
+  - CSS code splitting and minification
+  - Optimized dependencies pre-bundling
 
 ### Added - 2026-01-XX (Performance Optimizations - Smooth 60+ FPS & PWA Optimization)
 - **Performance Utility System** (`src/utils/performance.js`):
