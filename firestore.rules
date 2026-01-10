@@ -1,0 +1,88 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Helper function to check if user owns the document
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Users can read their own data
+      // Admins can read any user data
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Only admins can write to user documents (to change roles)
+      // Users can create their own document on signup
+      allow create: if isOwner(userId) || isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Products collection
+    match /products/{productId} {
+      // Everyone can read products (guests, users, admins)
+      allow read: if true;
+      
+      // Only admins can create, update, or delete products
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Orders collection (for future implementation)
+    match /orders/{orderId} {
+      // Users can read their own orders
+      // Admins can read all orders
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      
+      // Authenticated users can create orders
+      // Only admins can update or delete orders
+      allow create: if isAuthenticated();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    
+    // Cart collection (optional - currently using localStorage)
+    match /carts/{userId} {
+      // Users can read and write their own cart
+      allow read, write: if isOwner(userId);
+    }
+
+    // Reviews collection
+    match /reviews/{reviewId} {
+      // Everyone can read reviews
+      allow read: if true;
+
+      // Authenticated users can create reviews for themselves only
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.productId is string
+        && request.resource.data.comment is string
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5;
+
+      // Users can update/delete their own reviews; admins can manage all
+      allow update, delete: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+    }
+    
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

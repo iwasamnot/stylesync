@@ -1,0 +1,243 @@
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
+import ThemeToggle from './ThemeToggle';
+import Logo from './Logo';
+import FunModeBanner from './FunModeBanner';
+import { useTheme } from '../context/ThemeContext';
+import SearchModal from './SearchModal';
+import PwaInstallButton from './PwaInstallButton';
+
+const Navbar = () => {
+  const { cartItemCount } = useCart();
+  const { currentUser, userRole, isAdmin } = useAuth();
+  const { wishlistCount } = useWishlist();
+  const { theme } = useTheme();
+  const location = useLocation();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    // Close search when route changes
+    setSearchOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      const isK = e.key?.toLowerCase?.() === 'k';
+      const isSlash = e.key === '/';
+      const isMetaCombo = (e.metaKey || e.ctrlKey) && isK;
+      if (isMetaCombo || isSlash) {
+        // Avoid triggering while typing in inputs
+        const el = document.activeElement;
+        const tag = el?.tagName?.toLowerCase?.();
+        if (tag === 'input' || tag === 'textarea' || el?.isContentEditable) return;
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <motion.nav
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? 'glass-morphism backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/50 dark:border-gray-800/50 shadow-lg'
+          : 'bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800'
+      }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+            <Link to="/" className="flex items-center">
+              <motion.div
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
+              >
+                <Logo className="w-8 h-8 mr-3" />
+              </motion.div>
+              <span className="text-xl font-light tracking-widest uppercase text-gray-900 dark:text-white">StyleSync</span>
+            </Link>
+          </motion.div>
+
+          {/* Navigation Links */}
+          <div className="hidden md:flex items-center space-x-8">
+            <Link
+              to="/"
+              className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
+            >
+              Shop
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors inline-flex items-center gap-2"
+              aria-label="Search (Ctrl/⌘ K)"
+              title="Search (Ctrl/⌘ K)"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+              Search
+              <span className="ml-1 hidden lg:inline-flex items-center rounded-md border border-gray-200 dark:border-gray-800 px-2 py-0.5 text-[10px] tracking-widest text-gray-500 dark:text-gray-400">
+                Ctrl/⌘K
+              </span>
+            </button>
+            
+            <PwaInstallButton />
+
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
+              >
+                Admin
+              </Link>
+            )}
+            
+            {currentUser ? (
+              <Link
+                to="/profile"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
+              >
+                Account
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
+              >
+                Sign In
+              </Link>
+            )}
+            
+            <ThemeToggle />
+            
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to="/wishlist"
+                className="relative text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                  />
+                </svg>
+                {wishlistCount > 0 && (
+                  <motion.span
+                    className="absolute -top-2 -right-2 bg-black text-white text-[10px] font-medium w-4 h-4 flex items-center justify-center rounded-full"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  >
+                    {wishlistCount}
+                  </motion.span>
+                )}
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to="/cart"
+                className="relative text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                  />
+                </svg>
+                {cartItemCount > 0 && (
+                  <motion.span
+                    className="absolute -top-2 -right-2 bg-black text-white text-[10px] font-medium w-4 h-4 flex items-center justify-center rounded-full"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  >
+                    {cartItemCount}
+                  </motion.span>
+                )}
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-4">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
+              aria-label="Search"
+              title="Search"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            </button>
+            <Link
+              to="/cart"
+              className="relative text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
+          </div>
+        </div>
+      </div>
+      {theme === 'fun' && <FunModeBanner />}
+    </motion.nav>
+  );
+};
+
+export default Navbar;
+
