@@ -1,18 +1,19 @@
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const { cartItems, updateQuantity, removeFromCart, cartTotal, clearCart } = useCart();
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleCheckout = () => {
     if (!currentUser) {
       alert('Please login to checkout');
+      navigate('/login');
       return;
     }
-    // TODO: Implement checkout functionality
-    alert('Checkout functionality coming soon!');
+    navigate('/checkout');
   };
 
   if (cartItems.length === 0) {

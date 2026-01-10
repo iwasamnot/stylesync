@@ -32,6 +32,23 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
 - **Product Details**: View individual product information
 - **User Profile**: View profile and manage account
 - **Protected Routes**: Route guards for authenticated and admin-only pages
+- **💳 Payment & Orders** (Complete E-commerce Flow):
+  - Payment integration with credit card processing (mock Stripe)
+  - 3-step checkout flow: Shipping Address → Payment Method → Order Review
+  - Shipping address form with validation
+  - Payment method form with card number formatting
+  - Order creation in Firestore with complete order data
+  - Order history page showing all user orders
+  - Order details page with full order information
+  - Order status tracking: pending, processing, shipped, completed, cancelled
+  - Order cancellation for users (pending/processing orders)
+  - Admin order management with status updates
+  - Order confirmation with confetti animation
+  - Automatic cart clearing after successful order
+  - Protected checkout route requiring authentication
+  - Order summary with subtotal, shipping (free), tax (8%), and total
+  - Progress indicator for checkout steps
+  - Theme-aware styling for all order pages
 - **🤖 AI Assistant** (Product Recommendations & Size Guessing):
   - AI-powered chat interface for product recommendations
   - Size recommendation system based on gender, age, weight, height, and body measurements
@@ -62,11 +79,15 @@ A modern clothing e-commerce application built with React, Vite, Tailwind CSS, a
   - Glass morphism navbar with blur on scroll
 
 ### 🔄 In Progress / Planned
-- Checkout flow and payment integration
-- Order management system
-- User order history
-- Enhanced AI assistant with machine learning models
-- Advanced product recommendations using collaborative filtering
+- Real Stripe payment integration (requires backend server)
+- Email notifications for order confirmations and status updates
+- Order tracking with shipping provider integration
+- Advanced AI assistant with machine learning models
+- Product recommendations using collaborative filtering
+- Wishlist notifications
+- Product reviews and ratings system
+- Inventory management
+- Analytics dashboard
 
 ## 🎨 Themes
 

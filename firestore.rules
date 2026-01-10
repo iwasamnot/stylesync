@@ -42,16 +42,27 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
     
-    // Orders collection (for future implementation)
+    // Orders collection
     match /orders/{orderId} {
       // Users can read their own orders
       // Admins can read all orders
-      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow read: if isAuthenticated() && (isOwner(resource.data.userId) || isAdmin());
       
       // Authenticated users can create orders
-      // Only admins can update or delete orders
-      allow create: if isAuthenticated();
-      allow update: if isAdmin();
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.items is list
+        && request.resource.data.total is number
+        && request.resource.data.status == 'pending';
+      
+      // Users can update their own orders (for cancellation)
+      // Admins can update any order (for status changes)
+      allow update: if isAuthenticated() && (
+        (isOwner(resource.data.userId) && request.resource.data.status == 'cancelled')
+        || isAdmin()
+      );
+      
+      // Only admins can delete orders
       allow delete: if isAdmin();
     }
     

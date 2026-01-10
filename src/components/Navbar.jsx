@@ -114,6 +114,15 @@ const Navbar = () => {
               </Link>
             )}
             
+            {currentUser && (
+              <Link
+                to="/orders"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white uppercase tracking-widest font-light transition-colors"
+              >
+                Orders
+              </Link>
+            )}
+            
             {currentUser ? (
               <Link
                 to="/profile"

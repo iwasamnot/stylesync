@@ -8,6 +8,7 @@ import { ToastProvider, useToast } from './context/ToastContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { RecentlyViewedProvider } from './context/RecentlyViewedContext';
 import { UserProfileProvider } from './context/UserProfileContext';
+import { OrderProvider } from './context/OrderContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -20,9 +21,12 @@ const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 const ProductDetails = lazy(() => import('./pages/ProductDetails'));
 const Cart = lazy(() => import('./pages/Cart'));
+const Checkout = lazy(() => import('./pages/Checkout'));
 const Profile = lazy(() => import('./pages/Profile'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const Wishlist = lazy(() => import('./pages/Wishlist'));
+const OrderHistory = lazy(() => import('./pages/OrderHistory'));
+const OrderDetails = lazy(() => import('./pages/OrderDetails'));
 
 function AppContent() {
   const { toasts, removeToast } = useToast();
@@ -65,6 +69,30 @@ function AppContent() {
               
               {/* Protected Routes - Require Authentication */}
               <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute requireAuth={true}>
+                    <Checkout />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <ProtectedRoute requireAuth={true}>
+                    <OrderHistory />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/order/:id"
+                element={
+                  <ProtectedRoute requireAuth={true}>
+                    <OrderDetails />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/profile"
                 element={
                   <ProtectedRoute requireAuth={true}>
@@ -98,15 +126,17 @@ function App() {
         <AuthProvider>
           <UserProfileProvider>
             <CartProvider>
-              <WishlistProvider>
-                <RecentlyViewedProvider>
-                  <ToastProvider>
-                    <Router>
-                      <AppContent />
-                    </Router>
-                  </ToastProvider>
-                </RecentlyViewedProvider>
-              </WishlistProvider>
+              <OrderProvider>
+                <WishlistProvider>
+                  <RecentlyViewedProvider>
+                    <ToastProvider>
+                      <Router>
+                        <AppContent />
+                      </Router>
+                    </ToastProvider>
+                  </RecentlyViewedProvider>
+                </WishlistProvider>
+              </OrderProvider>
             </CartProvider>
           </UserProfileProvider>
         </AuthProvider>
