@@ -7,6 +7,7 @@ import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 import { useRecentlyViewed } from '../context/RecentlyViewedContext';
 import { calculateDiscount } from '../utils/helpers';
+import { sampleProducts } from '../data/sampleProducts';
 import WishlistButton from '../components/WishlistButton';
 import ImageZoom from '../components/ImageZoom';
 import SocialShare from '../components/SocialShare';
@@ -14,6 +15,7 @@ import ProductReviews from '../components/ProductReviews';
 import RelatedProducts from '../components/RelatedProducts';
 import AIAssistant from '../components/AIAssistant';
 import Confetti from '../components/Confetti';
+import ARVRExperience from '../components/ARVRExperience';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -27,6 +29,7 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showARVR, setShowARVR] = useState(false);
 
   useEffect(() => {
     fetchProduct();
@@ -47,32 +50,67 @@ const ProductDetails = () => {
         // Add to recently viewed
         addToRecentlyViewed(productData);
       } else {
-        navigate('/');
+        // Try to find product in sample products by index
+        const sampleIndex = parseInt(id);
+        if (!isNaN(sampleIndex) && sampleIndex >= 0 && sampleIndex < sampleProducts.length) {
+          const sampleProduct = { ...sampleProducts[sampleIndex], id: id };
+          setProduct(sampleProduct);
+          if (sampleProduct.sizes && sampleProduct.sizes.length > 0) {
+            setSelectedSize(sampleProduct.sizes[0]);
+          }
+          if (sampleProduct.colors && sampleProduct.colors.length > 0) {
+            setSelectedColor(sampleProduct.colors[0]);
+          }
+          addToRecentlyViewed(sampleProduct);
+        } else {
+          navigate('/');
+        }
       }
     } catch (error) {
       console.error('Error fetching product:', error);
-      navigate('/');
+      // Try sample products as fallback
+      const sampleIndex = parseInt(id);
+      if (!isNaN(sampleIndex) && sampleIndex >= 0 && sampleIndex < sampleProducts.length) {
+        const sampleProduct = { ...sampleProducts[sampleIndex], id: id };
+        setProduct(sampleProduct);
+        if (sampleProduct.sizes && sampleProduct.sizes.length > 0) {
+          setSelectedSize(sampleProduct.sizes[0]);
+        }
+        if (sampleProduct.colors && sampleProduct.colors.length > 0) {
+          setSelectedColor(sampleProduct.colors[0]);
+        }
+        addToRecentlyViewed(sampleProduct);
+      } else {
+        navigate('/');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleAddToCart = () => {
-    if (!product) return;
-    if (product.stock <= 0) {
-      showToast('Product is out of stock!', 'error');
-      return;
+    if (product && selectedSize && selectedColor) {
+      addToCart({
+        ...product,
+        quantity,
+        selectedSize,
+        selectedColor,
+      });
+      setShowConfetti(true);
+      showToast(`${product.name} added to cart!`, 'success');
+      setTimeout(() => setShowConfetti(false), 3000);
+    } else {
+      showToast('Please select size and color', 'error');
     }
-    const itemToAdd = {
-      ...product,
-      selectedSize,
-      selectedColor,
-      quantity: quantity,
-    };
-    addToCart(itemToAdd);
-    showToast(`${quantity} x ${product.name} added to cart!`, 'success');
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 3000);
+  };
+
+  const handleARCapture = (imageData) => {
+    // Create a download link for the captured image
+    const link = document.createElement('a');
+    link.download = `${product.name}-ar-try-on.png`;
+    link.href = imageData;
+    link.click();
+    showToast('AR photo saved!', 'success');
   };
 
   const discount = product?.onSale && product?.originalPrice 
@@ -238,6 +276,24 @@ const ProductDetails = () => {
               </div>
             </div>
 
+            {/* AR/VR Button for accessories */}
+            {product && product.arEnabled && (
+              <motion.button
+                type="button"
+                onClick={() => setShowARVR(true)}
+                className="w-full border border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400 px-6 py-3 text-xs uppercase tracking-widest font-light hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-black transition-all mb-4 btn-fluid ripple-effect"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  Try AR/VR
+                </span>
+              </motion.button>
+            )}
+
             <motion.button
               type="button"
               onClick={handleAddToCart}
@@ -268,6 +324,18 @@ const ProductDetails = () => {
           }
         }}
       />
+
+      {/* AR/VR Modal */}
+      {showARVR && product && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <ARVRExperience
+            product={product}
+            onCapture={handleARCapture}
+            onClose={() => setShowARVR(false)}
+            className="w-full max-w-4xl h-full max-h-[90vh]"
+          />
+        </div>
+      )}
     </div>
   );
 };

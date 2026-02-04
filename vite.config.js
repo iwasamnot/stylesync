@@ -38,6 +38,17 @@ export default defineConfig({
             },
           },
           {
+            urlPattern: /\.(?:glb|gltf|obj|mtl)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: '3d-models-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+              },
+            },
+          },
+          {
             urlPattern: /^https:\/\/via\.placeholder\.com\/.*/i,
             handler: 'NetworkFirst',
             options: {

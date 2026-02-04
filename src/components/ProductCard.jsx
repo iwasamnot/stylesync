@@ -10,6 +10,7 @@ import { prefersReducedMotion } from '../utils/performance';
 const ProductCard = memo(({ product, index = 0 }) => {
   const [showQuickView, setShowQuickView] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { theme } = useTheme();
   const shouldReduceMotion = useReducedMotion() || prefersReducedMotion();
   const isFun = theme === 'fun';
@@ -82,22 +83,30 @@ const ProductCard = memo(({ product, index = 0 }) => {
         >
           <div className={`aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden relative image-zoom ${isFun ? 'rounded-2xl' : 'rounded-t-lg'}`}>
             <Link to={`/product/${product?.id || '1'}`}>
-              <motion.img
-                src={product?.image || 'https://via.placeholder.com/300'}
-                alt={product?.name || 'Product'}
-                className="w-full h-full object-cover"
-                variants={shouldReduceMotion ? { rest: { scale: 1 }, hover: { scale: 1 } } : imageVariants}
-                initial="rest"
-                animate={isHovered ? 'hover' : 'rest'}
-                whileHover={shouldReduceMotion ? {} : { scale: 1.1 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                loading="lazy" // Lazy load images
-                style={{
-                  willChange: isHovered ? 'transform' : 'auto',
-                  transform: 'translateZ(0)',
-                  backfaceVisibility: 'hidden',
-                }}
-              />
+              {imageError || !product?.image ? (
+                <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">📦</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">Product Image</div>
+                  </div>
+                </div>
+              ) : (
+                <motion.img
+                  src={product?.image}
+                  alt={product?.name || 'Product'}
+                  className="w-full h-full object-cover"
+                  variants={shouldReduceMotion ? { rest: { scale: 1 }, hover: { scale: 1 } } : imageVariants}
+                  initial="rest"
+                  animate={isHovered ? 'hover' : 'rest'}
+                  whileHover={shouldReduceMotion ? {} : { scale: 1.1 }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  loading="lazy"
+                  onError={() => setImageError(true)}
+                  style={{
+                    willChange: isHovered ? 'transform' : 'auto',
+                  }}
+                />
+              )}
             </Link>
             <motion.div
               className="absolute top-4 left-4 z-10"

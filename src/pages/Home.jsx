@@ -18,6 +18,7 @@ import AIAssistant from '../components/AIAssistant';
 import { useTheme } from '../context/ThemeContext';
 import { db } from '../lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { sampleProducts } from '../data/sampleProducts';
 
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -71,14 +72,44 @@ const Home = () => {
 
   const fetchProducts = async () => {
     try {
+      // Temporarily force sample products to test
+      console.log('Using sample products for testing');
+      const productsWithIds = sampleProducts.map((product, index) => ({
+        ...product,
+        id: index.toString()
+      }));
+      setAllProducts(productsWithIds);
+      setLoading(false);
+      return;
+      
+      // Original Firebase code (commented out for testing)
+      /*
       const querySnapshot = await getDocs(collection(db, 'products'));
       const productsList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setAllProducts(productsList);
+      
+      // If no products in Firebase, use sample products
+      if (productsList.length === 0) {
+        console.log('No products in Firebase, using sample products');
+        const productsWithIds = sampleProducts.map((product, index) => ({
+          ...product,
+          id: index.toString()
+        }));
+        setAllProducts(productsWithIds);
+      } else {
+        setAllProducts(productsList);
+      }
+      */
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching products from Firebase, using sample products:', error);
+      // Fallback to sample products on error
+      const productsWithIds = sampleProducts.map((product, index) => ({
+        ...product,
+        id: index.toString()
+      }));
+      setAllProducts(productsWithIds);
     } finally {
       setLoading(false);
     }
