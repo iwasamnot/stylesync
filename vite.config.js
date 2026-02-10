@@ -10,10 +10,10 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['logo.svg'],
       workbox: {
-        // LEAD ARCHITECT FIX: Increase precache limit to 5MB to handle the 3.11MB vendor chunk
-        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, 
+        // FIX 1: Increase precache limit to 5MB for the heavy vendor file
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         
-        // Optimize caching strategy
+        // Runtime caching strategies
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
@@ -36,17 +36,6 @@ export default defineConfig({
               cacheName: 'images-cache',
               expiration: {
                 maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-              },
-            },
-          },
-          {
-            urlPattern: /\.(?:glb|gltf|obj|mtl)$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: '3d-models-cache',
-              expiration: {
-                maxEntries: 50,
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
               },
             },
@@ -105,24 +94,23 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // FIX: Group React core and hooks together to prevent 'useLayoutEffect' errors
+          // FIX 2: Group React + Framer Motion together to prevent 'useLayoutEffect' crash
           if (
-            id.includes('node_modules/react/') || 
-            id.includes('node_modules/react-dom/') || 
-            id.includes('node_modules/scheduler/') ||
-            id.includes('node_modules/react-router')
+            id.includes('node_modules/react') || 
+            id.includes('node_modules/react-dom') || 
+            id.includes('node_modules/react-router') || 
+            id.includes('node_modules/scheduler') ||
+            id.includes('node_modules/framer-motion') // Must be with React
           ) {
-            return 'react-core';
+            return 'react-vendor';
           }
-          // Firebase vendor chunk
+
+          // Keep heavy Firebase SDK separate
           if (id.includes('node_modules/firebase')) {
             return 'firebase-vendor';
           }
-          // Framer Motion chunk
-          if (id.includes('node_modules/framer-motion')) {
-            return 'framer-motion';
-          }
-          // Catch-all vendor for other small libraries
+
+          // Catch-all for other dependencies
           if (id.includes('node_modules')) {
             return 'vendor';
           }
@@ -135,9 +123,8 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, 
+        drop_console: true, // Remove console logs in production
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
       },
     },
     sourcemap: false,
@@ -146,7 +133,7 @@ export default defineConfig({
   },
   server: {
     hmr: {
-      overlay: false, 
+      overlay: false,
     },
   },
   optimizeDeps: {
