@@ -10,7 +10,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['logo.svg'],
       workbox: {
-        // FIX 1: Increase precache limit to 5MB for the heavy vendor file
+        // FIX 1: Keep the 5MB limit to accommodate the consolidated vendor file
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         
         // Runtime caching strategies
@@ -94,23 +94,18 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // FIX 2: Group React + Framer Motion together to prevent 'useLayoutEffect' crash
-          if (
-            id.includes('node_modules/react') || 
-            id.includes('node_modules/react-dom') || 
-            id.includes('node_modules/react-router') || 
-            id.includes('node_modules/scheduler') ||
-            id.includes('node_modules/framer-motion') // Must be with React
-          ) {
-            return 'react-vendor';
-          }
-
-          // Keep heavy Firebase SDK separate
+          // LEAD ARCHITECT FIX: Simplified 2-Chunk Strategy
+          
+          // 1. ISOLATE FIREBASE: This is the largest dependency. 
+          // Keeping it separate keeps the main bundle small enough to load fast.
           if (id.includes('node_modules/firebase')) {
             return 'firebase-vendor';
           }
-
-          // Catch-all for other dependencies
+          
+          // 2. CONSOLIDATE EVERYTHING ELSE:
+          // Instead of splitting React, Framer, and Router, we put them ALL 
+          // into one 'vendor' chunk. This GUARANTEES they share the same 
+          // React instance and load order, fixing the "undefined" crash.
           if (id.includes('node_modules')) {
             return 'vendor';
           }
@@ -123,7 +118,7 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console logs in production
+        drop_console: true,
         drop_debugger: true,
       },
     },
@@ -146,6 +141,5 @@ export default defineConfig({
       'firebase/auth',
       'firebase/firestore',
     ],
-    exclude: ['@stripe/stripe-js'], 
   },
 })
