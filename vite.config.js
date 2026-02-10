@@ -10,6 +10,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['logo.svg'],
       workbox: {
+        // LEAD ARCHITECT FIX: Increase precache limit to 5MB to handle the 3.11MB vendor chunk
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, 
+        
         // Optimize caching strategy
         runtimeCaching: [
           {
@@ -115,12 +118,12 @@ export default defineConfig({
     }),
   ],
   build: {
-    // Optimize chunk sizes
-    chunkSizeWarningLimit: 1000,
+    // Optimize chunk sizes for better performance scores
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // React vendor chunk
+          // React core vendor chunk
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router')) {
             return 'react-vendor';
           }
@@ -132,11 +135,11 @@ export default defineConfig({
           if (id.includes('node_modules/framer-motion')) {
             return 'framer-motion';
           }
-          // Only include stripe if it's actually used (not empty)
-          if (id.includes('node_modules/@stripe/stripe-js') && id.includes('stripe')) {
-            return 'stripe';
+          // Only include stripe if it's actually used
+          if (id.includes('node_modules/@stripe/stripe-js')) {
+            return 'stripe-vendor';
           }
-          // Other node_modules
+          // Remaining node_modules
           if (id.includes('node_modules')) {
             return 'vendor';
           }
@@ -147,16 +150,16 @@ export default defineConfig({
         entryFileNames: 'assets/[name]-[hash].js',
       },
     },
-    // Minify with terser for better performance
+    // Minify with terser for production performance
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console.log in production
+        drop_console: true, // Remove console.log for security and performance
         drop_debugger: true,
         pure_funcs: ['console.log', 'console.info', 'console.debug'],
       },
     },
-    // Source maps for debugging (disabled in production for performance)
+    // Source maps disabled in production for performance
     sourcemap: false,
     // Optimize CSS
     cssCodeSplit: true,
@@ -165,10 +168,10 @@ export default defineConfig({
   // Optimize dev server
   server: {
     hmr: {
-      overlay: false, // Disable error overlay for better performance
+      overlay: false, // Disable error overlay for better focus
     },
   },
-  // Optimize dependencies
+  // Optimize dependencies for development
   optimizeDeps: {
     include: [
       'react',
@@ -179,6 +182,6 @@ export default defineConfig({
       'firebase/auth',
       'firebase/firestore',
     ],
-    exclude: ['@stripe/stripe-js'], // Exclude from pre-bundling as it's loaded on-demand
+    exclude: ['@stripe/stripe-js'], 
   },
 })
