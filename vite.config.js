@@ -182,4 +182,3 @@ export default defineConfig({
     exclude: ['@stripe/stripe-js'], // Exclude from pre-bundling as it's loaded on-demand
   },
 })
-
