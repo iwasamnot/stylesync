@@ -52,17 +52,6 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /^https:\/\/via\.placeholder\.com\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'placeholder-images',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
-              },
-            },
-          },
-          {
             urlPattern: /^https:\/\/api\./i,
             handler: 'NetworkFirst',
             options: {
@@ -86,12 +75,9 @@ export default defineConfig({
             },
           },
         ],
-        // Skip waiting for better performance
         skipWaiting: true,
         clientsClaim: true,
-        // Clean up old caches
         cleanupOutdatedCaches: true,
-        // Navigation preload for faster page loads
         navigationPreload: true,
       },
       manifest: {
@@ -111,21 +97,22 @@ export default defineConfig({
             purpose: 'any maskable',
           },
         ],
-        // Performance hints
-        related_applications: [],
-        prefer_related_applications: false,
       },
     }),
   ],
   build: {
-    // Optimize chunk sizes for better performance scores
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // React core vendor chunk
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router')) {
-            return 'react-vendor';
+          // FIX: Group React core and hooks together to prevent 'useLayoutEffect' errors
+          if (
+            id.includes('node_modules/react/') || 
+            id.includes('node_modules/react-dom/') || 
+            id.includes('node_modules/scheduler/') ||
+            id.includes('node_modules/react-router')
+          ) {
+            return 'react-core';
           }
           // Firebase vendor chunk
           if (id.includes('node_modules/firebase')) {
@@ -135,43 +122,33 @@ export default defineConfig({
           if (id.includes('node_modules/framer-motion')) {
             return 'framer-motion';
           }
-          // Only include stripe if it's actually used
-          if (id.includes('node_modules/@stripe/stripe-js')) {
-            return 'stripe-vendor';
-          }
-          // Remaining node_modules
+          // Catch-all vendor for other small libraries
           if (id.includes('node_modules')) {
             return 'vendor';
           }
         },
-        // Optimize asset names for better caching
         assetFileNames: 'assets/[name]-[hash][extname]',
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
       },
     },
-    // Minify with terser for production performance
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console.log for security and performance
+        drop_console: true, 
         drop_debugger: true,
         pure_funcs: ['console.log', 'console.info', 'console.debug'],
       },
     },
-    // Source maps disabled in production for performance
     sourcemap: false,
-    // Optimize CSS
     cssCodeSplit: true,
     cssMinify: true,
   },
-  // Optimize dev server
   server: {
     hmr: {
-      overlay: false, // Disable error overlay for better focus
+      overlay: false, 
     },
   },
-  // Optimize dependencies for development
   optimizeDeps: {
     include: [
       'react',
